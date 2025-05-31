@@ -136,14 +136,12 @@ class MissionAnalyzer:
         # Combat statistics bar chart
         pilots = data.get('pilots', {})
         total_kills = sum(p.get('kills', 0) for p in pilots.values())
-        total_deaths = sum(p.get('deaths', 0) for p in pilots.values())
         total_shots = sum(p.get('shots_fired', 0) for p in pilots.values())
-        total_hits = sum(p.get('hits_scored', 0) for p in pilots.values())
         
         fig.add_trace(go.Bar(
-            x=['Kills', 'Deaths', 'Shots', 'Hits'],
-            y=[total_kills, total_deaths, total_shots, total_hits],
-            marker_color=['green', 'red', 'blue', 'orange']
+            x=['Kills', 'Shots'],
+            y=[total_kills, total_shots],
+            marker_color=['green', 'blue']
         ), row=1, col=2)
         
         # Pilot count indicator
@@ -169,20 +167,40 @@ class MissionAnalyzer:
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     def create_pilot_performance_charts(self, data):
-        """Create radar charts for top pilots"""
+        """Create radar charts for all pilots, organized by coalition"""
         pilots = data.get('pilots', {})
         
-        # Get top 5 pilots by efficiency rating
-        top_pilots = sorted(pilots.items(), 
-                          key=lambda x: x[1].get('efficiency_rating', 0), 
-                          reverse=True)[:5]
+        # Separate pilots by coalition
+        red_pilots = []
+        blue_pilots = []
+        
+        for pilot_name, pilot_data in pilots.items():
+            if pilot_data.get('shots_fired', 0) == 0:
+                continue  # Skip pilots with no activity
+                
+            pilot_info = {
+                'name': pilot_name,
+                'data': pilot_data,
+                'coalition': pilot_data.get('coalition', 0),
+                'is_player_controlled': pilot_data.get('is_player_controlled', False)
+            }
+            
+            if pilot_data.get('coalition') == 1:  # Red coalition
+                red_pilots.append(pilot_info)
+            elif pilot_data.get('coalition') == 2:  # Blue coalition
+                blue_pilots.append(pilot_info)
+        
+        # Sort pilots by efficiency rating within each coalition
+        red_pilots.sort(key=lambda x: x['data'].get('efficiency_rating', 0), reverse=True)
+        blue_pilots.sort(key=lambda x: x['data'].get('efficiency_rating', 0), reverse=True)
         
         charts = []
         
-        for pilot_name, pilot_data in top_pilots:
-            if pilot_data.get('shots_fired', 0) == 0:
-                continue
-                
+        # Create charts for Red coalition pilots
+        for pilot_info in red_pilots:
+            pilot_name = pilot_info['name']
+            pilot_data = pilot_info['data']
+            
             # Normalize metrics to 0-100 scale
             accuracy = pilot_data.get('accuracy', 0)
             kd_ratio = min(pilot_data.get('kd_ratio', 0) * 20, 100)  # Cap at 100
@@ -195,8 +213,13 @@ class MissionAnalyzer:
                 r=[accuracy, kd_ratio, efficiency, shots_fired],
                 theta=['Accuracy', 'K/D Ratio', 'Efficiency', 'Activity'],
                 fill='toself',
-                name=pilot_name
+                name=pilot_name,
+                line_color='red',
+                fillcolor='rgba(255, 0, 0, 0.3)'
             ))
+            
+            # Add player type indicator to title
+            player_type = "Human" if pilot_info['is_player_controlled'] else "AI"
             
             fig.update_layout(
                 polar=dict(
@@ -204,13 +227,58 @@ class MissionAnalyzer:
                         visible=True,
                         range=[0, 100]
                     )),
-                title=f"{pilot_name} ({pilot_data.get('aircraft_type', 'Unknown')})",
+                title=f"{pilot_name} ({pilot_data.get('aircraft_type', 'Unknown')}) - Red [{player_type}]",
                 showlegend=True,
                 height=400
             )
             
             charts.append({
                 'pilot': pilot_name,
+                'coalition': 'red',
+                'is_player_controlled': pilot_info['is_player_controlled'],
+                'chart': json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            })
+        
+        # Create charts for Blue coalition pilots
+        for pilot_info in blue_pilots:
+            pilot_name = pilot_info['name']
+            pilot_data = pilot_info['data']
+            
+            # Normalize metrics to 0-100 scale
+            accuracy = pilot_data.get('accuracy', 0)
+            kd_ratio = min(pilot_data.get('kd_ratio', 0) * 20, 100)  # Cap at 100
+            efficiency = pilot_data.get('efficiency_rating', 0)
+            shots_fired = min(pilot_data.get('shots_fired', 0) * 10, 100)  # Scale shots
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatterpolar(
+                r=[accuracy, kd_ratio, efficiency, shots_fired],
+                theta=['Accuracy', 'K/D Ratio', 'Efficiency', 'Activity'],
+                fill='toself',
+                name=pilot_name,
+                line_color='blue',
+                fillcolor='rgba(0, 0, 255, 0.3)'
+            ))
+            
+            # Add player type indicator to title
+            player_type = "Human" if pilot_info['is_player_controlled'] else "AI"
+            
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 100]
+                    )),
+                title=f"{pilot_name} ({pilot_data.get('aircraft_type', 'Unknown')}) - Blue [{player_type}]",
+                showlegend=True,
+                height=400
+            )
+            
+            charts.append({
+                'pilot': pilot_name,
+                'coalition': 'blue',
+                'is_player_controlled': pilot_info['is_player_controlled'],
                 'chart': json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
             })
         
@@ -283,147 +351,895 @@ class MissionAnalyzer:
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     def create_group_comparison_chart(self, data):
-        """Create group performance comparison"""
+        """Create comprehensive group comparison with multiple engaging visualizations"""
         groups = data.get('groups', {})
+        pilots = data.get('pilots', {})
         
-        group_names = []
-        accuracy = []
-        survivability = []
-        efficiency = []
-        kills = []
+        if not groups:
+            fig = go.Figure()
+            fig.add_annotation(text="No group data available", 
+                             xref="paper", yref="paper",
+                             x=0.5, y=0.5, showarrow=False)
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         
-        for group_data in groups.values():
-            group_names.append(group_data.get('name', 'Unknown'))
-            accuracy.append(group_data.get('group_accuracy', 0))
-            survivability.append(group_data.get('group_survivability', 0))
-            efficiency.append(group_data.get('average_pilot_efficiency', 0))
-            kills.append(group_data.get('total_kills', 0))
+        # Separate groups by coalition
+        red_groups = []
+        blue_groups = []
         
+        for group_id, group_data in groups.items():
+            group_info = {
+                'id': group_id,
+                'name': group_data.get('name', 'Unknown'),
+                'data': group_data,
+                'coalition': group_data.get('coalition', 0)
+            }
+            
+            if group_data.get('coalition') == 1:  # Red coalition
+                red_groups.append(group_info)
+            elif group_data.get('coalition') == 2:  # Blue coalition
+                blue_groups.append(group_info)
+        
+        # Create comprehensive comparison dashboard
         fig = make_subplots(
-            rows=2, cols=2,
-            subplot_titles=('Group Accuracy', 'Group Survivability', 'Average Efficiency', 'Total Kills'),
-            specs=[[{"type": "bar"}, {"type": "bar"}],
-                   [{"type": "bar"}, {"type": "bar"}]]
+            rows=3, cols=2,
+            subplot_titles=(
+                'Formation Effectiveness Radar', 'Coalition Force Strength',
+                'Combat Performance Matrix', 'Pilot Quality Distribution', 
+                'Tactical Efficiency Comparison', 'Formation Survivability'
+            ),
+            specs=[
+                [{"type": "scatterpolar"}, {"type": "bar"}],
+                [{"type": "scatter"}, {"type": "histogram"}],
+                [{"type": "bar"}, {"type": "indicator"}]
+            ],
+            vertical_spacing=0.12,
+            horizontal_spacing=0.1
         )
         
-        colors = ['red' if 'Red' in name or group_data.get('coalition') == 1 else 'blue' 
-                 for name, group_data in zip(group_names, groups.values())]
+        # 1. Formation Effectiveness Radar Chart (Row 1, Col 1)
+        for group_info in red_groups + blue_groups:
+            group_data = group_info['data']
+            group_name = group_info['name']
+            coalition = group_info['coalition']
+            
+            # Normalize metrics for radar chart (0-100 scale)
+            accuracy = group_data.get('group_accuracy', 0)
+            survivability = group_data.get('group_survivability', 0)
+            efficiency = group_data.get('average_pilot_efficiency', 0)
+            activity = min(group_data.get('total_shots', 0) * 5, 100)  # Scale activity
+            lethality = min(group_data.get('total_kills', 0) * 25, 100)  # Scale kills
+            
+            color = 'red' if coalition == 1 else 'blue'
+            
+            fig.add_trace(go.Scatterpolar(
+                r=[accuracy, survivability, efficiency, activity, lethality],
+                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity', 'Lethality'],
+                fill='toself',
+                name=f"{group_name} ({['Neutral', 'Red', 'Blue'][coalition]})",
+                line_color=color,
+                fillcolor=f'rgba({255 if coalition == 1 else 0}, 0, {255 if coalition == 2 else 0}, 0.3)'
+            ), row=1, col=1)
         
-        fig.add_trace(go.Bar(x=group_names, y=accuracy, marker_color=colors, name="Accuracy"), row=1, col=1)
-        fig.add_trace(go.Bar(x=group_names, y=survivability, marker_color=colors, name="Survivability"), row=1, col=2)
-        fig.add_trace(go.Bar(x=group_names, y=efficiency, marker_color=colors, name="Efficiency"), row=2, col=1)
-        fig.add_trace(go.Bar(x=group_names, y=kills, marker_color=colors, name="Kills"), row=2, col=2)
+        # 2. Coalition Force Strength (Row 1, Col 2)
+        coalition_names = []
+        coalition_pilots = []
+        coalition_kills = []
+        coalition_colors = []
         
+        red_total_pilots = sum(g['data'].get('total_pilots', 0) for g in red_groups)
+        blue_total_pilots = sum(g['data'].get('total_pilots', 0) for g in blue_groups)
+        red_total_kills = sum(g['data'].get('total_kills', 0) for g in red_groups)
+        blue_total_kills = sum(g['data'].get('total_kills', 0) for g in blue_groups)
+        
+        if red_total_pilots > 0:
+            coalition_names.append('Red Coalition')
+            coalition_pilots.append(red_total_pilots)
+            coalition_kills.append(red_total_kills)
+            coalition_colors.append('red')
+        
+        if blue_total_pilots > 0:
+            coalition_names.append('Blue Coalition')
+            coalition_pilots.append(blue_total_pilots)
+            coalition_kills.append(blue_total_kills)
+            coalition_colors.append('blue')
+        
+        fig.add_trace(go.Bar(
+            x=coalition_names,
+            y=coalition_pilots,
+            name="Total Pilots",
+            marker_color=coalition_colors,
+            text=[f"{p} pilots<br>{k} kills" for p, k in zip(coalition_pilots, coalition_kills)],
+            textposition="inside"
+        ), row=1, col=2)
+        
+        # 3. Combat Performance Matrix (Row 2, Col 1)
+        group_names = []
+        group_accuracy = []
+        group_kills = []
+        group_colors = []
+        group_sizes = []
+        
+        for group_info in red_groups + blue_groups:
+            group_data = group_info['data']
+            group_names.append(group_info['name'])
+            group_accuracy.append(group_data.get('group_accuracy', 0))
+            group_kills.append(group_data.get('total_kills', 0))
+            group_colors.append('red' if group_info['coalition'] == 1 else 'blue')
+            group_sizes.append(max(group_data.get('total_pilots', 1) * 10, 20))  # Size based on pilot count
+        
+        fig.add_trace(go.Scatter(
+            x=group_accuracy,
+            y=group_kills,
+            mode='markers+text',
+            text=group_names,
+            textposition="top center",
+            marker=dict(
+                size=group_sizes,
+                color=group_colors,
+                opacity=0.7,
+                line=dict(width=2, color='white')
+            ),
+            name="Groups",
+            hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Kills: %{y}<extra></extra>"
+        ), row=2, col=1)
+        
+        # 4. Pilot Quality Distribution (Row 2, Col 2)
+        all_pilot_efficiencies = []
+        pilot_coalitions = []
+        
+        for pilot_name, pilot_data in pilots.items():
+            efficiency = pilot_data.get('efficiency_rating', 0)
+            coalition = pilot_data.get('coalition', 0)
+            if efficiency > 0:  # Only include active pilots
+                all_pilot_efficiencies.append(efficiency)
+                pilot_coalitions.append(coalition)
+        
+        # Create histogram for each coalition
+        red_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 1]
+        blue_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 2]
+        
+        if red_efficiencies:
+            fig.add_trace(go.Histogram(
+                x=red_efficiencies,
+                name="Red Pilots",
+                marker_color='red',
+                opacity=0.7,
+                nbinsx=10
+            ), row=2, col=2)
+        
+        if blue_efficiencies:
+            fig.add_trace(go.Histogram(
+                x=blue_efficiencies,
+                name="Blue Pilots",
+                marker_color='blue',
+                opacity=0.7,
+                nbinsx=10
+            ), row=2, col=2)
+        
+        # 5. Tactical Efficiency Comparison (Row 3, Col 1)
+        efficiency_names = []
+        efficiency_values = []
+        efficiency_colors = []
+        
+        for group_info in sorted(red_groups + blue_groups, 
+                               key=lambda x: x['data'].get('average_pilot_efficiency', 0), 
+                               reverse=True):
+            group_data = group_info['data']
+            efficiency_names.append(group_info['name'])
+            efficiency_values.append(group_data.get('average_pilot_efficiency', 0))
+            efficiency_colors.append('red' if group_info['coalition'] == 1 else 'blue')
+        
+        fig.add_trace(go.Bar(
+            y=efficiency_names,
+            x=efficiency_values,
+            orientation='h',
+            marker_color=efficiency_colors,
+            text=[f"{v:.1f}" for v in efficiency_values],
+            textposition="inside",
+            name="Formation Efficiency"
+        ), row=3, col=1)
+        
+        # 6. Formation Survivability Indicator (Row 3, Col 2)
+        if red_groups and blue_groups:
+            red_survivability = sum(g['data'].get('group_survivability', 0) for g in red_groups) / len(red_groups)
+            blue_survivability = sum(g['data'].get('group_survivability', 0) for g in blue_groups) / len(blue_groups)
+            
+            # Determine winner
+            if red_survivability > blue_survivability:
+                winner_text = f"Red Coalition<br>Superior Survivability<br>{red_survivability:.1f}% vs {blue_survivability:.1f}%"
+                winner_color = "red"
+            elif blue_survivability > red_survivability:
+                winner_text = f"Blue Coalition<br>Superior Survivability<br>{blue_survivability:.1f}% vs {red_survivability:.1f}%"
+                winner_color = "blue"
+            else:
+                winner_text = f"Equal Survivability<br>{red_survivability:.1f}%"
+                winner_color = "gray"
+            
+            fig.add_trace(go.Indicator(
+                mode="number+delta+gauge",
+                value=max(red_survivability, blue_survivability),
+                delta={'reference': 50, 'relative': True},
+                gauge={
+                    'axis': {'range': [None, 100]},
+                    'bar': {'color': winner_color},
+                    'steps': [
+                        {'range': [0, 50], 'color': "lightgray"},
+                        {'range': [50, 75], 'color': "yellow"},
+                        {'range': [75, 100], 'color': "lightgreen"}
+                    ],
+                    'threshold': {
+                        'line': {'color': "red", 'width': 4},
+                        'thickness': 0.75,
+                        'value': 90
+                    }
+                },
+                title={'text': winner_text, 'font': {'size': 14}},
+                number={'font': {'size': 20}}
+            ), row=3, col=2)
+        
+        # Update layout
         fig.update_layout(
-            title="Group Performance Comparison",
-            showlegend=False,
-            height=600
+            title={
+                'text': "Formation Analysis Dashboard - Tactical Performance Comparison",
+                'x': 0.5,
+                'font': {'size': 20}
+            },
+            showlegend=True,
+            height=1200,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            )
         )
+        
+        # Update polar chart
+        fig.update_polars(
+            radialaxis=dict(visible=True, range=[0, 100]),
+            row=1, col=1
+        )
+        
+        # Update axis labels
+        fig.update_xaxes(title_text="Accuracy (%)", row=2, col=1)
+        fig.update_yaxes(title_text="Total Kills", row=2, col=1)
+        fig.update_xaxes(title_text="Pilot Efficiency Rating", row=2, col=2)
+        fig.update_yaxes(title_text="Number of Pilots", row=2, col=2)
+        fig.update_xaxes(title_text="Average Efficiency", row=3, col=1)
+        fig.update_yaxes(title_text="Formation", row=3, col=1)
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     def create_combat_timeline(self, data):
-        """Create combat timeline visualization"""
+        """Create comprehensive combat timeline with multiple event tracks"""
         pilots = data.get('pilots', {})
+        
+        # We need to reconstruct events from the available data
+        # Since we don't have direct access to all events, we'll create a timeline
+        # based on the data we have and simulate a comprehensive view
         
         events = []
         
+        # Add mission start
+        events.append({
+            'time': 0,
+            'event_type': 'Mission Start',
+            'pilot': 'SYSTEM',
+            'aircraft': '',
+            'coalition': 0,
+            'details': 'Mission begins',
+            'track': 'System',
+            'priority': 1,
+            'color': 'green'
+        })
+        
+        # Process pilot data to extract timeline events
         for pilot_name, pilot_data in pilots.items():
-            # Add first shot events
+            coalition = pilot_data.get('coalition', 0)
+            aircraft = pilot_data.get('aircraft_type', 'Unknown')
+            coalition_color = 'red' if coalition == 1 else 'blue' if coalition == 2 else 'gray'
+            
+            # Engine startup / Mission entry (estimated)
+            if pilot_data.get('flight_time', 0) > 0:
+                events.append({
+                    'time': max(0, pilot_data.get('time_to_first_shot', 60) - 30),  # Estimate 30s before first shot
+                    'event_type': 'Engine Startup',
+                    'pilot': pilot_name,
+                    'aircraft': aircraft,
+                    'coalition': coalition,
+                    'details': f'{pilot_name} starts engines',
+                    'track': 'Flight Operations',
+                    'priority': 2,
+                    'color': coalition_color
+                })
+            
+            # First shot events
             if pilot_data.get('time_to_first_shot') is not None:
                 events.append({
                     'time': pilot_data.get('time_to_first_shot', 0),
+                    'event_type': 'First Shot',
                     'pilot': pilot_name,
-                    'event': 'First Shot',
-                    'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
-                    'value': 1
+                    'aircraft': aircraft,
+                    'coalition': coalition,
+                    'details': f'{pilot_name} fires first weapon',
+                    'track': 'Combat Actions',
+                    'priority': 3,
+                    'color': coalition_color
                 })
             
-            # Add first kill events
+            # First kill events
             if pilot_data.get('time_to_first_kill') is not None:
                 events.append({
                     'time': pilot_data.get('time_to_first_kill', 0),
+                    'event_type': 'First Kill',
                     'pilot': pilot_name,
-                    'event': 'First Kill',
-                    'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
-                    'value': 2
+                    'aircraft': aircraft,
+                    'coalition': coalition,
+                    'details': f'{pilot_name} scores first kill',
+                    'track': 'Combat Results',
+                    'priority': 4,
+                    'color': coalition_color
                 })
+            
+            # Death events
+            if pilot_data.get('deaths', 0) > 0:
+                # Estimate death time based on other events or flight time
+                death_time = pilot_data.get('flight_time', 300)  # Default to end of flight
+                if pilot_data.get('killed_by'):
+                    # If we know who killed them, try to estimate when
+                    killer_data = pilots.get(pilot_data['killed_by'], {})
+                    if killer_data.get('time_to_first_kill'):
+                        death_time = killer_data['time_to_first_kill']
+                
+                events.append({
+                    'time': death_time,
+                    'event_type': 'Pilot Death',
+                    'pilot': pilot_name,
+                    'aircraft': aircraft,
+                    'coalition': coalition,
+                    'details': f'{pilot_name} KIA' + (f' by {pilot_data.get("killed_by", "unknown")}' if pilot_data.get('killed_by') else ''),
+                    'track': 'Casualties',
+                    'priority': 5,
+                    'color': 'darkred'
+                })
+            
+            # Ejection events (estimated based on deaths)
+            if pilot_data.get('ejections', 0) > 0:
+                eject_time = pilot_data.get('flight_time', 300) - 5  # 5 seconds before death/crash
+                events.append({
+                    'time': max(0, eject_time),
+                    'event_type': 'Ejection',
+                    'pilot': pilot_name,
+                    'aircraft': aircraft,
+                    'coalition': coalition,
+                    'details': f'{pilot_name} ejects from {aircraft}',
+                    'track': 'Flight Operations',
+                    'priority': 4,
+                    'color': 'orange'
+                })
+            
+            # Add weapon usage events (spread throughout engagement)
+            weapons_used = pilot_data.get('weapons_used', {})
+            shots_fired = pilot_data.get('shots_fired', 0)
+            
+            if shots_fired > 0 and pilot_data.get('time_to_first_shot') is not None:
+                first_shot_time = pilot_data['time_to_first_shot']
+                flight_time = pilot_data.get('flight_time', first_shot_time + 60)
+                
+                # Distribute weapon usage over time
+                for weapon, count in weapons_used.items():
+                    if count > 0:
+                        # Spread weapon usage over the engagement period
+                        for i in range(min(count, 3)):  # Show up to 3 weapon events per type
+                            weapon_time = first_shot_time + (i * (flight_time - first_shot_time) / max(count, 1))
+                            events.append({
+                                'time': weapon_time,
+                                'event_type': 'Weapon Fire',
+                                'pilot': pilot_name,
+                                'aircraft': aircraft,
+                                'coalition': coalition,
+                                'details': f'{pilot_name} fires {weapon}',
+                                'track': 'Weapons',
+                                'priority': 2,
+                                'color': coalition_color,
+                                'weapon': weapon
+                            })
+        
+        # Add mission end
+        mission_duration = data.get('mission_summary', {}).get('duration', 600)
+        events.append({
+            'time': mission_duration,
+            'event_type': 'Mission End',
+            'pilot': 'SYSTEM',
+            'aircraft': '',
+            'coalition': 0,
+            'details': 'Mission complete',
+            'track': 'System',
+            'priority': 1,
+            'color': 'green'
+        })
         
         if not events:
-            # Create empty timeline
             fig = go.Figure()
             fig.add_annotation(text="No timeline data available", 
                              xref="paper", yref="paper",
                              x=0.5, y=0.5, showarrow=False)
-        else:
-            # Sort events by time
-            events.sort(key=lambda x: x['time'])
-            
-            fig = go.Figure()
-            
-            # Group events by type
-            for event_type in ['First Shot', 'First Kill']:
-                type_events = [e for e in events if e['event'] == event_type]
-                if type_events:
-                    fig.add_trace(go.Scatter(
-                        x=[e['time'] for e in type_events],
-                        y=[e['pilot'] for e in type_events],
-                        mode='markers+text',
-                        text=[f"{e['aircraft']}" for e in type_events],
-                        textposition="middle right",
-                        marker=dict(size=12, symbol='diamond' if event_type == 'First Kill' else 'circle'),
-                        name=event_type
-                    ))
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         
-        fig.update_layout(
-            title="Combat Timeline",
-            xaxis_title="Time (seconds)",
-            yaxis_title="Pilot",
-            height=400
+        # Sort events by time
+        events.sort(key=lambda x: x['time'])
+        
+        # Create comprehensive timeline with multiple tracks
+        fig = make_subplots(
+            rows=5, cols=1,
+            subplot_titles=('System Events', 'Flight Operations', 'Combat Actions', 'Weapons Usage', 'Combat Results & Casualties'),
+            shared_xaxes=True,
+            vertical_spacing=0.08,
+            row_heights=[0.15, 0.2, 0.25, 0.2, 0.2]
         )
+        
+        # Define track mapping
+        track_rows = {
+            'System': 1,
+            'Flight Operations': 2,
+            'Combat Actions': 3,
+            'Weapons': 4,
+            'Combat Results': 5,
+            'Casualties': 5
+        }
+        
+        # Group events by track
+        tracks = {}
+        for event in events:
+            track = event['track']
+            if track not in tracks:
+                tracks[track] = []
+            tracks[track].append(event)
+        
+        # Create timeline for each track
+        for track_name, track_events in tracks.items():
+            if track_name not in track_rows:
+                continue
+                
+            row = track_rows[track_name]
+            
+            # Separate events by coalition for better visualization
+            red_events = [e for e in track_events if e['coalition'] == 1]
+            blue_events = [e for e in track_events if e['coalition'] == 2]
+            system_events = [e for e in track_events if e['coalition'] == 0]
+            
+            # Plot Red coalition events
+            if red_events:
+                fig.add_trace(go.Scatter(
+                    x=[e['time'] for e in red_events],
+                    y=[f"{e['pilot']} ({e['aircraft']})" if e['aircraft'] else e['pilot'] for e in red_events],
+                    mode='markers+text',
+                    text=[e['event_type'] for e in red_events],
+                    textposition="top center",
+                    marker=dict(
+                        size=12,
+                        color='red',
+                        symbol=[self._get_event_symbol(e['event_type']) for e in red_events],
+                        line=dict(width=2, color='white')
+                    ),
+                    name="Red Coalition",
+                    hovertemplate="<b>%{text}</b><br>Time: %{x:.1f}s<br>%{y}<br><extra></extra>",
+                    showlegend=(row == 1)  # Only show legend on first row
+                ), row=row, col=1)
+            
+            # Plot Blue coalition events
+            if blue_events:
+                fig.add_trace(go.Scatter(
+                    x=[e['time'] for e in blue_events],
+                    y=[f"{e['pilot']} ({e['aircraft']})" if e['aircraft'] else e['pilot'] for e in blue_events],
+                    mode='markers+text',
+                    text=[e['event_type'] for e in blue_events],
+                    textposition="top center",
+                    marker=dict(
+                        size=12,
+                        color='blue',
+                        symbol=[self._get_event_symbol(e['event_type']) for e in blue_events],
+                        line=dict(width=2, color='white')
+                    ),
+                    name="Blue Coalition",
+                    hovertemplate="<b>%{text}</b><br>Time: %{x:.1f}s<br>%{y}<br><extra></extra>",
+                    showlegend=(row == 1)  # Only show legend on first row
+                ), row=row, col=1)
+            
+            # Plot System events
+            if system_events:
+                fig.add_trace(go.Scatter(
+                    x=[e['time'] for e in system_events],
+                    y=[e['pilot'] for e in system_events],
+                    mode='markers+text',
+                    text=[e['event_type'] for e in system_events],
+                    textposition="top center",
+                    marker=dict(
+                        size=15,
+                        color='green',
+                        symbol='star',
+                        line=dict(width=2, color='white')
+                    ),
+                    name="System Events",
+                    hovertemplate="<b>%{text}</b><br>Time: %{x:.1f}s<br><extra></extra>",
+                    showlegend=(row == 1)  # Only show legend on first row
+                ), row=row, col=1)
+        
+        # Add phase indicators
+        phases = self._get_mission_phases(events, mission_duration)
+        for phase in phases:
+            fig.add_vrect(
+                x0=phase['start'], x1=phase['end'],
+                fillcolor=phase['color'], opacity=0.1,
+                layer="below", line_width=0,
+                annotation_text=phase['name'],
+                annotation_position="top left"
+            )
+        
+        # Update layout
+        fig.update_layout(
+            title={
+                'text': "Comprehensive Combat Timeline - Multi-Track Event Analysis",
+                'x': 0.5,
+                'font': {'size': 18}
+            },
+            height=800,
+            showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ),
+            hovermode='closest'
+        )
+        
+        # Update x-axes
+        fig.update_xaxes(title_text="Mission Time (seconds)", row=5, col=1)
+        for i in range(1, 6):
+            fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray', row=i, col=1)
+            fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray', row=i, col=1)
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
+    def _get_event_symbol(self, event_type):
+        """Get appropriate symbol for event type"""
+        symbol_map = {
+            'Engine Startup': 'circle',
+            'First Shot': 'triangle-up',
+            'First Kill': 'star',
+            'Pilot Death': 'x',
+            'Ejection': 'diamond',
+            'Weapon Fire': 'square',
+            'Mission Start': 'star',
+            'Mission End': 'star'
+        }
+        return symbol_map.get(event_type, 'circle')
+    
+    def _get_mission_phases(self, events, duration):
+        """Define mission phases based on events"""
+        phases = []
+        
+        # Pre-combat phase (0 to first shot)
+        first_shot_time = min([e['time'] for e in events if e['event_type'] == 'First Shot'], default=duration/4)
+        if first_shot_time > 0:
+            phases.append({
+                'name': 'Pre-Combat',
+                'start': 0,
+                'end': first_shot_time,
+                'color': 'blue'
+            })
+        
+        # Combat phase (first shot to last kill/death)
+        combat_events = [e for e in events if e['event_type'] in ['First Kill', 'Pilot Death', 'Weapon Fire']]
+        if combat_events:
+            combat_start = first_shot_time
+            combat_end = max([e['time'] for e in combat_events], default=duration*0.8)
+            phases.append({
+                'name': 'Active Combat',
+                'start': combat_start,
+                'end': combat_end,
+                'color': 'red'
+            })
+            
+            # Post-combat phase
+            if combat_end < duration:
+                phases.append({
+                    'name': 'Post-Combat',
+                    'start': combat_end,
+                    'end': duration,
+                    'color': 'green'
+                })
+        
+        return phases
+    
     def create_kill_death_network(self, data):
-        """Create kill/death relationship network"""
+        """Create comprehensive kill/death relationship network visualization"""
         pilots = data.get('pilots', {})
         
-        # Find kill relationships
+        # Find kill relationships and build network data
         relationships = []
+        all_pilots = set()
+        
         for pilot_name, pilot_data in pilots.items():
+            all_pilots.add(pilot_name)
             if pilot_data.get('killed_by'):
+                killer = pilot_data['killed_by']
+                all_pilots.add(killer)
                 relationships.append({
-                    'killer': pilot_data['killed_by'],
-                    'victim': pilot_name
+                    'killer': killer,
+                    'victim': pilot_name,
+                    'killer_data': pilots.get(killer, {}),
+                    'victim_data': pilot_data
                 })
         
         if not relationships:
+            # Create informative empty state
             fig = go.Figure()
-            fig.add_annotation(text="No kill/death relationships to display", 
-                             xref="paper", yref="paper",
-                             x=0.5, y=0.5, showarrow=False)
+            fig.add_annotation(
+                text="No Direct Kill Relationships Found<br><br>" +
+                     "This could mean:<br>" +
+                     "• No pilots were shot down by other pilots<br>" +
+                     "• Deaths were caused by crashes, system failures, or ground fire<br>" +
+                     "• Kill attribution data is not available in the logs",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, 
+                showarrow=False,
+                font=dict(size=16),
+                align="center"
+            )
+            fig.update_layout(
+                title="Kill/Death Network Analysis",
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                height=400,
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)'
+            )
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        
+        # Create network layout using a force-directed approach
+        import math
+        import random
+        
+        # Position nodes in a circular layout with some randomization
+        pilot_positions = {}
+        pilot_list = list(all_pilots)
+        n_pilots = len(pilot_list)
+        
+        if n_pilots == 1:
+            pilot_positions[pilot_list[0]] = (0, 0)
         else:
-            # Create network visualization
-            fig = go.Figure()
+            for i, pilot in enumerate(pilot_list):
+                angle = 2 * math.pi * i / n_pilots
+                radius = max(1, n_pilots / 4)  # Adjust radius based on number of pilots
+                x = radius * math.cos(angle) + random.uniform(-0.3, 0.3)
+                y = radius * math.sin(angle) + random.uniform(-0.3, 0.3)
+                pilot_positions[pilot] = (x, y)
+        
+        # Create the network visualization
+        fig = go.Figure()
+        
+        # Add edges (kill relationships) first so they appear behind nodes
+        edge_x = []
+        edge_y = []
+        edge_info = []
+        
+        for rel in relationships:
+            killer = rel['killer']
+            victim = rel['victim']
             
-            # Simple layout - just show the relationships as a table-like structure
-            killers = list(set([r['killer'] for r in relationships]))
-            victims = list(set([r['victim'] for r in relationships]))
-            
-            # Create arrows showing kill relationships
-            for i, rel in enumerate(relationships):
+            if killer in pilot_positions and victim in pilot_positions:
+                x0, y0 = pilot_positions[killer]
+                x1, y1 = pilot_positions[victim]
+                
+                # Add edge coordinates
+                edge_x.extend([x0, x1, None])
+                edge_y.extend([y0, y1, None])
+                
+                # Add arrow annotation for direction
                 fig.add_annotation(
-                    x=0.2, y=0.8 - i * 0.2,
-                    text=f"{rel['killer']} → {rel['victim']}",
-                    showarrow=False,
-                    font=dict(size=14)
+                    x=(x0 + x1) / 2,
+                    y=(y0 + y1) / 2,
+                    ax=x0, ay=y0,
+                    axref='x', ayref='y',
+                    xref='x', yref='y',
+                    showarrow=True,
+                    arrowhead=2,
+                    arrowsize=1.5,
+                    arrowwidth=2,
+                    arrowcolor='darkred',
+                    text="",
+                    bgcolor="rgba(255,255,255,0.8)",
+                    bordercolor="darkred",
+                    borderwidth=1
                 )
         
+        # Add edges as a single trace
+        if edge_x:
+            fig.add_trace(go.Scatter(
+                x=edge_x, y=edge_y,
+                mode='lines',
+                line=dict(width=2, color='darkred'),
+                hoverinfo='none',
+                showlegend=False,
+                name='Kill Relationships'
+            ))
+        
+        # Separate pilots by coalition and role
+        red_pilots = []
+        blue_pilots = []
+        neutral_pilots = []
+        killers = set([r['killer'] for r in relationships])
+        victims = set([r['victim'] for r in relationships])
+        
+        for pilot in all_pilots:
+            pilot_data = pilots.get(pilot, {})
+            coalition = pilot_data.get('coalition', 0)
+            x, y = pilot_positions[pilot]
+            
+            pilot_info = {
+                'name': pilot,
+                'x': x,
+                'y': y,
+                'coalition': coalition,
+                'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
+                'kills': pilot_data.get('kills', 0),
+                'deaths': pilot_data.get('deaths', 0),
+                'is_killer': pilot in killers,
+                'is_victim': pilot in victims,
+                'efficiency': pilot_data.get('efficiency_rating', 0)
+            }
+            
+            if coalition == 1:
+                red_pilots.append(pilot_info)
+            elif coalition == 2:
+                blue_pilots.append(pilot_info)
+            else:
+                neutral_pilots.append(pilot_info)
+        
+        # Add pilot nodes by coalition
+        for coalition_pilots, color, name in [
+            (red_pilots, 'red', 'Red Coalition'),
+            (blue_pilots, 'blue', 'Blue Coalition'),
+            (neutral_pilots, 'gray', 'Unknown Coalition')
+        ]:
+            if not coalition_pilots:
+                continue
+                
+            # Determine node sizes based on kills and role
+            node_sizes = []
+            node_symbols = []
+            hover_texts = []
+            
+            for pilot in coalition_pilots:
+                # Base size on total kills, minimum 15, maximum 40
+                base_size = 15 + min(pilot['kills'] * 5, 25)
+                
+                # Increase size for killers, decrease for victims
+                if pilot['is_killer'] and pilot['is_victim']:
+                    size = base_size + 5  # Both killer and victim
+                    symbol = 'diamond'
+                elif pilot['is_killer']:
+                    size = base_size + 8  # Pure killer
+                    symbol = 'triangle-up'
+                elif pilot['is_victim']:
+                    size = base_size - 3  # Pure victim
+                    symbol = 'x'
+                else:
+                    size = base_size  # No direct involvement
+                    symbol = 'circle'
+                
+                node_sizes.append(size)
+                node_symbols.append(symbol)
+                
+                # Create detailed hover text
+                role_text = []
+                if pilot['is_killer']:
+                    role_text.append("Killer")
+                if pilot['is_victim']:
+                    role_text.append("Victim")
+                if not role_text:
+                    role_text.append("Observer")
+                
+                hover_text = (
+                    f"<b>{pilot['name']}</b><br>"
+                    f"Aircraft: {pilot['aircraft']}<br>"
+                    f"Role: {', '.join(role_text)}<br>"
+                    f"Kills: {pilot['kills']}<br>"
+                    f"Deaths: {pilot['deaths']}<br>"
+                    f"Efficiency: {pilot['efficiency']:.1f}"
+                )
+                hover_texts.append(hover_text)
+            
+            fig.add_trace(go.Scatter(
+                x=[p['x'] for p in coalition_pilots],
+                y=[p['y'] for p in coalition_pilots],
+                mode='markers+text',
+                marker=dict(
+                    size=node_sizes,
+                    color=color,
+                    symbol=node_symbols,
+                    line=dict(width=2, color='white'),
+                    opacity=0.8
+                ),
+                text=[p['name'] for p in coalition_pilots],
+                textposition="bottom center",
+                textfont=dict(size=10, color='black'),
+                hovertemplate='%{hovertext}<extra></extra>',
+                hovertext=hover_texts,
+                name=name,
+                showlegend=True
+            ))
+        
+        # Add relationship summary as annotations
+        summary_text = f"Network Analysis: {len(relationships)} kill relationship(s) between {len(all_pilots)} pilot(s)"
+        fig.add_annotation(
+            text=summary_text,
+            xref="paper", yref="paper",
+            x=0.5, y=0.95,
+            showarrow=False,
+            font=dict(size=14, color='black'),
+            bgcolor="rgba(255,255,255,0.8)",
+            bordercolor="gray",
+            borderwidth=1
+        )
+        
+        # Add detailed relationship list
+        rel_text = "Kill Relationships:<br>"
+        for i, rel in enumerate(relationships):
+            killer_aircraft = rel['killer_data'].get('aircraft_type', 'Unknown')
+            victim_aircraft = rel['victim_data'].get('aircraft_type', 'Unknown')
+            rel_text += f"• {rel['killer']} ({killer_aircraft}) → {rel['victim']} ({victim_aircraft})<br>"
+            if i >= 5:  # Limit to first 6 relationships to avoid clutter
+                rel_text += f"... and {len(relationships) - 6} more"
+                break
+        
+        fig.add_annotation(
+            text=rel_text,
+            xref="paper", yref="paper",
+            x=0.02, y=0.98,
+            showarrow=False,
+            font=dict(size=10, color='black'),
+            bgcolor="rgba(255,255,255,0.9)",
+            bordercolor="gray",
+            borderwidth=1,
+            align="left",
+            valign="top"
+        )
+        
+        # Update layout
         fig.update_layout(
-            title="Kill/Death Relationships",
-            xaxis=dict(visible=False),
-            yaxis=dict(visible=False),
-            height=300
+            title={
+                'text': "Kill/Death Network - Combat Relationship Analysis",
+                'x': 0.5,
+                'font': {'size': 18}
+            },
+            xaxis=dict(
+                visible=False,
+                range=[min([pos[0] for pos in pilot_positions.values()]) - 1,
+                       max([pos[0] for pos in pilot_positions.values()]) + 1]
+            ),
+            yaxis=dict(
+                visible=False,
+                range=[min([pos[1] for pos in pilot_positions.values()]) - 1,
+                       max([pos[1] for pos in pilot_positions.values()]) + 1],
+                scaleanchor="x",
+                scaleratio=1
+            ),
+            height=600,
+            plot_bgcolor='rgba(240,240,240,0.3)',
+            paper_bgcolor='white',
+            hovermode='closest',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            )
         )
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)

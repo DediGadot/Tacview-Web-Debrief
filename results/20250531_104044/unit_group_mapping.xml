@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcs_mapping timestamp="Mission Time 08:07:36" mission_time="29256.801">
+<groups>
+<group id="1" name="f-15a" category="0" coalition="2" first_seen="28800.801" last_seen="29256.801" active="true"/>
+<group id="2" name="f16-a" category="0" coalition="1" first_seen="28800.801" last_seen="29256.801" active="true"/>
+</groups>
+<units>
+<unit id="16778752" name="f-15a-1" display_name="f-15a-1" is_player_controlled="false" type="F-15C" group_id="1" group_name="f-15a" coalition="2" first_seen="28800.801" last_seen="29142.801" active="false"/>
+<unit id="16777984" name="f16-a-2" display_name="f16-a-2" is_player_controlled="false" type="F-16C_50" group_id="2" group_name="f16-a" coalition="1" first_seen="28800.801" last_seen="29256.801" active="true"/>
+<unit id="16779008" name="f-15a-2" display_name="f-15a-2" is_player_controlled="false" type="F-15C" group_id="1" group_name="f-15a" coalition="2" first_seen="28800.801" last_seen="29052.801" active="false"/>
+<unit id="16778240" name="f16-a-3" display_name="f16-a-3" is_player_controlled="false" type="F-16C_50" group_id="2" group_name="f16-a" coalition="1" first_seen="28800.801" last_seen="29256.801" active="true"/>
+<unit id="16777472" name="Aerial-2-1" display_name="Aerial-2-1" is_player_controlled="false" type="F-16C_50" group_id="2" group_name="f16-a" coalition="1" first_seen="28800.801" last_seen="29256.801" active="true"/>
+<unit id="16778496" name="Aerial-1-1" display_name="Aerial-1-1" is_player_controlled="false" type="F-15C" group_id="1" group_name="f-15a" coalition="2" first_seen="28800.801" last_seen="28992.801" active="false"/>
+<unit id="16777728" name="f16-a-1" display_name="f16-a-1" is_player_controlled="false" type="F-16C_50" group_id="2" group_name="f16-a" coalition="1" first_seen="28800.801" last_seen="29256.801" active="true"/>
+<unit id="16779264" name="f-15a-3" display_name="f-15a-3" is_player_controlled="false" type="F-15C" group_id="1" group_name="f-15a" coalition="2" first_seen="28800.801" last_seen="29253.801" active="false"/>
+</units>
+</dcs_mapping>

@@ -21,6 +21,7 @@ class PilotStats:
     coalition: int = 0
     group_id: Optional[int] = None
     group_name: str = ""
+    is_player_controlled: bool = False
     
     # Combat statistics
     shots_fired: int = 0
@@ -166,6 +167,7 @@ class DCSMissionAnalyzer:
                 unit_id = int(unit.get('id'))
                 group_id = int(unit.get('group_id'))
                 pilot_name = unit.get('name')
+                is_player_controlled = unit.get('is_player_controlled', 'false').lower() == 'true'
                 
                 self.unit_to_group[unit_id] = group_id
                 self.unit_to_pilot[unit_id] = pilot_name
@@ -177,7 +179,8 @@ class DCSMissionAnalyzer:
                         aircraft_type=unit.get('type'),
                         coalition=int(unit.get('coalition')),
                         group_id=group_id,
-                        group_name=unit.get('group_name')
+                        group_name=unit.get('group_name'),
+                        is_player_controlled=is_player_controlled
                     )
                 
                 # Add pilot to group
@@ -281,27 +284,44 @@ class DCSMissionAnalyzer:
             self.process_crash_event(event_data)
     
     def get_pilot_from_event(self, event_data: dict, role: str = 'initiator') -> Optional[str]:
-        """Extract pilot name from event data"""
+        """Extract pilot name from event data with improved object ID mapping"""
+        # First try to get pilot name directly
         pilot_key = f"{role}PilotName"
-        if pilot_key in event_data:
-            pilot_name = event_data[pilot_key]
-            # Sometimes pilot name is the aircraft type, try to map to actual pilot
-            if pilot_name and pilot_name not in self.pilot_stats:
-                # Look up by object ID if available
-                object_key = f"{role}_object_id"
-                if object_key in event_data:
-                    object_id = event_data[object_key]
-                    if object_id in self.unit_to_pilot:
-                        return self.unit_to_pilot[object_id]
-            return pilot_name
-        return None
+        pilot_name = event_data.get(pilot_key)
+        
+        # Try to map using object ID if pilot name is generic aircraft type
+        object_key = f"{role}_object_id"
+        if object_key in event_data:
+            object_id = event_data[object_key]
+            
+            # Check if we have a mapping for this object ID
+            if object_id in self.unit_to_pilot:
+                mapped_pilot = self.unit_to_pilot[object_id]
+                # Use mapped pilot name if it's more specific than aircraft type
+                if mapped_pilot and (not pilot_name or pilot_name in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']):
+                    return mapped_pilot
+        
+        # If we have a pilot name but no mapping, create a mapping for future use
+        if pilot_name and object_key in event_data:
+            object_id = event_data[object_key]
+            if object_id not in self.unit_to_pilot:
+                self.unit_to_pilot[object_id] = pilot_name
+        
+        return pilot_name
     
     def ensure_pilot_exists(self, pilot_name: str, event_data: dict):
-        """Ensure pilot exists in stats, create if needed"""
+        """Ensure pilot exists in stats, create if needed with improved data extraction"""
         if pilot_name and pilot_name not in self.pilot_stats:
             # Try to get more info from event
             aircraft_type = event_data.get('initiator_unit_type', pilot_name)
             coalition = event_data.get('initiator_coalition', 0)
+            
+            # Try to get object ID for better mapping
+            object_id = event_data.get('initiator_object_id')
+            if object_id and object_id in self.unit_to_pilot:
+                unit_info = self.unit_to_pilot[object_id]
+                aircraft_type = unit_info.get('type', aircraft_type)
+                coalition = unit_info.get('coalition', coalition)
             
             self.pilot_stats[pilot_name] = PilotStats(
                 name=pilot_name,
@@ -359,41 +379,61 @@ class DCSMissionAnalyzer:
         pilot.weapons_hit_with[weapon] += 1
     
     def process_kill_event(self, event_data: dict):
-        """Process kill event"""
-        pilot_name = self.get_pilot_from_event(event_data, 'initiator')
-        if not pilot_name:
+        """Process kill event with improved pilot tracking"""
+        killer_name = self.get_pilot_from_event(event_data, 'initiator')
+        victim_name = self.get_pilot_from_event(event_data, 'target')
+        
+        if not killer_name:
             return
             
-        self.ensure_pilot_exists(pilot_name, event_data)
-        pilot = self.pilot_stats[pilot_name]
-        pilot.kills += 1
+        self.ensure_pilot_exists(killer_name, event_data)
+        killer = self.pilot_stats[killer_name]
+        killer.kills += 1
         
         # Track weapon kills
         weapon = event_data.get('weapon', 'Unknown')
-        pilot.weapons_kills_with[weapon] += 1
+        killer.weapons_kills_with[weapon] += 1
         
         # Track time to first kill
-        if pilot.time_to_first_kill is None and 't' in event_data and pilot.first_seen > 0:
-            pilot.time_to_first_kill = event_data['t'] - pilot.first_seen
+        if killer.time_to_first_kill is None and 't' in event_data and killer.first_seen > 0:
+            killer.time_to_first_kill = event_data['t'] - killer.first_seen
         
         # Update kill streak
-        pilot.kill_streak += 1
-        pilot.max_kill_streak = max(pilot.max_kill_streak, pilot.kill_streak)
+        killer.kill_streak += 1
+        killer.max_kill_streak = max(killer.max_kill_streak, killer.kill_streak)
         
-        # Track who killed whom (for the victim)
-        target_name = event_data.get('targetPilotName') or event_data.get('target')
-        if target_name and target_name in self.pilot_stats:
-            self.pilot_stats[target_name].killed_by = pilot_name
+        # Track who killed whom (for the victim) - improved victim tracking
+        if victim_name:
+            # Ensure victim exists in our tracking
+            victim_event_data = {
+                'initiator_unit_type': event_data.get('target_unit_type', 'Unknown'),
+                'initiator_coalition': event_data.get('target_coalition', 0),
+                'initiator_object_id': event_data.get('target_object_id')
+            }
+            self.ensure_pilot_exists(victim_name, victim_event_data)
+            
+            # Set the killer relationship
+            self.pilot_stats[victim_name].killed_by = killer_name
+            
+            # Also increment victim's death count if not already done by death event
+            # (some logs might have kill events without corresponding death events)
+            if self.pilot_stats[victim_name].deaths == 0:
+                self.pilot_stats[victim_name].deaths += 1
+                # Reset victim's kill streak
+                self.pilot_stats[victim_name].kill_streak = 0
     
     def process_death_event(self, event_data: dict):
-        """Process pilot death event"""
+        """Process pilot death event with improved tracking"""
         pilot_name = self.get_pilot_from_event(event_data, 'initiator')
         if not pilot_name:
             return
             
         self.ensure_pilot_exists(pilot_name, event_data)
         pilot = self.pilot_stats[pilot_name]
-        pilot.deaths += 1
+        
+        # Only increment deaths if not already counted from kill event
+        if pilot.deaths == 0 or not pilot.killed_by:
+            pilot.deaths += 1
         
         # Reset kill streak on death
         pilot.kill_streak = 0
@@ -810,6 +850,7 @@ class DCSMissionAnalyzer:
                 'coalition': pilot.coalition,
                 'group_id': pilot.group_id,
                 'group_name': pilot.group_name,
+                'is_player_controlled': pilot.is_player_controlled,
                 'kills': pilot.kills,
                 'deaths': pilot.deaths,
                 'shots_fired': pilot.shots_fired,

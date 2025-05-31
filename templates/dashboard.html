@@ -121,24 +121,160 @@
             <div class="chart-container">
                 <div id="missionOverviewChart"></div>
             </div>
+            
+            <!-- Mission Overview Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Mission Overview Statistics Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Quick Statistics</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Minutes:</strong> Total mission duration from start to end</li>
+                                        <li><strong>Active Pilots:</strong> Number of pilots who participated in combat</li>
+                                        <li><strong>Total Kills:</strong> Sum of all confirmed aircraft kills</li>
+                                        <li><strong>Shots Fired:</strong> Total weapons discharged during mission</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Mission Duration Gauge</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Green Zone:</strong> 0-30 minutes (Short engagement)</li>
+                                        <li><strong>Yellow Zone:</strong> 30-60 minutes (Standard mission)</li>
+                                        <li><strong>Red Threshold:</strong> 90+ minutes (Extended operation)</li>
+                                        <li><strong>Gauge Value:</strong> Actual mission time in minutes</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Combat Statistics</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Kills Bar:</strong> Total confirmed aircraft destroyed</li>
+                                        <li><strong>Shots Bar:</strong> All weapons fired (missiles, guns, etc.)</li>
+                                        <li><strong>Comparison:</strong> Shows engagement intensity vs. effectiveness</li>
+                                        <li><strong>Colors:</strong> Green for kills, Blue for shots</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Participation Metrics</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Active Pilots:</strong> Pilots who fired weapons or engaged</li>
+                                        <li><strong>Active Groups:</strong> Formations that participated in combat</li>
+                                        <li><strong>Scope:</strong> Indicates mission scale and complexity</li>
+                                        <li><strong>Analysis:</strong> Higher numbers = larger, more complex engagement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Pilot Performance Section -->
         <div id="pilots-section" class="dashboard-section d-none">
             <div class="row mb-4">
-                <div class="col-12">
+                <div class="col-md-8">
                     <h3><i class="fas fa-user-pilot me-2"></i>Pilot Performance Analysis</h3>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="humanOnlyToggle">
+                        <label class="form-check-label" for="humanOnlyToggle">
+                            <i class="fas fa-user me-1"></i>Human Pilots Only
+                        </label>
+                    </div>
                 </div>
             </div>
             
-            <div class="row">
+            <!-- Red Coalition Pilots -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h4 class="text-danger"><i class="fas fa-circle me-2"></i>Red Coalition</h4>
+                </div>
+            </div>
+            <div class="row" id="redPilotCharts">
                 {% for pilot_chart in session_data.visualizations.pilot_performance %}
-                <div class="col-lg-6 mb-4">
+                {% if pilot_chart.coalition == 'red' %}
+                <div class="col-lg-6 mb-4 pilot-chart" data-is-human="{{ pilot_chart.is_player_controlled|lower }}">
                     <div class="chart-container">
                         <div id="pilotChart{{ loop.index }}"></div>
                     </div>
                 </div>
+                {% endif %}
                 {% endfor %}
+            </div>
+            
+            <!-- Blue Coalition Pilots -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h4 class="text-primary"><i class="fas fa-circle me-2"></i>Blue Coalition</h4>
+                </div>
+            </div>
+            <div class="row" id="bluePilotCharts">
+                {% for pilot_chart in session_data.visualizations.pilot_performance %}
+                {% if pilot_chart.coalition == 'blue' %}
+                <div class="col-lg-6 mb-4 pilot-chart" data-is-human="{{ pilot_chart.is_player_controlled|lower }}">
+                    <div class="chart-container">
+                        <div id="pilotChart{{ loop.index }}"></div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Pilot Performance Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Pilot Performance Metrics Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Radar Chart Metrics</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Accuracy:</strong> Hit percentage (hits/shots × 100)</li>
+                                        <li><strong>K/D Ratio:</strong> Kills per death (scaled × 20, max 100)</li>
+                                        <li><strong>Efficiency:</strong> Overall performance rating (0-100)</li>
+                                        <li><strong>Activity:</strong> Combat engagement level (shots × 10)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Chart Interpretation</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Larger Area:</strong> Better overall performance</li>
+                                        <li><strong>Balanced Shape:</strong> Well-rounded pilot skills</li>
+                                        <li><strong>Spikes:</strong> Exceptional performance in specific areas</li>
+                                        <li><strong>Scale:</strong> All metrics normalized to 0-100 range</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Coalition Organization</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Red Coalition:</strong> Displayed with red coloring</li>
+                                        <li><strong>Blue Coalition:</strong> Displayed with blue coloring</li>
+                                        <li><strong>Sorting:</strong> Pilots ordered by efficiency rating</li>
+                                        <li><strong>Aircraft Type:</strong> Shown in chart title</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Pilot Classification</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Human:</strong> Player-controlled pilots</li>
+                                        <li><strong>AI:</strong> Computer-controlled pilots</li>
+                                        <li><strong>Toggle Filter:</strong> Show/hide AI pilots</li>
+                                        <li><strong>Identification:</strong> Marked in chart titles</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -153,18 +289,161 @@
             <div class="chart-container">
                 <div id="weaponChart"></div>
             </div>
+            
+            <!-- Weapon Analysis Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Weapon Analysis Statistics Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Weapon Usage Chart</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>X-Axis:</strong> Weapon types used in mission</li>
+                                        <li><strong>Y-Axis:</strong> Total shots fired per weapon</li>
+                                        <li><strong>Bar Height:</strong> Indicates weapon popularity/usage</li>
+                                        <li><strong>Color:</strong> Light blue for all weapons</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Effectiveness Scatter Plot</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>X-Axis:</strong> Total shots fired</li>
+                                        <li><strong>Y-Axis:</strong> Effectiveness percentage (kills/shots)</li>
+                                        <li><strong>Bubble Size:</strong> Number of kills achieved</li>
+                                        <li><strong>Position:</strong> Top-right = most effective weapons</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Effectiveness Calculation</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Formula:</strong> (Kills ÷ Shots) × 100</li>
+                                        <li><strong>High %:</strong> Weapon is very lethal</li>
+                                        <li><strong>Low %:</strong> Weapon requires many shots per kill</li>
+                                        <li><strong>Zero %:</strong> Weapon fired but no kills recorded</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Tactical Insights</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bubble Size:</strong> Larger = more total kills</li>
+                                        <li><strong>Weapon Labels:</strong> Positioned above data points</li>
+                                        <li><strong>Comparison:</strong> Usage vs. effectiveness analysis</li>
+                                        <li><strong>Strategy:</strong> Identify most/least effective weapons</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Group Comparison Section -->
         <div id="groups-section" class="dashboard-section d-none">
             <div class="row mb-4">
                 <div class="col-12">
-                    <h3><i class="fas fa-users me-2"></i>Group Performance Comparison</h3>
+                    <h3><i class="fas fa-users me-2"></i>Formation Analysis Dashboard</h3>
+                    <p class="text-muted">
+                        Comprehensive tactical analysis comparing formation effectiveness, pilot quality distribution, 
+                        and coalition performance across multiple combat metrics.
+                    </p>
                 </div>
             </div>
             
-            <div class="chart-container">
+            <div class="chart-container" style="min-height: 1200px;">
                 <div id="groupChart"></div>
+            </div>
+            
+            <!-- Analysis Insights -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Tactical Insights</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6 class="text-primary">Formation Effectiveness</h6>
+                                    <p class="small text-muted">
+                                        The radar chart shows multi-dimensional performance across accuracy, survivability, 
+                                        efficiency, activity level, and lethality. Larger areas indicate superior overall performance.
+                                    </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="text-success">Combat Performance Matrix</h6>
+                                    <p class="small text-muted">
+                                        Scatter plot correlates accuracy with kill count. Bubble size represents formation size. 
+                                        Top-right positions indicate elite formations with high accuracy and kill counts.
+                                    </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="text-warning">Pilot Quality Distribution</h6>
+                                    <p class="small text-muted">
+                                        Histogram shows the distribution of pilot efficiency ratings by coalition. 
+                                        Right-skewed distributions indicate higher concentrations of skilled pilots.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Group Analysis Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Formation Analysis Metrics Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Radar Chart Metrics</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Accuracy:</strong> Group average hit percentage</li>
+                                        <li><strong>Survivability:</strong> Percentage of pilots who survived</li>
+                                        <li><strong>Efficiency:</strong> Average pilot efficiency rating</li>
+                                        <li><strong>Activity:</strong> Total shots fired (scaled)</li>
+                                        <li><strong>Lethality:</strong> Total kills achieved (scaled)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Force Strength & Matrix</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Coalition Bars:</strong> Total pilots per side</li>
+                                        <li><strong>Kill Numbers:</strong> Displayed on bars</li>
+                                        <li><strong>Scatter Plot:</strong> Accuracy vs. kills correlation</li>
+                                        <li><strong>Bubble Size:</strong> Formation size (pilot count)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Quality & Efficiency</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Histogram:</strong> Pilot skill distribution</li>
+                                        <li><strong>Red/Blue Bars:</strong> Coalition comparison</li>
+                                        <li><strong>Efficiency Bars:</strong> Formation rankings</li>
+                                        <li><strong>Horizontal Layout:</strong> Easy comparison</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Survivability Gauge</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Gauge Value:</strong> Winning coalition survivability</li>
+                                        <li><strong>Color Zones:</strong> Performance thresholds</li>
+                                        <li><strong>Delta:</strong> Comparison to 50% baseline</li>
+                                        <li><strong>Winner Text:</strong> Superior coalition identified</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -172,12 +451,67 @@
         <div id="timeline-section" class="dashboard-section d-none">
             <div class="row mb-4">
                 <div class="col-12">
-                    <h3><i class="fas fa-clock me-2"></i>Combat Timeline</h3>
+                    <h3><i class="fas fa-clock me-2"></i>Comprehensive Combat Timeline</h3>
+                    <p class="text-muted">
+                        Multi-track timeline showing the complete mission flow across different operational domains. 
+                        Events are organized by type and coalition, with mission phases highlighted for tactical analysis.
+                    </p>
                 </div>
             </div>
             
-            <div class="chart-container">
+            <div class="chart-container" style="min-height: 900px;">
                 <div id="timelineChart"></div>
+            </div>
+            
+            <!-- Timeline Legend and Controls -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Timeline Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Event Tracks</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>System:</strong> Mission start/end</li>
+                                        <li><strong>Flight Ops:</strong> Engine startup, ejections</li>
+                                        <li><strong>Combat Actions:</strong> First shots, engagements</li>
+                                        <li><strong>Weapons:</strong> Weapon usage patterns</li>
+                                        <li><strong>Results:</strong> Kills, deaths, casualties</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Event Symbols</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>⭐:</strong> Mission events, kills</li>
+                                        <li><strong>▲:</strong> First shots</li>
+                                        <li><strong>◆:</strong> Ejections</li>
+                                        <li><strong>■:</strong> Weapon fire</li>
+                                        <li><strong>✕:</strong> Pilot deaths</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Mission Phases</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Pre-Combat:</strong> Setup and positioning</li>
+                                        <li><strong>Active Combat:</strong> Engagement period</li>
+                                        <li><strong>Post-Combat:</strong> Resolution phase</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Coalition Colors</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><span class="badge bg-danger">Red</span> Coalition events</li>
+                                        <li><span class="badge bg-primary">Blue</span> Coalition events</li>
+                                        <li><span class="badge bg-success">Green</span> System events</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -192,6 +526,58 @@
             <div class="chart-container">
                 <div id="leaderboardChart"></div>
             </div>
+            
+            <!-- Leaderboard Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Efficiency Rankings Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Efficiency Rating</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Scale:</strong> 0-100 composite performance score</li>
+                                        <li><strong>Calculation:</strong> Weighted combination of multiple metrics</li>
+                                        <li><strong>Factors:</strong> K/D ratio, accuracy, activity, survivability</li>
+                                        <li><strong>Ranking:</strong> Higher scores = better performance</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Star Rating System</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>★★★★★:</strong> 80+ (Elite performance)</li>
+                                        <li><strong>★★★★☆:</strong> 60-79 (Excellent performance)</li>
+                                        <li><strong>★★★☆☆:</strong> 40-59 (Good performance)</li>
+                                        <li><strong>★★☆☆☆:</strong> 20-39 (Average performance)</li>
+                                        <li><strong>★☆☆☆☆:</strong> 0-19 (Below average)</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Chart Features</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Horizontal Bars:</strong> Easy comparison of ratings</li>
+                                        <li><strong>Coalition Colors:</strong> Red/Blue pilot identification</li>
+                                        <li><strong>Top 10:</strong> Only highest performers shown</li>
+                                        <li><strong>Text Labels:</strong> Rating and stars displayed</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Performance Interpretation</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>High Efficiency:</strong> Skilled, effective pilot</li>
+                                        <li><strong>Low Efficiency:</strong> Needs improvement or limited engagement</li>
+                                        <li><strong>Coalition Balance:</strong> Compare red vs. blue performance</li>
+                                        <li><strong>Pilot Development:</strong> Identify training needs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Network Section -->
@@ -204,6 +590,57 @@
             
             <div class="chart-container">
                 <div id="networkChart"></div>
+            </div>
+            
+            <!-- Network Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Kill/Death Network Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">Network Structure</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Arrows:</strong> Show kill relationships</li>
+                                        <li><strong>Format:</strong> "Killer → Victim"</li>
+                                        <li><strong>Direction:</strong> Points from killer to victim</li>
+                                        <li><strong>List View:</strong> Simple text-based display</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Relationship Analysis</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Direct Kills:</strong> Confirmed pilot-to-pilot eliminations</li>
+                                        <li><strong>Attribution:</strong> Based on weapon hit data</li>
+                                        <li><strong>Chronological:</strong> Listed in order of occurrence</li>
+                                        <li><strong>Verification:</strong> Cross-referenced with event logs</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Tactical Insights</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Ace Identification:</strong> Pilots with multiple kills</li>
+                                        <li><strong>Vulnerability Analysis:</strong> Frequently targeted pilots</li>
+                                        <li><strong>Engagement Patterns:</strong> Who fights whom</li>
+                                        <li><strong>Coalition Dynamics:</strong> Inter-coalition combat flow</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Data Limitations</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Direct Kills Only:</strong> Excludes crashes, system failures</li>
+                                        <li><strong>Attribution Required:</strong> Must have clear killer data</li>
+                                        <li><strong>Simple Display:</strong> Text format for clarity</li>
+                                        <li><strong>No Relationships:</strong> Message shown if no data available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -280,43 +717,71 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0"><i class="fas fa-table me-2"></i>Detailed Pilot Statistics</h5>
+                    <small class="text-muted">Click column headers to sort</small>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                        <table id="pilotStatsTable" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Pilot</th>
-                                    <th>Aircraft</th>
-                                    <th>Coalition</th>
-                                    <th>Kills</th>
-                                    <th>Deaths</th>
-                                    <th>K/D</th>
-                                    <th>Accuracy</th>
-                                    <th>Efficiency</th>
-                                    <th>Flight Time</th>
+                                    <th class="sortable" data-column="pilot" data-type="text">
+                                        Pilot <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="aircraft" data-type="text">
+                                        Aircraft <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="coalition" data-type="number">
+                                        Coalition <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="type" data-type="text">
+                                        Type <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="kills" data-type="number">
+                                        Kills <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="deaths" data-type="number">
+                                        Deaths <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="kd" data-type="number">
+                                        K/D <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="accuracy" data-type="number">
+                                        Accuracy <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="efficiency" data-type="number">
+                                        Efficiency <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="flight_time" data-type="number">
+                                        Flight Time <i class="fas fa-sort sort-icon"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for pilot_name, pilot_data in session_data.mission_data.pilots.items() %}
                                 <tr>
-                                    <td><strong>{{ pilot_name }}</strong></td>
-                                    <td>{{ pilot_data.aircraft_type }}</td>
-                                    <td>
+                                    <td data-value="{{ pilot_name }}"><strong>{{ pilot_name }}</strong></td>
+                                    <td data-value="{{ pilot_data.aircraft_type }}">{{ pilot_data.aircraft_type }}</td>
+                                    <td data-value="{{ pilot_data.coalition }}">
                                         <span class="badge bg-{{ 'danger' if pilot_data.coalition == 1 else 'primary' }}">
                                             {{ 'Red' if pilot_data.coalition == 1 else 'Blue' }}
                                         </span>
                                     </td>
-                                    <td>{{ pilot_data.kills }}</td>
-                                    <td>{{ pilot_data.deaths }}</td>
-                                    <td>{{ "%.2f"|format(pilot_data.kd_ratio) }}</td>
-                                    <td>{{ "%.1f"|format(pilot_data.accuracy) }}%</td>
-                                    <td>
+                                    <td data-value="{{ 'Human' if pilot_data.is_player_controlled else 'AI' }}">
+                                        <span class="badge bg-{{ 'success' if pilot_data.is_player_controlled else 'secondary' }}">
+                                            <i class="fas fa-{{ 'user' if pilot_data.is_player_controlled else 'robot' }} me-1"></i>
+                                            {{ 'Human' if pilot_data.is_player_controlled else 'AI' }}
+                                        </span>
+                                    </td>
+                                    <td data-value="{{ pilot_data.kills }}">{{ pilot_data.kills }}</td>
+                                    <td data-value="{{ pilot_data.deaths }}">{{ pilot_data.deaths }}</td>
+                                    <td data-value="{{ pilot_data.kd_ratio }}">{{ "%.2f"|format(pilot_data.kd_ratio) }}</td>
+                                    <td data-value="{{ pilot_data.accuracy }}">{{ "%.1f"|format(pilot_data.accuracy) }}%</td>
+                                    <td data-value="{{ pilot_data.efficiency_rating }}">
                                         <span class="badge bg-{{ 'success' if pilot_data.efficiency_rating >= 60 else 'warning' if pilot_data.efficiency_rating >= 40 else 'secondary' }}">
                                             {{ "%.1f"|format(pilot_data.efficiency_rating) }}
                                         </span>
                                     </td>
-                                    <td>{{ "%.1f"|format(pilot_data.flight_time) }}s</td>
+                                    <td data-value="{{ pilot_data.flight_time }}">{{ "%.1f"|format(pilot_data.flight_time) }}s</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -332,6 +797,72 @@
 {% block extra_js %}
 <script>
 $(document).ready(function() {
+    // Table sorting functionality
+    let currentSort = { column: null, direction: 'asc' };
+    
+    $('.sortable').click(function() {
+        const column = $(this).data('column');
+        const type = $(this).data('type');
+        
+        // Update sort direction
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.direction = 'asc';
+        }
+        currentSort.column = column;
+        
+        // Update sort icons
+        $('.sort-icon').removeClass('fa-sort-up fa-sort-down').addClass('fa-sort');
+        $(this).find('.sort-icon')
+            .removeClass('fa-sort')
+            .addClass(currentSort.direction === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+        
+        // Sort the table
+        sortTable(column, type, currentSort.direction);
+    });
+    
+    function sortTable(column, type, direction) {
+        const tbody = $('#pilotStatsTable tbody');
+        const rows = tbody.find('tr').toArray();
+        
+        rows.sort(function(a, b) {
+            let aVal, bVal;
+            
+            if (type === 'number') {
+                aVal = parseFloat($(a).find(`td[data-value]`).eq(getColumnIndex(column)).data('value')) || 0;
+                bVal = parseFloat($(b).find(`td[data-value]`).eq(getColumnIndex(column)).data('value')) || 0;
+            } else {
+                aVal = $(a).find(`td[data-value]`).eq(getColumnIndex(column)).data('value').toString().toLowerCase();
+                bVal = $(b).find(`td[data-value]`).eq(getColumnIndex(column)).data('value').toString().toLowerCase();
+            }
+            
+            if (direction === 'asc') {
+                return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+            } else {
+                return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+            }
+        });
+        
+        tbody.empty().append(rows);
+    }
+    
+    function getColumnIndex(column) {
+        const columnMap = {
+            'pilot': 0,
+            'aircraft': 1,
+            'coalition': 2,
+            'type': 3,
+            'kills': 4,
+            'deaths': 5,
+            'kd': 6,
+            'accuracy': 7,
+            'efficiency': 8,
+            'flight_time': 9
+        };
+        return columnMap[column] || 0;
+    }
+
     // Navigation handling
     $('.sidebar-item').click(function() {
         $('.sidebar-item').removeClass('active');
@@ -405,6 +936,19 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Human-only toggle functionality
+    $('#humanOnlyToggle').change(function() {
+        const showHumanOnly = $(this).is(':checked');
+        $('.pilot-chart').each(function() {
+            const isHuman = $(this).data('is-human') === true || $(this).data('is-human') === 'true';
+            if (showHumanOnly && !isHuman) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
 });
 
 // Print functionality
@@ -425,6 +969,31 @@ function refreshChartsInSection(sectionId) {
 </script>
 
 <style>
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.sortable:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sort-icon {
+    margin-left: 5px;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.sortable:hover .sort-icon {
+    opacity: 1;
+}
+
+.fa-sort-up, .fa-sort-down {
+    opacity: 1 !important;
+    color: #007bff;
+}
+
 @media print {
     .sidebar, .navbar {
         display: none !important;
