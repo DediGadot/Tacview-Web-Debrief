@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}DCS Mission Debrief - Upload Files{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 text-white mb-3">
+                    <i class="fas fa-fighter-jet me-3"></i>
+                    DCS Mission Debrief
+                </h1>
+                <p class="lead text-white-50">
+                    Upload your DCS.log and debrief.log files for comprehensive mission analysis
+                </p>
+            </div>
+
+            <!-- Upload Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="fas fa-upload me-2"></i>
+                        Upload Mission Files
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form id="uploadForm" action="{{ url_for('upload_files') }}" method="post" enctype="multipart/form-data">
+                        <!-- DCS.log Upload -->
+                        <div class="mb-4">
+                            <label for="dcs_log" class="form-label fw-bold">
+                                <i class="fas fa-file-alt me-2 text-primary"></i>
+                                DCS.log File
+                            </label>
+                            <div class="upload-area" id="dcsUploadArea">
+                                <input type="file" class="form-control d-none" id="dcs_log" name="dcs_log" accept=".log" required>
+                                <div class="upload-content">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                    <h5>Drop DCS.log file here or click to browse</h5>
+                                    <p class="text-muted">Contains unit mapping and mission data</p>
+                                    <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('dcs_log').click()">
+                                        Choose File
+                                    </button>
+                                </div>
+                                <div class="file-info d-none">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span class="file-name"></span>
+                                    <span class="file-size text-muted ms-2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Debrief.log Upload -->
+                        <div class="mb-4">
+                            <label for="debrief_log" class="form-label fw-bold">
+                                <i class="fas fa-file-code me-2 text-success"></i>
+                                debrief.log File
+                            </label>
+                            <div class="upload-area" id="debriefUploadArea">
+                                <input type="file" class="form-control d-none" id="debrief_log" name="debrief_log" accept=".log" required>
+                                <div class="upload-content">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                    <h5>Drop debrief.log file here or click to browse</h5>
+                                    <p class="text-muted">Contains detailed mission events and combat data</p>
+                                    <button type="button" class="btn btn-outline-success" onclick="document.getElementById('debrief_log').click()">
+                                        Choose File
+                                    </button>
+                                </div>
+                                <div class="file-info d-none">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span class="file-name"></span>
+                                    <span class="file-size text-muted ms-2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn" disabled>
+                                <i class="fas fa-rocket me-2"></i>
+                                Analyze Mission
+                            </button>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="text-center mt-4 loading-spinner" id="loadingSpinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Processing your mission files...</p>
+                            <small class="text-muted">This may take a few moments</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        How to Use
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary">
+                                <i class="fas fa-file-alt me-1"></i>
+                                DCS.log File
+                            </h6>
+                            <ul class="small">
+                                <li>Located in your DCS installation folder</li>
+                                <li>Contains unit mapping and group information</li>
+                                <li>Required for proper pilot identification</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-success">
+                                <i class="fas fa-file-code me-1"></i>
+                                debrief.log File
+                            </h6>
+                            <ul class="small">
+                                <li>Generated after each mission</li>
+                                <li>Contains detailed combat events</li>
+                                <li>Includes shots, hits, kills, and timing data</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="fw-bold text-info">
+                                <i class="fas fa-chart-line me-1"></i>
+                                What You'll Get
+                            </h6>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-primary">Mission Overview</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-success">Pilot Performance</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-warning">Weapon Analysis</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-info">Combat Timeline</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-secondary">Group Comparison</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-danger">Efficiency Ratings</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-dark">Kill Networks</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-2">
+                                    <span class="badge bg-primary">Export Data</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    let dcsFileSelected = false;
+    let debriefFileSelected = false;
+
+    // File size formatter
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Setup drag and drop for upload areas
+    function setupDragDrop(areaId, inputId) {
+        const area = document.getElementById(areaId);
+        const input = document.getElementById(inputId);
+        
+        area.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            area.classList.add('dragover');
+        });
+        
+        area.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            area.classList.remove('dragover');
+        });
+        
+        area.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            area.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.name.endsWith('.log')) {
+                    input.files = files;
+                    updateFileDisplay(areaId, file);
+                    updateSubmitButton();
+                } else {
+                    alert('Please select a .log file');
+                }
+            }
+        });
+        
+        area.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'BUTTON') {
+                input.click();
+            }
+        });
+    }
+
+    // Update file display
+    function updateFileDisplay(areaId, file) {
+        const area = document.getElementById(areaId);
+        const uploadContent = area.querySelector('.upload-content');
+        const fileInfo = area.querySelector('.file-info');
+        const fileName = fileInfo.querySelector('.file-name');
+        const fileSize = fileInfo.querySelector('.file-size');
+        
+        uploadContent.classList.add('d-none');
+        fileInfo.classList.remove('d-none');
+        fileName.textContent = file.name;
+        fileSize.textContent = '(' + formatFileSize(file.size) + ')';
+        
+        // Update flags
+        if (areaId === 'dcsUploadArea') {
+            dcsFileSelected = true;
+        } else if (areaId === 'debriefUploadArea') {
+            debriefFileSelected = true;
+        }
+    }
+
+    // Update submit button state
+    function updateSubmitButton() {
+        const submitBtn = document.getElementById('submitBtn');
+        if (dcsFileSelected && debriefFileSelected) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    // Setup drag and drop
+    setupDragDrop('dcsUploadArea', 'dcs_log');
+    setupDragDrop('debriefUploadArea', 'debrief_log');
+
+    // File input change handlers
+    $('#dcs_log').change(function() {
+        const file = this.files[0];
+        if (file) {
+            updateFileDisplay('dcsUploadArea', file);
+            updateSubmitButton();
+        }
+    });
+
+    $('#debrief_log').change(function() {
+        const file = this.files[0];
+        if (file) {
+            updateFileDisplay('debriefUploadArea', file);
+            updateSubmitButton();
+        }
+    });
+
+    // Form submission
+    $('#uploadForm').submit(function() {
+        $('#submitBtn').hide();
+        $('#loadingSpinner').show();
+    });
+
+    // File validation
+    function validateFile(input) {
+        const file = input.files[0];
+        if (file) {
+            if (!file.name.endsWith('.log')) {
+                alert('Please select a .log file');
+                input.value = '';
+                return false;
+            }
+            if (file.size > 50 * 1024 * 1024) { // 50MB limit
+                alert('File size must be less than 50MB');
+                input.value = '';
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Add file validation to inputs
+    $('#dcs_log, #debrief_log').change(function() {
+        validateFile(this);
+    });
+});
+</script>
+{% endblock %} 

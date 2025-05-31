@@ -1,0 +1,4 @@
+Flask==2.3.3
+Werkzeug==2.3.7
+plotly==5.17.0
+pandas==2.1.3 

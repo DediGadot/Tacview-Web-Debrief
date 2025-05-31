@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}Mission Dashboard - DCS Debrief{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar Navigation -->
+    <div class="col-xl-2 col-lg-3">
+        <div class="sidebar">
+            <div class="sidebar-item active" data-target="overview">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Mission Overview
+            </div>
+            <div class="sidebar-item" data-target="pilots">
+                <i class="fas fa-user-pilot me-2"></i>
+                Pilot Performance
+            </div>
+            <div class="sidebar-item" data-target="weapons">
+                <i class="fas fa-crosshairs me-2"></i>
+                Weapon Analysis
+            </div>
+            <div class="sidebar-item" data-target="groups">
+                <i class="fas fa-users me-2"></i>
+                Group Comparison
+            </div>
+            <div class="sidebar-item" data-target="timeline">
+                <i class="fas fa-clock me-2"></i>
+                Combat Timeline
+            </div>
+            <div class="sidebar-item" data-target="leaderboard">
+                <i class="fas fa-trophy me-2"></i>
+                Efficiency Rankings
+            </div>
+            <div class="sidebar-item" data-target="network">
+                <i class="fas fa-project-diagram me-2"></i>
+                Kill Networks
+            </div>
+            <div class="sidebar-item" data-target="summary">
+                <i class="fas fa-file-alt me-2"></i>
+                Mission Summary
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-xl-10 col-lg-9">
+        <!-- Mission Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="mb-1">
+                                    <i class="fas fa-fighter-jet me-2 text-primary"></i>
+                                    Mission Analysis Complete
+                                </h2>
+                                <p class="text-muted mb-0">
+                                    Session: {{ session_id }} | 
+                                    Processed: {{ session_data.timestamp[:19] | replace('T', ' ') }}
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="btn-group">
+                                    <a href="{{ url_for('download_file', session_id=session_id, file_type='json') }}" 
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-download me-1"></i>JSON
+                                    </a>
+                                    <a href="{{ url_for('download_file', session_id=session_id, file_type='xml') }}" 
+                                       class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-download me-1"></i>XML
+                                    </a>
+                                    <button class="btn btn-outline-info btn-sm" onclick="printReport()">
+                                        <i class="fas fa-print me-1"></i>Print
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div id="overview-section" class="dashboard-section">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-tachometer-alt me-2"></i>Mission Overview</h3>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ "%.1f"|format(session_data.mission_data.mission_summary.duration / 60) }}</div>
+                        <div class="stat-label">Minutes</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ session_data.mission_data.mission_summary.active_pilots }}</div>
+                        <div class="stat-label">Active Pilots</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ session_data.mission_data.pilots.values() | selectattr('kills') | sum(attribute='kills') }}</div>
+                        <div class="stat-label">Total Kills</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ session_data.mission_data.pilots.values() | selectattr('shots_fired') | sum(attribute='shots_fired') }}</div>
+                        <div class="stat-label">Shots Fired</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mission Overview Chart -->
+            <div class="chart-container">
+                <div id="missionOverviewChart"></div>
+            </div>
+        </div>
+
+        <!-- Pilot Performance Section -->
+        <div id="pilots-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-user-pilot me-2"></i>Pilot Performance Analysis</h3>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for pilot_chart in session_data.visualizations.pilot_performance %}
+                <div class="col-lg-6 mb-4">
+                    <div class="chart-container">
+                        <div id="pilotChart{{ loop.index }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Weapon Analysis Section -->
+        <div id="weapons-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-crosshairs me-2"></i>Weapon Effectiveness Analysis</h3>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="weaponChart"></div>
+            </div>
+        </div>
+
+        <!-- Group Comparison Section -->
+        <div id="groups-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-users me-2"></i>Group Performance Comparison</h3>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="groupChart"></div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div id="timeline-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-clock me-2"></i>Combat Timeline</h3>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="timelineChart"></div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div id="leaderboard-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-trophy me-2"></i>Pilot Efficiency Rankings</h3>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="leaderboardChart"></div>
+            </div>
+        </div>
+
+        <!-- Network Section -->
+        <div id="network-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-project-diagram me-2"></i>Kill/Death Networks</h3>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="networkChart"></div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div id="summary-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-file-alt me-2"></i>Detailed Mission Summary</h3>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Top Pilots -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-star me-2"></i>Top Performers</h5>
+                        </div>
+                        <div class="card-body">
+                            {% set top_pilots = session_data.mission_data.pilots.items() | sort(attribute='1.efficiency_rating', reverse=true) | list %}
+                            {% for pilot_name, pilot_data in top_pilots[:5] %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong>{{ pilot_name }}</strong>
+                                    <small class="text-muted d-block">{{ pilot_data.aircraft_type }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-primary">{{ "%.1f"|format(pilot_data.efficiency_rating) }}</span>
+                                    <small class="text-muted d-block">{{ pilot_data.kills }}K / {{ pilot_data.deaths }}D</small>
+                                </div>
+                            </div>
+                            {% if not loop.last %}<hr class="my-2">{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mission Statistics -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Mission Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            {% set total_shots = session_data.mission_data.pilots.values() | selectattr('shots_fired') | sum(attribute='shots_fired') %}
+                            {% set total_hits = session_data.mission_data.pilots.values() | selectattr('hits_scored') | sum(attribute='hits_scored') %}
+                            {% set total_kills = session_data.mission_data.pilots.values() | selectattr('kills') | sum(attribute='kills') %}
+                            {% set total_deaths = session_data.mission_data.pilots.values() | selectattr('deaths') | sum(attribute='deaths') %}
+                            
+                            <div class="row text-center">
+                                <div class="col-6 mb-3">
+                                    <h4 class="text-primary">{{ "%.1f"|format((total_hits / total_shots * 100) if total_shots > 0 else 0) }}%</h4>
+                                    <small class="text-muted">Overall Accuracy</small>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h4 class="text-success">{{ "%.2f"|format(total_kills / (total_deaths if total_deaths > 0 else 1)) }}</h4>
+                                    <small class="text-muted">K/D Ratio</small>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="text-info">{{ session_data.mission_data.mission_summary.total_events }}</h4>
+                                    <small class="text-muted">Total Events</small>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="text-warning">{{ session_data.mission_data.groups | length }}</h4>
+                                    <small class="text-muted">Active Groups</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Pilot Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-table me-2"></i>Detailed Pilot Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Pilot</th>
+                                    <th>Aircraft</th>
+                                    <th>Coalition</th>
+                                    <th>Kills</th>
+                                    <th>Deaths</th>
+                                    <th>K/D</th>
+                                    <th>Accuracy</th>
+                                    <th>Efficiency</th>
+                                    <th>Flight Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pilot_name, pilot_data in session_data.mission_data.pilots.items() %}
+                                <tr>
+                                    <td><strong>{{ pilot_name }}</strong></td>
+                                    <td>{{ pilot_data.aircraft_type }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'danger' if pilot_data.coalition == 1 else 'primary' }}">
+                                            {{ 'Red' if pilot_data.coalition == 1 else 'Blue' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ pilot_data.kills }}</td>
+                                    <td>{{ pilot_data.deaths }}</td>
+                                    <td>{{ "%.2f"|format(pilot_data.kd_ratio) }}</td>
+                                    <td>{{ "%.1f"|format(pilot_data.accuracy) }}%</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if pilot_data.efficiency_rating >= 60 else 'warning' if pilot_data.efficiency_rating >= 40 else 'secondary' }}">
+                                            {{ "%.1f"|format(pilot_data.efficiency_rating) }}
+                                        </span>
+                                    </td>
+                                    <td>{{ "%.1f"|format(pilot_data.flight_time) }}s</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Navigation handling
+    $('.sidebar-item').click(function() {
+        $('.sidebar-item').removeClass('active');
+        $(this).addClass('active');
+        
+        const target = $(this).data('target');
+        $('.dashboard-section').addClass('d-none');
+        $('#' + target + '-section').removeClass('d-none');
+        
+        // Trigger chart resize for better display
+        setTimeout(function() {
+            const chartElement = document.querySelector('#' + target + '-section .chart-container div');
+            if (chartElement) {
+                Plotly.Plots.resize(chartElement);
+            }
+        }, 100);
+    });
+
+    // Load and display charts
+    const visualizations = {{ session_data.visualizations | tojson | safe }};
+    
+    // Mission Overview Chart
+    if (visualizations.mission_overview) {
+        const overviewData = JSON.parse(visualizations.mission_overview);
+        Plotly.newPlot('missionOverviewChart', overviewData.data, overviewData.layout, {responsive: true});
+    }
+
+    // Pilot Performance Charts
+    if (visualizations.pilot_performance) {
+        visualizations.pilot_performance.forEach(function(pilotChart, index) {
+            const chartData = JSON.parse(pilotChart.chart);
+            Plotly.newPlot('pilotChart' + (index + 1), chartData.data, chartData.layout, {responsive: true});
+        });
+    }
+
+    // Weapon Effectiveness Chart
+    if (visualizations.weapon_effectiveness) {
+        const weaponData = JSON.parse(visualizations.weapon_effectiveness);
+        Plotly.newPlot('weaponChart', weaponData.data, weaponData.layout, {responsive: true});
+    }
+
+    // Group Comparison Chart
+    if (visualizations.group_comparison) {
+        const groupData = JSON.parse(visualizations.group_comparison);
+        Plotly.newPlot('groupChart', groupData.data, groupData.layout, {responsive: true});
+    }
+
+    // Combat Timeline Chart
+    if (visualizations.combat_timeline) {
+        const timelineData = JSON.parse(visualizations.combat_timeline);
+        Plotly.newPlot('timelineChart', timelineData.data, timelineData.layout, {responsive: true});
+    }
+
+    // Efficiency Leaderboard Chart
+    if (visualizations.efficiency_leaderboard) {
+        const leaderboardData = JSON.parse(visualizations.efficiency_leaderboard);
+        Plotly.newPlot('leaderboardChart', leaderboardData.data, leaderboardData.layout, {responsive: true});
+    }
+
+    // Kill/Death Network Chart
+    if (visualizations.kill_death_network) {
+        const networkData = JSON.parse(visualizations.kill_death_network);
+        Plotly.newPlot('networkChart', networkData.data, networkData.layout, {responsive: true});
+    }
+
+    // Handle window resize
+    $(window).resize(function() {
+        $('.chart-container div').each(function() {
+            if (this.id && !$(this).closest('.d-none').length) {
+                Plotly.Plots.resize(this);
+            }
+        });
+    });
+});
+
+// Print functionality
+function printReport() {
+    window.print();
+}
+
+// Auto-refresh charts when section becomes visible
+function refreshChartsInSection(sectionId) {
+    setTimeout(function() {
+        $('#' + sectionId + '-section .chart-container div').each(function() {
+            if (this.id) {
+                Plotly.Plots.resize(this);
+            }
+        });
+    }, 200);
+}
+</script>
+
+<style>
+@media print {
+    .sidebar, .navbar {
+        display: none !important;
+    }
+    
+    .dashboard-section {
+        display: block !important;
+        page-break-after: always;
+    }
+    
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}
+</style>
+{% endblock %} 

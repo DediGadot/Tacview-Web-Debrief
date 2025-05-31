@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcs_mapping timestamp="Mission Time 08:00:39" mission_time="28839.501">
+<groups>
+<group id="1" name="Aerial-1" category="0" coalition="2" first_seen="28803.501" last_seen="28839.501" active="true"/>
+<group id="2" name="f16A" category="0" coalition="1" first_seen="28803.501" last_seen="28833.501" active="false"/>
+</groups>
+<units>
+<unit id="16777472" name="Aerial-2-1" type="MiG-23MLD" group_id="2" group_name="f16A" coalition="1" first_seen="28803.501" last_seen="28818.501" active="false"/>
+<unit id="16777728" name="Aerial-1-1" type="F-16C_50" group_id="1" group_name="Aerial-1" coalition="2" first_seen="28803.501" last_seen="28836.501" active="false"/>
+</units>
+</dcs_mapping>

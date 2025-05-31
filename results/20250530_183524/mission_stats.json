@@ -1,0 +1,103 @@
+{
+  "mission_summary": {
+    "duration": 36.596,
+    "total_events": 30,
+    "active_pilots": 2,
+    "active_groups": 2
+  },
+  "pilots": {
+    "Aerial-2-1": {
+      "aircraft_type": "MiG-23MLD",
+      "coalition": 1,
+      "group_id": 2,
+      "group_name": "f16A",
+      "kills": 0,
+      "deaths": 0,
+      "shots_fired": 0,
+      "hits_scored": 0,
+      "accuracy": 0.0,
+      "kd_ratio": 0.0,
+      "flight_time": 0.0,
+      "weapons_used": {},
+      "weapons_kills": {},
+      "efficiency_rating": 0.0,
+      "time_to_first_shot": null,
+      "time_to_first_kill": null,
+      "max_kill_streak": 0,
+      "targets_engaged": [],
+      "friendly_fire_incidents": 0,
+      "killed_by": null,
+      "shots_per_kill": 0.0,
+      "ejections": 1
+    },
+    "Aerial-1-1": {
+      "aircraft_type": "F-16C_50",
+      "coalition": 2,
+      "group_id": 1,
+      "group_name": "Aerial-1",
+      "kills": 1,
+      "deaths": 1,
+      "shots_fired": 5,
+      "hits_scored": 3,
+      "accuracy": 60.0,
+      "kd_ratio": 1.0,
+      "flight_time": 5.926999999999998,
+      "weapons_used": {
+        "AIM-9X": 4,
+        "AIM-120C": 1
+      },
+      "weapons_kills": {
+        "AIM-9X": 1
+      },
+      "efficiency_rating": 68.0,
+      "time_to_first_shot": 0,
+      "time_to_first_kill": 9.537999999999998,
+      "max_kill_streak": 1,
+      "targets_engaged": [
+        "MiG-23MLD"
+      ],
+      "friendly_fire_incidents": 0,
+      "killed_by": null,
+      "shots_per_kill": 5.0,
+      "ejections": 0
+    }
+  },
+  "groups": {
+    "1": {
+      "name": "Aerial-1",
+      "coalition": 2,
+      "total_pilots": 1,
+      "total_kills": 1,
+      "total_deaths": 1,
+      "total_shots": 5,
+      "total_hits": 3,
+      "group_accuracy": 60.0,
+      "group_kd_ratio": 1.0,
+      "group_survivability": 0.0,
+      "average_pilot_efficiency": 68.0,
+      "total_flight_hours": 0.0016463888888888882,
+      "total_friendly_fire": 0,
+      "most_active_pilot": "Aerial-1-1",
+      "most_kills_pilot": "Aerial-1-1",
+      "most_accurate_pilot": "Aerial-1-1"
+    },
+    "2": {
+      "name": "f16A",
+      "coalition": 1,
+      "total_pilots": 1,
+      "total_kills": 0,
+      "total_deaths": 0,
+      "total_shots": 0,
+      "total_hits": 0,
+      "group_accuracy": 0.0,
+      "group_kd_ratio": 0.0,
+      "group_survivability": 100.0,
+      "average_pilot_efficiency": 0.0,
+      "total_flight_hours": 0.0,
+      "total_friendly_fire": 0,
+      "most_active_pilot": "Aerial-2-1",
+      "most_kills_pilot": "Aerial-2-1",
+      "most_accurate_pilot": "Aerial-2-1"
+    }
+  }
+}
