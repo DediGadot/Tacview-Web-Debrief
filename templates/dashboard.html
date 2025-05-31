@@ -296,45 +296,70 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Weapon Analysis Statistics Guide</h5>
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Comprehensive Weapon Analysis Guide</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <h6 class="text-primary">Weapon Usage Chart</h6>
+                                    <h6 class="text-primary">Effectiveness Matrix</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>X-Axis:</strong> Weapon types used in mission</li>
-                                        <li><strong>Y-Axis:</strong> Total shots fired per weapon</li>
-                                        <li><strong>Bar Height:</strong> Indicates weapon popularity/usage</li>
-                                        <li><strong>Color:</strong> Light blue for all weapons</li>
+                                        <li><strong>X-Axis:</strong> Accuracy percentage (hits/shots)</li>
+                                        <li><strong>Y-Axis:</strong> Effectiveness percentage (kills/shots)</li>
+                                        <li><strong>Bubble Size:</strong> Total usage (shots fired)</li>
+                                        <li><strong>Color Scale:</strong> Lethality percentage (kills/hits)</li>
+                                        <li><strong>Top-Right:</strong> Most accurate and effective weapons</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-success">Effectiveness Scatter Plot</h6>
+                                    <h6 class="text-success">Coalition Preferences & Radar</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Red/Blue Bars:</strong> Coalition weapon usage comparison</li>
+                                        <li><strong>Radar Chart:</strong> Top 5 weapons by usage</li>
+                                        <li><strong>5 Metrics:</strong> Accuracy, effectiveness, lethality, usage, reliability</li>
+                                        <li><strong>Larger Areas:</strong> Superior weapon performance</li>
+                                        <li><strong>Color Coding:</strong> Different weapons distinguished</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Lethality vs Usage Analysis</h6>
                                     <ul class="small text-muted mb-0">
                                         <li><strong>X-Axis:</strong> Total shots fired</li>
-                                        <li><strong>Y-Axis:</strong> Effectiveness percentage (kills/shots)</li>
-                                        <li><strong>Bubble Size:</strong> Number of kills achieved</li>
-                                        <li><strong>Position:</strong> Top-right = most effective weapons</li>
+                                        <li><strong>Y-Axis:</strong> Lethality percentage</li>
+                                        <li><strong>Bubble Size:</strong> Overall effectiveness</li>
+                                        <li><strong>Color Categories:</strong> Blue=Missiles, Red=Guns, Green=A2G</li>
+                                        <li><strong>Top-Right:</strong> High-usage, high-lethality weapons</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-warning">Effectiveness Calculation</h6>
+                                    <h6 class="text-info">Pilot Mastery & Platform Analysis</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Formula:</strong> (Kills ÷ Shots) × 100</li>
-                                        <li><strong>High %:</strong> Weapon is very lethal</li>
-                                        <li><strong>Low %:</strong> Weapon requires many shots per kill</li>
-                                        <li><strong>Zero %:</strong> Weapon fired but no kills recorded</li>
+                                        <li><strong>Heatmap:</strong> Pilot vs weapon mastery percentage</li>
+                                        <li><strong>Color Scale:</strong> Red=High mastery, Blue=Low mastery</li>
+                                        <li><strong>Sunburst Chart:</strong> Hierarchical weapon usage</li>
+                                        <li><strong>Inner Ring:</strong> Weapon categories (Missiles, Guns, Other)</li>
+                                        <li><strong>Outer Ring:</strong> Individual weapons with usage data</li>
                                     </ul>
                                 </div>
-                                <div class="col-md-3">
-                                    <h6 class="text-info">Tactical Insights</h6>
-                                    <ul class="small text-muted mb-0">
-                                        <li><strong>Bubble Size:</strong> Larger = more total kills</li>
-                                        <li><strong>Weapon Labels:</strong> Positioned above data points</li>
-                                        <li><strong>Comparison:</strong> Usage vs. effectiveness analysis</li>
-                                        <li><strong>Strategy:</strong> Identify most/least effective weapons</li>
-                                    </ul>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>Tactical Insights</h6>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <strong>Weapon Categories:</strong> Missiles typically show higher lethality but lower usage. 
+                                                Guns show higher usage but variable effectiveness based on pilot skill.
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Coalition Analysis:</strong> Compare weapon preferences between sides to identify 
+                                                tactical doctrines and equipment advantages.
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>Pilot Mastery:</strong> Identify weapon specialists and training opportunities. 
+                                                Dark red areas indicate pilots with exceptional weapon proficiency.
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

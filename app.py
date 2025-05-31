@@ -283,68 +283,347 @@ class MissionAnalyzer:
         return charts
     
     def create_weapon_effectiveness_chart(self, data):
-        """Create weapon effectiveness visualization"""
+        """Create comprehensive weapon analysis dashboard with multiple engaging visualizations"""
         pilots = data.get('pilots', {})
         
-        # Aggregate weapon data
+        # Aggregate comprehensive weapon data
         weapon_stats = {}
-        for pilot_data in pilots.values():
+        pilot_weapon_preferences = {}
+        coalition_weapon_usage = {1: {}, 2: {}}
+        
+        for pilot_name, pilot_data in pilots.items():
             weapons_used = pilot_data.get('weapons_used', {})
             weapons_kills = pilot_data.get('weapons_kills', {})
+            weapons_hits = pilot_data.get('weapons_hit_with', {})
+            coalition = pilot_data.get('coalition', 0)
+            
+            pilot_weapon_preferences[pilot_name] = {
+                'coalition': coalition,
+                'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
+                'weapons': weapons_used,
+                'kills': weapons_kills,
+                'hits': weapons_hits
+            }
             
             for weapon, shots in weapons_used.items():
                 if weapon not in weapon_stats:
-                    weapon_stats[weapon] = {'shots': 0, 'kills': 0}
+                    weapon_stats[weapon] = {
+                        'shots': 0, 'kills': 0, 'hits': 0, 'pilots_used': 0,
+                        'red_usage': 0, 'blue_usage': 0, 'aircraft_types': set()
+                    }
+                
                 weapon_stats[weapon]['shots'] += shots
                 weapon_stats[weapon]['kills'] += weapons_kills.get(weapon, 0)
+                weapon_stats[weapon]['hits'] += weapons_hits.get(weapon, 0)
+                weapon_stats[weapon]['pilots_used'] += 1
+                weapon_stats[weapon]['aircraft_types'].add(pilot_data.get('aircraft_type', 'Unknown'))
+                
+                # Coalition usage tracking
+                if coalition in [1, 2]:
+                    if coalition == 1:
+                        weapon_stats[weapon]['red_usage'] += shots
+                    else:
+                        weapon_stats[weapon]['blue_usage'] += shots
+                    
+                    if weapon not in coalition_weapon_usage[coalition]:
+                        coalition_weapon_usage[coalition][weapon] = 0
+                    coalition_weapon_usage[coalition][weapon] += shots
         
-        # Calculate effectiveness metrics
-        weapons = []
-        shots = []
-        kills = []
-        effectiveness = []
+        if not weapon_stats:
+            fig = go.Figure()
+            fig.add_annotation(text="No weapon data available", 
+                             xref="paper", yref="paper",
+                             x=0.5, y=0.5, showarrow=False)
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         
-        for weapon, stats in weapon_stats.items():
-            if stats['shots'] > 0:
-                weapons.append(weapon)
-                shots.append(stats['shots'])
-                kills.append(stats['kills'])
-                effectiveness.append((stats['kills'] / stats['shots']) * 100)
-        
+        # Create comprehensive weapons dashboard
         fig = make_subplots(
-            rows=1, cols=2,
-            subplot_titles=('Weapon Usage', 'Weapon Effectiveness'),
-            specs=[[{"type": "bar"}, {"type": "scatter"}]]
+            rows=3, cols=2,
+            subplot_titles=(
+                'Weapon Effectiveness Matrix', 'Coalition Weapon Preferences',
+                'Weapon Performance Radar', 'Lethality vs Usage Analysis',
+                'Pilot Weapon Mastery', 'Weapon Platform Analysis'
+            ),
+            specs=[
+                [{"type": "scatter"}, {"type": "bar"}],
+                [{"type": "scatterpolar"}, {"type": "scatter"}],
+                [{"type": "heatmap"}, {"type": "sunburst"}]
+            ],
+            vertical_spacing=0.12,
+            horizontal_spacing=0.1
         )
         
-        # Weapon usage bar chart
-        fig.add_trace(go.Bar(
-            x=weapons,
-            y=shots,
-            name="Shots Fired",
-            marker_color='lightblue'
-        ), row=1, col=1)
+        # 1. Weapon Effectiveness Matrix (Row 1, Col 1)
+        weapons = list(weapon_stats.keys())
+        effectiveness_data = []
+        accuracy_data = []
+        lethality_data = []
+        usage_data = []
         
-        # Weapon effectiveness scatter plot
+        for weapon in weapons:
+            stats = weapon_stats[weapon]
+            shots = stats['shots']
+            hits = stats['hits']
+            kills = stats['kills']
+            
+            # Calculate metrics
+            accuracy = (hits / shots * 100) if shots > 0 else 0
+            effectiveness = (kills / shots * 100) if shots > 0 else 0
+            lethality = (kills / hits * 100) if hits > 0 else 0
+            
+            effectiveness_data.append(effectiveness)
+            accuracy_data.append(accuracy)
+            lethality_data.append(lethality)
+            usage_data.append(shots)
+        
+        # Create effectiveness matrix scatter plot
         fig.add_trace(go.Scatter(
-            x=shots,
-            y=effectiveness,
+            x=accuracy_data,
+            y=effectiveness_data,
             mode='markers+text',
             text=weapons,
             textposition="top center",
-            marker=dict(size=kills, sizemode='diameter', sizeref=max(kills)/50 if kills else 1),
-            name="Effectiveness %"
-        ), row=1, col=2)
+            marker=dict(
+                size=[max(10, min(u/2, 50)) for u in usage_data],  # Size based on usage
+                color=lethality_data,
+                colorscale='Viridis',
+                showscale=True,
+                colorbar=dict(title="Lethality %", x=0.48),
+                line=dict(width=2, color='white'),
+                opacity=0.8
+            ),
+            name="Weapons",
+            hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Effectiveness: %{y:.1f}%<br>Usage: " + 
+                         str([f"{u} shots" for u in usage_data]) + "<extra></extra>",
+            customdata=usage_data
+        ), row=1, col=1)
         
+        # 2. Coalition Weapon Preferences (Row 1, Col 2)
+        red_weapons = []
+        blue_weapons = []
+        red_usage = []
+        blue_usage = []
+        
+        for weapon in weapons:
+            stats = weapon_stats[weapon]
+            if stats['red_usage'] > 0:
+                red_weapons.append(weapon)
+                red_usage.append(stats['red_usage'])
+            if stats['blue_usage'] > 0:
+                blue_weapons.append(weapon)
+                blue_usage.append(stats['blue_usage'])
+        
+        if red_weapons:
+            fig.add_trace(go.Bar(
+                x=red_weapons,
+                y=red_usage,
+                name="Red Coalition",
+                marker_color='red',
+                opacity=0.7
+            ), row=1, col=2)
+        
+        if blue_weapons:
+            fig.add_trace(go.Bar(
+                x=blue_weapons,
+                y=blue_usage,
+                name="Blue Coalition",
+                marker_color='blue',
+                opacity=0.7
+            ), row=1, col=2)
+        
+        # 3. Weapon Performance Radar (Row 2, Col 1)
+        # Select top 5 weapons by usage for radar chart
+        top_weapons = sorted(weapons, key=lambda w: weapon_stats[w]['shots'], reverse=True)[:5]
+        
+        for i, weapon in enumerate(top_weapons):
+            stats = weapon_stats[weapon]
+            shots = stats['shots']
+            hits = stats['hits']
+            kills = stats['kills']
+            
+            # Normalize metrics to 0-100 scale
+            accuracy = (hits / shots * 100) if shots > 0 else 0
+            effectiveness = (kills / shots * 100) if shots > 0 else 0
+            lethality = (kills / hits * 100) if hits > 0 else 0
+            usage_score = min(shots * 10, 100)  # Scale usage
+            reliability = min(stats['pilots_used'] * 20, 100)  # Based on how many pilots used it
+            
+            colors = ['red', 'blue', 'green', 'orange', 'purple']
+            
+            fig.add_trace(go.Scatterpolar(
+                r=[accuracy, effectiveness, lethality, usage_score, reliability],
+                theta=['Accuracy', 'Effectiveness', 'Lethality', 'Usage', 'Reliability'],
+                fill='toself',
+                name=weapon,
+                line_color=colors[i % len(colors)],
+                fillcolor=f'rgba({255 if i%2==0 else 0}, {128 if i%3==0 else 0}, {255 if i%2==1 else 0}, 0.3)'
+            ), row=2, col=1)
+        
+        # 4. Lethality vs Usage Analysis (Row 2, Col 2)
+        weapon_categories = []
+        for weapon in weapons:
+            stats = weapon_stats[weapon]
+            shots = stats['shots']
+            kills = stats['kills']
+            lethality = (kills / stats['hits'] * 100) if stats['hits'] > 0 else 0
+            
+            # Categorize weapons
+            if 'AIM' in weapon or 'missile' in weapon.lower():
+                category = 'Air-to-Air Missile'
+                color = 'blue'
+            elif 'PGU' in weapon or 'gun' in weapon.lower() or 'cannon' in weapon.lower():
+                category = 'Gun/Cannon'
+                color = 'red'
+            elif 'bomb' in weapon.lower() or 'AGM' in weapon:
+                category = 'Air-to-Ground'
+                color = 'green'
+            else:
+                category = 'Other'
+                color = 'gray'
+            
+            weapon_categories.append(category)
+        
+        # Create lethality vs usage scatter
+        fig.add_trace(go.Scatter(
+            x=usage_data,
+            y=lethality_data,
+            mode='markers+text',
+            text=weapons,
+            textposition="top center",
+            marker=dict(
+                size=[max(15, min(e*2, 40)) for e in effectiveness_data],
+                color=[{'Air-to-Air Missile': 'blue', 'Gun/Cannon': 'red', 
+                       'Air-to-Ground': 'green', 'Other': 'gray'}[cat] for cat in weapon_categories],
+                opacity=0.7,
+                line=dict(width=2, color='white')
+            ),
+            name="Weapon Types",
+            hovertemplate="<b>%{text}</b><br>Usage: %{x} shots<br>Lethality: %{y:.1f}%<extra></extra>"
+        ), row=2, col=2)
+        
+        # 5. Pilot Weapon Mastery Heatmap (Row 3, Col 1)
+        # Create heatmap of pilot vs weapon effectiveness
+        active_pilots = [p for p, data in pilot_weapon_preferences.items() 
+                        if sum(data['weapons'].values()) > 0][:8]  # Top 8 active pilots
+        
+        if active_pilots and weapons:
+            heatmap_data = []
+            pilot_labels = []
+            
+            for pilot in active_pilots:
+                pilot_data = pilot_weapon_preferences[pilot]
+                row_data = []
+                pilot_labels.append(f"{pilot}<br>({pilot_data['aircraft']})")
+                
+                for weapon in weapons:
+                    pilot_shots = pilot_data['weapons'].get(weapon, 0)
+                    pilot_kills = pilot_data['kills'].get(weapon, 0)
+                    mastery = (pilot_kills / pilot_shots * 100) if pilot_shots > 0 else 0
+                    row_data.append(mastery)
+                
+                heatmap_data.append(row_data)
+            
+            fig.add_trace(go.Heatmap(
+                z=heatmap_data,
+                x=weapons,
+                y=pilot_labels,
+                colorscale='RdYlBu_r',
+                showscale=True,
+                colorbar=dict(title="Mastery %", x=1.02),
+                hovertemplate="<b>%{y}</b><br>Weapon: %{x}<br>Mastery: %{z:.1f}%<extra></extra>"
+            ), row=3, col=1)
+        
+        # 6. Weapon Platform Analysis (Row 3, Col 2) - Sunburst chart
+        # Create hierarchical data for sunburst
+        sunburst_data = {
+            'ids': [],
+            'labels': [],
+            'parents': [],
+            'values': []
+        }
+        
+        # Add root
+        sunburst_data['ids'].append('weapons')
+        sunburst_data['labels'].append('All Weapons')
+        sunburst_data['parents'].append('')
+        sunburst_data['values'].append(sum(weapon_stats[w]['shots'] for w in weapons))
+        
+        # Add weapon categories
+        categories = {}
+        for weapon in weapons:
+            if 'AIM' in weapon or 'missile' in weapon.lower():
+                cat = 'Missiles'
+            elif 'PGU' in weapon or 'gun' in weapon.lower():
+                cat = 'Guns'
+            else:
+                cat = 'Other'
+            
+            if cat not in categories:
+                categories[cat] = 0
+            categories[cat] += weapon_stats[weapon]['shots']
+        
+        for cat, usage in categories.items():
+            sunburst_data['ids'].append(cat)
+            sunburst_data['labels'].append(cat)
+            sunburst_data['parents'].append('weapons')
+            sunburst_data['values'].append(usage)
+        
+        # Add individual weapons
+        for weapon in weapons:
+            if 'AIM' in weapon or 'missile' in weapon.lower():
+                parent = 'Missiles'
+            elif 'PGU' in weapon or 'gun' in weapon.lower():
+                parent = 'Guns'
+            else:
+                parent = 'Other'
+            
+            sunburst_data['ids'].append(weapon)
+            sunburst_data['labels'].append(weapon)
+            sunburst_data['parents'].append(parent)
+            sunburst_data['values'].append(weapon_stats[weapon]['shots'])
+        
+        fig.add_trace(go.Sunburst(
+            ids=sunburst_data['ids'],
+            labels=sunburst_data['labels'],
+            parents=sunburst_data['parents'],
+            values=sunburst_data['values'],
+            branchvalues="total",
+            hovertemplate="<b>%{label}</b><br>Usage: %{value} shots<br>Percentage: %{percentParent}<extra></extra>"
+        ), row=3, col=2)
+        
+        # Update layout
         fig.update_layout(
-            title="Weapon Analysis",
-            height=500
+            title={
+                'text': "Comprehensive Weapon Analysis Dashboard - Combat Effectiveness & Usage Patterns",
+                'x': 0.5,
+                'font': {'size': 18}
+            },
+            showlegend=True,
+            height=1200,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            )
         )
         
-        fig.update_xaxes(title_text="Weapon Type", row=1, col=1)
-        fig.update_yaxes(title_text="Shots Fired", row=1, col=1)
-        fig.update_xaxes(title_text="Total Shots", row=1, col=2)
-        fig.update_yaxes(title_text="Effectiveness %", row=1, col=2)
+        # Update polar chart
+        fig.update_polars(
+            radialaxis=dict(visible=True, range=[0, 100]),
+            row=2, col=1
+        )
+        
+        # Update axis labels
+        fig.update_xaxes(title_text="Accuracy (%)", row=1, col=1)
+        fig.update_yaxes(title_text="Effectiveness (%)", row=1, col=1)
+        fig.update_xaxes(title_text="Weapon Type", row=1, col=2)
+        fig.update_yaxes(title_text="Shots Fired", row=1, col=2)
+        fig.update_xaxes(title_text="Total Usage (Shots)", row=2, col=2)
+        fig.update_yaxes(title_text="Lethality (%)", row=2, col=2)
+        fig.update_xaxes(title_text="Weapon", row=3, col=1)
+        fig.update_yaxes(title_text="Pilot", row=3, col=1)
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
