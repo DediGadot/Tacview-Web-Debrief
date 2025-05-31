@@ -175,9 +175,7 @@ class MissionAnalyzer:
         blue_pilots = []
         
         for pilot_name, pilot_data in pilots.items():
-            if pilot_data.get('shots_fired', 0) == 0:
-                continue  # Skip pilots with no activity
-                
+            # Show all pilots, regardless of activity level
             pilot_info = {
                 'name': pilot_name,
                 'data': pilot_data,

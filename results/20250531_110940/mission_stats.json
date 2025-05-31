@@ -1,165 +1,24 @@
 {
   "mission_summary": {
-    "duration": 406.92900000000003,
-    "total_events": 60,
+    "duration": 328.29200000000003,
+    "total_events": 121,
     "active_pilots": 8,
     "active_groups": 2
   },
   "pilots": {
-    "Aerial-2-1": {
-      "aircraft_type": "MiG-23MLD",
-      "coalition": 1,
-      "group_id": 2,
-      "group_name": "f16A",
-      "is_player_controlled": false,
-      "kills": 0,
-      "deaths": 0,
-      "shots_fired": 2,
-      "hits_scored": 2,
-      "accuracy": 100.0,
-      "kd_ratio": 0.0,
-      "flight_time": 47.47999999999999,
-      "weapons_used": {
-        "AIM-120C": 2
-      },
-      "weapons_kills": {},
-      "efficiency_rating": 30.0,
-      "time_to_first_shot": 0,
-      "time_to_first_kill": null,
-      "max_kill_streak": 0,
-      "targets_engaged": [
-        "F-15C"
-      ],
-      "friendly_fire_incidents": 0,
-      "killed_by": null,
-      "shots_per_kill": 0.0,
-      "ejections": 0
-    },
-    "Aerial-1-1": {
-      "aircraft_type": "F-16C_50",
-      "coalition": 2,
-      "group_id": 1,
-      "group_name": "Aerial-1",
-      "is_player_controlled": false,
-      "kills": 0,
-      "deaths": 0,
-      "shots_fired": 0,
-      "hits_scored": 0,
-      "accuracy": 0.0,
-      "kd_ratio": 0.0,
-      "flight_time": 0.0,
-      "weapons_used": {},
-      "weapons_kills": {},
-      "efficiency_rating": 0.0,
-      "time_to_first_shot": null,
-      "time_to_first_kill": null,
-      "max_kill_streak": 0,
-      "targets_engaged": [],
-      "friendly_fire_incidents": 0,
-      "killed_by": null,
-      "shots_per_kill": 0.0,
-      "ejections": 0
-    },
-    "F-15C_16778496": {
+    "f-15a-1": {
       "aircraft_type": "F-15C",
       "coalition": 2,
-      "group_id": null,
-      "group_name": "",
+      "group_id": 1,
+      "group_name": "f-15a",
       "is_player_controlled": false,
       "kills": 0,
       "deaths": 1,
-      "shots_fired": 0,
-      "hits_scored": 0,
-      "accuracy": 0.0,
-      "kd_ratio": 0.0,
-      "flight_time": 0.0,
-      "weapons_used": {},
-      "weapons_kills": {},
-      "efficiency_rating": 0.0,
-      "time_to_first_shot": null,
-      "time_to_first_kill": null,
-      "max_kill_streak": 0,
-      "targets_engaged": [],
-      "friendly_fire_incidents": 0,
-      "killed_by": null,
-      "shots_per_kill": 0.0,
-      "ejections": 0
-    },
-    "F-16C_50_16777984": {
-      "aircraft_type": "F-16C_50",
-      "coalition": 1,
-      "group_id": null,
-      "group_name": "",
-      "is_player_controlled": false,
-      "kills": 1,
-      "deaths": 0,
-      "shots_fired": 2,
-      "hits_scored": 1,
-      "accuracy": 50.0,
-      "kd_ratio": 1.0,
-      "flight_time": 152.15999999999997,
-      "weapons_used": {
-        "AIM-9M": 2
-      },
-      "weapons_kills": {
-        "AIM-9M": 1
-      },
-      "efficiency_rating": 71.0,
-      "time_to_first_shot": 0,
-      "time_to_first_kill": 159.68,
-      "max_kill_streak": 1,
-      "targets_engaged": [
-        "F-15C"
-      ],
-      "friendly_fire_incidents": 0,
-      "killed_by": null,
-      "shots_per_kill": 2.0,
-      "ejections": 0
-    },
-    "F-16C_50_16778240": {
-      "aircraft_type": "F-16C_50",
-      "coalition": 1,
-      "group_id": null,
-      "group_name": "",
-      "is_player_controlled": false,
-      "kills": 1,
-      "deaths": 0,
-      "shots_fired": 2,
-      "hits_scored": 1,
-      "accuracy": 50.0,
-      "kd_ratio": 1.0,
-      "flight_time": 162.26000000000002,
-      "weapons_used": {
-        "AIM-9M": 2
-      },
-      "weapons_kills": {
-        "AIM-9M": 1
-      },
-      "efficiency_rating": 71.0,
-      "time_to_first_shot": 0,
-      "time_to_first_kill": 170.17999999999998,
-      "max_kill_streak": 1,
-      "targets_engaged": [
-        "F-15C"
-      ],
-      "friendly_fire_incidents": 0,
-      "killed_by": null,
-      "shots_per_kill": 2.0,
-      "ejections": 0
-    },
-    "F-15C_16778752": {
-      "aircraft_type": "F-15C",
-      "coalition": 2,
-      "group_id": null,
-      "group_name": "",
-      "is_player_controlled": false,
-      "kills": 0,
-      "deaths": 0,
       "shots_fired": 2,
       "hits_scored": 0,
       "accuracy": 0.0,
       "kd_ratio": 0.0,
-      "flight_time": 36.81999999999999,
+      "flight_time": 34.420000000000016,
       "weapons_used": {
         "AIM-9L": 2
       },
@@ -172,15 +31,132 @@
         "F-16C_50"
       ],
       "friendly_fire_incidents": 0,
+      "killed_by": "f16-a-1",
+      "shots_per_kill": 0.0,
+      "ejections": 1
+    },
+    "f16-a-2": {
+      "aircraft_type": "F-16C_50",
+      "coalition": 1,
+      "group_id": 2,
+      "group_name": "f16-a",
+      "is_player_controlled": false,
+      "kills": 2,
+      "deaths": 0,
+      "shots_fired": 2,
+      "hits_scored": 11,
+      "accuracy": 550.0,
+      "kd_ratio": 2.0,
+      "flight_time": 31.80000000000001,
+      "weapons_used": {
+        "AIM-9M": 2
+      },
+      "weapons_kills": {
+        "AIM-9M": 1,
+        "PGU-28/B SAPHEI": 1
+      },
+      "efficiency_rating": 100,
+      "time_to_first_shot": 0,
+      "time_to_first_kill": 35.22999999999999,
+      "max_kill_streak": 2,
+      "targets_engaged": [
+        "F-15C"
+      ],
+      "friendly_fire_incidents": 0,
+      "killed_by": null,
+      "shots_per_kill": 1.0,
+      "ejections": 0
+    },
+    "f-15a-2": {
+      "aircraft_type": "F-15C",
+      "coalition": 2,
+      "group_id": 1,
+      "group_name": "f-15a",
+      "is_player_controlled": false,
+      "kills": 0,
+      "deaths": 1,
+      "shots_fired": 0,
+      "hits_scored": 0,
+      "accuracy": 0.0,
+      "kd_ratio": 0.0,
+      "flight_time": 0.0,
+      "weapons_used": {},
+      "weapons_kills": {},
+      "efficiency_rating": 0.0,
+      "time_to_first_shot": null,
+      "time_to_first_kill": null,
+      "max_kill_streak": 0,
+      "targets_engaged": [],
+      "friendly_fire_incidents": 0,
+      "killed_by": "f16-a-2",
+      "shots_per_kill": 0.0,
+      "ejections": 0
+    },
+    "f16-a-3": {
+      "aircraft_type": "F-16C_50",
+      "coalition": 1,
+      "group_id": 2,
+      "group_name": "f16-a",
+      "is_player_controlled": false,
+      "kills": 0,
+      "deaths": 0,
+      "shots_fired": 2,
+      "hits_scored": 0,
+      "accuracy": 0.0,
+      "kd_ratio": 0.0,
+      "flight_time": 167.82,
+      "weapons_used": {
+        "AIM-9M": 2
+      },
+      "weapons_kills": {},
+      "efficiency_rating": 0.0,
+      "time_to_first_shot": 0,
+      "time_to_first_kill": null,
+      "max_kill_streak": 0,
+      "targets_engaged": [
+        "F-15C"
+      ],
+      "friendly_fire_incidents": 0,
       "killed_by": null,
       "shots_per_kill": 0.0,
       "ejections": 0
     },
-    "F-15C_16779008": {
+    "Aerial-2-1": {
+      "aircraft_type": "F-16C_50",
+      "coalition": 1,
+      "group_id": 2,
+      "group_name": "f16-a",
+      "is_player_controlled": false,
+      "kills": 1,
+      "deaths": 0,
+      "shots_fired": 2,
+      "hits_scored": 1,
+      "accuracy": 50.0,
+      "kd_ratio": 1.0,
+      "flight_time": 47.5,
+      "weapons_used": {
+        "AIM-120C": 2
+      },
+      "weapons_kills": {
+        "AIM-120C": 1
+      },
+      "efficiency_rating": 71.0,
+      "time_to_first_shot": 0,
+      "time_to_first_kill": 64.02000000000001,
+      "max_kill_streak": 1,
+      "targets_engaged": [
+        "F-15C"
+      ],
+      "friendly_fire_incidents": 0,
+      "killed_by": null,
+      "shots_per_kill": 2.0,
+      "ejections": 0
+    },
+    "Aerial-1-1": {
       "aircraft_type": "F-15C",
       "coalition": 2,
-      "group_id": null,
-      "group_name": "",
+      "group_id": 1,
+      "group_name": "f-15a",
       "is_player_controlled": false,
       "kills": 0,
       "deaths": 1,
@@ -197,15 +173,42 @@
       "max_kill_streak": 0,
       "targets_engaged": [],
       "friendly_fire_incidents": 0,
-      "killed_by": "F-16C_50_16777984",
+      "killed_by": "Aerial-2-1",
       "shots_per_kill": 0.0,
       "ejections": 1
     },
-    "F-15C_16779264": {
+    "f16-a-1": {
+      "aircraft_type": "F-16C_50",
+      "coalition": 1,
+      "group_id": 2,
+      "group_name": "f16-a",
+      "is_player_controlled": false,
+      "kills": 1,
+      "deaths": 0,
+      "shots_fired": 0,
+      "hits_scored": 4,
+      "accuracy": 0.0,
+      "kd_ratio": 1.0,
+      "flight_time": 0.0,
+      "weapons_used": {},
+      "weapons_kills": {
+        "PGU-28/B SAPHEI": 1
+      },
+      "efficiency_rating": 0.0,
+      "time_to_first_shot": null,
+      "time_to_first_kill": null,
+      "max_kill_streak": 1,
+      "targets_engaged": [],
+      "friendly_fire_incidents": 0,
+      "killed_by": null,
+      "shots_per_kill": 0.0,
+      "ejections": 0
+    },
+    "f-15a-3": {
       "aircraft_type": "F-15C",
       "coalition": 2,
-      "group_id": null,
-      "group_name": "",
+      "group_id": 1,
+      "group_name": "f-15a",
       "is_player_controlled": false,
       "kills": 0,
       "deaths": 1,
@@ -222,47 +225,47 @@
       "max_kill_streak": 0,
       "targets_engaged": [],
       "friendly_fire_incidents": 0,
-      "killed_by": "F-16C_50_16778240",
+      "killed_by": "f16-a-2",
       "shots_per_kill": 0.0,
       "ejections": 1
     }
   },
   "groups": {
     "1": {
-      "name": "Aerial-1",
+      "name": "f-15a",
       "coalition": 2,
-      "total_pilots": 1,
+      "total_pilots": 4,
       "total_kills": 0,
-      "total_deaths": 0,
-      "total_shots": 0,
+      "total_deaths": 4,
+      "total_shots": 2,
       "total_hits": 0,
       "group_accuracy": 0.0,
       "group_kd_ratio": 0.0,
-      "group_survivability": 100.0,
+      "group_survivability": 0.0,
       "average_pilot_efficiency": 0.0,
-      "total_flight_hours": 0.0,
+      "total_flight_hours": 0.009561111111111116,
       "total_friendly_fire": 0,
-      "most_active_pilot": "Aerial-1-1",
-      "most_kills_pilot": "Aerial-1-1",
-      "most_accurate_pilot": "Aerial-1-1"
+      "most_active_pilot": "f-15a-1",
+      "most_kills_pilot": "f-15a-1",
+      "most_accurate_pilot": "f-15a-1"
     },
     "2": {
-      "name": "f16A",
+      "name": "f16-a",
       "coalition": 1,
-      "total_pilots": 1,
-      "total_kills": 0,
+      "total_pilots": 4,
+      "total_kills": 4,
       "total_deaths": 0,
-      "total_shots": 2,
-      "total_hits": 2,
-      "group_accuracy": 100.0,
-      "group_kd_ratio": 0.0,
+      "total_shots": 6,
+      "total_hits": 16,
+      "group_accuracy": 266.66666666666663,
+      "group_kd_ratio": 4.0,
       "group_survivability": 100.0,
-      "average_pilot_efficiency": 30.0,
-      "total_flight_hours": 0.013188888888888885,
+      "average_pilot_efficiency": 42.75,
+      "total_flight_hours": 0.06864444444444445,
       "total_friendly_fire": 0,
-      "most_active_pilot": "Aerial-2-1",
-      "most_kills_pilot": "Aerial-2-1",
-      "most_accurate_pilot": "Aerial-2-1"
+      "most_active_pilot": "f16-a-2",
+      "most_kills_pilot": "f16-a-2",
+      "most_accurate_pilot": "f16-a-2"
     }
   }
 }

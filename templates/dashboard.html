@@ -184,7 +184,8 @@
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="humanOnlyToggle">
                         <label class="form-check-label" for="humanOnlyToggle">
-                            <i class="fas fa-user me-1"></i>Human Pilots Only
+                            <i class="fas fa-filter me-1"></i>
+                            <span id="toggleLabel">Show All Pilots</span>
                         </label>
                     </div>
                 </div>
@@ -751,9 +752,6 @@
                                     <th class="sortable" data-column="efficiency" data-type="number">
                                         Efficiency <i class="fas fa-sort sort-icon"></i>
                                     </th>
-                                    <th class="sortable" data-column="flight_time" data-type="number">
-                                        Flight Time <i class="fas fa-sort sort-icon"></i>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -781,7 +779,6 @@
                                             {{ "%.1f"|format(pilot_data.efficiency_rating) }}
                                         </span>
                                     </td>
-                                    <td data-value="{{ pilot_data.flight_time }}">{{ "%.1f"|format(pilot_data.flight_time) }}s</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -857,8 +854,7 @@ $(document).ready(function() {
             'deaths': 5,
             'kd': 6,
             'accuracy': 7,
-            'efficiency': 8,
-            'flight_time': 9
+            'efficiency': 8
         };
         return columnMap[column] || 0;
     }
@@ -940,15 +936,24 @@ $(document).ready(function() {
     // Human-only toggle functionality
     $('#humanOnlyToggle').change(function() {
         const showHumanOnly = $(this).is(':checked');
-        $('.pilot-chart').each(function() {
-            const isHuman = $(this).data('is-human') === true || $(this).data('is-human') === 'true';
-            if (showHumanOnly && !isHuman) {
-                $(this).hide();
-            } else {
-                $(this).show();
-            }
-        });
+        const toggleLabel = $('#toggleLabel');
+        
+        if (showHumanOnly) {
+            toggleLabel.html('<i class="fas fa-user me-1"></i>Human Pilots Only');
+            $('.pilot-chart').each(function() {
+                const isHuman = $(this).data('is-human') === true || $(this).data('is-human') === 'true';
+                if (!isHuman) {
+                    $(this).hide();
+                }
+            });
+        } else {
+            toggleLabel.html('<i class="fas fa-users me-1"></i>Show All Pilots');
+            $('.pilot-chart').show();
+        }
     });
+
+    // Initialize toggle label
+    $('#toggleLabel').html('<i class="fas fa-users me-1"></i>Show All Pilots');
 });
 
 // Print functionality

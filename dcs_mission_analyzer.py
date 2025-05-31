@@ -61,6 +61,9 @@ class PilotStats:
     average_engagement_time: float = 0.0
     total_damage_dealt: float = 0.0
     
+    # Hit tracking to prevent double counting
+    _hit_events_seen: Set[str] = field(default_factory=set)
+    
     def accuracy(self) -> float:
         """Calculate weapon accuracy percentage"""
         return (self.hits_scored / self.shots_fired * 100) if self.shots_fired > 0 else 0.0
@@ -289,7 +292,7 @@ class DCSMissionAnalyzer:
         pilot_key = f"{role}PilotName"
         pilot_name = event_data.get(pilot_key)
         
-        # Try to map using object ID if pilot name is generic aircraft type
+        # Try to map using object ID - this is the most reliable method
         object_key = f"{role}_object_id"
         if object_key in event_data:
             object_id = event_data[object_key]
@@ -297,15 +300,23 @@ class DCSMissionAnalyzer:
             # Check if we have a mapping for this object ID
             if object_id in self.unit_to_pilot:
                 mapped_pilot = self.unit_to_pilot[object_id]
-                # Use mapped pilot name if it's more specific than aircraft type
-                if mapped_pilot and (not pilot_name or pilot_name in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']):
+                # Always prefer the mapped pilot name from XML if available
+                if mapped_pilot:
                     return mapped_pilot
         
         # If we have a pilot name but no mapping, create a mapping for future use
+        # But only if the pilot name is not a generic aircraft type
         if pilot_name and object_key in event_data:
             object_id = event_data[object_key]
             if object_id not in self.unit_to_pilot:
-                self.unit_to_pilot[object_id] = pilot_name
+                # Only create mapping if pilot name is not generic aircraft type
+                if pilot_name not in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C', 'A-10C', 'AV-8B']:
+                    self.unit_to_pilot[object_id] = pilot_name
+                else:
+                    # For generic aircraft types, create a unique name based on object ID
+                    unique_pilot_name = f"{pilot_name}_{object_id}"
+                    self.unit_to_pilot[object_id] = unique_pilot_name
+                    return unique_pilot_name
         
         return pilot_name
     
@@ -315,18 +326,41 @@ class DCSMissionAnalyzer:
             # Try to get more info from event
             aircraft_type = event_data.get('initiator_unit_type', pilot_name)
             coalition = event_data.get('initiator_coalition', 0)
+            group_id = None
+            group_name = ""
+            is_player_controlled = False
             
             # Try to get object ID for better mapping
             object_id = event_data.get('initiator_object_id')
-            if object_id and object_id in self.unit_to_pilot:
-                unit_info = self.unit_to_pilot[object_id]
-                aircraft_type = unit_info.get('type', aircraft_type)
-                coalition = unit_info.get('coalition', coalition)
+            if object_id:
+                # Check if we have group mapping for this object ID
+                if object_id in self.unit_to_group:
+                    group_id = self.unit_to_group[object_id]
+                    if group_id in self.group_stats:
+                        group_name = self.group_stats[group_id].name
+                
+                # Check if this pilot already exists in our loaded units (from XML)
+                # and get the proper aircraft type and coalition
+                for existing_pilot in self.pilot_stats.values():
+                    if existing_pilot.name == pilot_name:
+                        aircraft_type = existing_pilot.aircraft_type
+                        coalition = existing_pilot.coalition
+                        group_id = existing_pilot.group_id
+                        group_name = existing_pilot.group_name
+                        is_player_controlled = existing_pilot.is_player_controlled
+                        break
+            
+            # If pilot name contains object ID suffix, extract aircraft type from it
+            if '_' in pilot_name and pilot_name.split('_')[0] in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']:
+                aircraft_type = pilot_name.split('_')[0]
             
             self.pilot_stats[pilot_name] = PilotStats(
                 name=pilot_name,
                 aircraft_type=aircraft_type,
-                coalition=coalition
+                coalition=coalition,
+                group_id=group_id,
+                group_name=group_name,
+                is_player_controlled=is_player_controlled
             )
     
     def process_shot_event(self, event_data: dict):
@@ -365,18 +399,35 @@ class DCSMissionAnalyzer:
             pilot.last_seen = event_data['t']
     
     def process_hit_event(self, event_data: dict):
-        """Process weapon hit event"""
+        """Process weapon hit event with improved hit tracking"""
         pilot_name = self.get_pilot_from_event(event_data, 'initiator')
         if not pilot_name:
             return
             
         self.ensure_pilot_exists(pilot_name, event_data)
-        
         pilot = self.pilot_stats[pilot_name]
-        pilot.hits_scored += 1
         
+        # Create a hit signature that groups hits by weapon burst rather than individual bullets
+        # For gun weapons, group hits within a small time window (0.5 seconds)
+        # For missiles, each hit is separate
         weapon = event_data.get('weapon', 'Unknown')
-        pilot.weapons_hit_with[weapon] += 1
+        time_val = event_data.get('t', 0)
+        target_id = event_data.get('target_object_id', 'unknown')
+        
+        # For gun weapons (like PGU-28/B SAPHEI), group hits within 0.5 second window
+        if 'PGU' in weapon or 'gun' in weapon.lower() or 'cannon' in weapon.lower():
+            # Round time to nearest 0.5 second to group gun bursts
+            time_window = round(time_val * 2) / 2  # 0.5 second windows
+            hit_signature = f"{weapon}_{target_id}_{time_window}"
+        else:
+            # For missiles and other weapons, each hit is separate
+            hit_signature = f"{time_val}_{weapon}_{target_id}_{event_data.get('initiator_object_id', 'unknown')}"
+        
+        # Only count this hit if we haven't seen this hit signature before
+        if hit_signature not in pilot._hit_events_seen:
+            pilot._hit_events_seen.add(hit_signature)
+            pilot.hits_scored += 1
+            pilot.weapons_hit_with[weapon] += 1
     
     def process_kill_event(self, event_data: dict):
         """Process kill event with improved pilot tracking"""
