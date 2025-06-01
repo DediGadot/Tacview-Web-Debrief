@@ -1,17 +1,20 @@
-# DCS World Mission Statistics Analyzer Requirements
-# All dependencies are part of Python standard library - no external packages needed!
-
-# The script uses only built-in Python modules:
-# - re (regular expressions)
-# - xml.etree.ElementTree (XML parsing)
-# - json (JSON export)
-# - collections (defaultdict, Counter)
-# - dataclasses (dataclass decorator)
-# - typing (type hints)
-# - argparse (command line arguments)
-# - datetime (future use)
-
-# If you want to extend the script with additional features, you might consider:
-# pandas>=1.3.0     # For advanced data analysis
-# matplotlib>=3.5.0 # For plotting statistics
-# plotly>=5.0.0     # For interactive charts 
+blinker==1.9.0
+click==8.1.8
+Flask==3.1.1
+gunicorn==23.0.0
+importlib_metadata==8.7.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+narwhals==1.41.0
+ngrok==1.4.0
+numpy==2.0.2
+packaging==25.0
+pandas==2.2.3
+plotly==6.1.2
+python-dateutil==2.9.0.post0
+pytz==2025.2
+six==1.17.0
+tzdata==2025.2
+Werkzeug==3.1.3
+zipp==3.22.0
