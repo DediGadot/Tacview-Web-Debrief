@@ -106,6 +106,15 @@ class MissionAnalyzer:
         # 7. Efficiency Leaderboard
         visualizations['efficiency_leaderboard'] = self.create_efficiency_leaderboard(mission_data)
         
+        # 8. Air-to-Ground Analysis
+        visualizations['air_to_ground_analysis'] = self.create_air_to_ground_analysis(mission_data)
+        
+        # 9. Air-to-Ground per Pilot Dashboard
+        visualizations['ag_pilot_dashboard'] = self.create_ag_pilot_dashboard(mission_data)
+        
+        # 10. Air-to-Ground per Group Dashboard
+        visualizations['ag_group_dashboard'] = self.create_ag_group_dashboard(mission_data)
+        
         return visualizations
     
     def create_mission_overview(self, data):
@@ -393,8 +402,11 @@ class MissionAnalyzer:
                 opacity=0.8
             ),
             name="Weapons",
-            hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Effectiveness: %{y:.1f}%<br>Usage: " + 
-                         str([f"{u} shots" for u in usage_data]) + "<extra></extra>",
+            hovertemplate="<b>%{text}</b><br>" +
+                         "Accuracy: %{x:.1f}%<br>" +
+                         "Effectiveness: %{y:.1f}%<br>" +
+                         "Usage: %{customdata} shots<br>" +
+                         "Lethality: %{marker.color:.1f}%<extra></extra>",
             customdata=usage_data
         ), row=1, col=1)
         
@@ -419,7 +431,8 @@ class MissionAnalyzer:
                 y=red_usage,
                 name="Red Coalition",
                 marker_color='red',
-                opacity=0.7
+                opacity=0.7,
+                hovertemplate="<b>%{x}</b><br>Red Coalition Usage: %{y} shots<extra></extra>"
             ), row=1, col=2)
         
         if blue_weapons:
@@ -428,7 +441,8 @@ class MissionAnalyzer:
                 y=blue_usage,
                 name="Blue Coalition",
                 marker_color='blue',
-                opacity=0.7
+                opacity=0.7,
+                hovertemplate="<b>%{x}</b><br>Blue Coalition Usage: %{y} shots<extra></extra>"
             ), row=1, col=2)
         
         # 3. Weapon Performance Radar (Row 2, Col 1)
@@ -456,37 +470,45 @@ class MissionAnalyzer:
                 fill='toself',
                 name=weapon,
                 line_color=colors[i % len(colors)],
-                fillcolor=f'rgba({255 if i%2==0 else 0}, {128 if i%3==0 else 0}, {255 if i%2==1 else 0}, 0.3)'
+                fillcolor=f'rgba({255 if i%2==0 else 0}, {128 if i%3==0 else 0}, {255 if i%2==1 else 0}, 0.3)',
+                hovertemplate="<b>" + weapon + "</b><br>" +
+                             "Accuracy: " + f"{accuracy:.1f}%" + "<br>" +
+                             "Effectiveness: " + f"{effectiveness:.1f}%" + "<br>" +
+                             "Lethality: " + f"{lethality:.1f}%" + "<br>" +
+                             "Usage Score: " + f"{usage_score:.1f}" + "<br>" +
+                             "Reliability: " + f"{reliability:.1f}" + "<extra></extra>"
             ), row=2, col=1)
         
         # 4. Lethality vs Usage Analysis (Row 2, Col 2)
         weapon_categories = []
+        lethality_for_scatter = []  # Separate lethality array for this chart
+        
         for weapon in weapons:
             stats = weapon_stats[weapon]
             shots = stats['shots']
+            hits = stats['hits']
             kills = stats['kills']
-            lethality = (kills / stats['hits'] * 100) if stats['hits'] > 0 else 0
+            
+            # Calculate lethality correctly
+            lethality = (kills / hits * 100) if hits > 0 else 0
+            lethality_for_scatter.append(lethality)
             
             # Categorize weapons
             if 'AIM' in weapon or 'missile' in weapon.lower():
                 category = 'Air-to-Air Missile'
-                color = 'blue'
             elif 'PGU' in weapon or 'gun' in weapon.lower() or 'cannon' in weapon.lower():
                 category = 'Gun/Cannon'
-                color = 'red'
             elif 'bomb' in weapon.lower() or 'AGM' in weapon:
                 category = 'Air-to-Ground'
-                color = 'green'
             else:
                 category = 'Other'
-                color = 'gray'
             
             weapon_categories.append(category)
         
         # Create lethality vs usage scatter
         fig.add_trace(go.Scatter(
             x=usage_data,
-            y=lethality_data,
+            y=lethality_for_scatter,  # Use the correctly calculated lethality
             mode='markers+text',
             text=weapons,
             textposition="top center",
@@ -498,7 +520,12 @@ class MissionAnalyzer:
                 line=dict(width=2, color='white')
             ),
             name="Weapon Types",
-            hovertemplate="<b>%{text}</b><br>Usage: %{x} shots<br>Lethality: %{y:.1f}%<extra></extra>"
+            customdata=[[weapon_stats[w]['hits'], weapon_stats[w]['kills']] for w in weapons],
+            hovertemplate="<b>%{text}</b><br>" +
+                         "Usage: %{x} shots<br>" +
+                         "Lethality: %{y:.1f}%<br>" +
+                         "Hits: %{customdata[0]}<br>" +
+                         "Kills: %{customdata[1]}<extra></extra>"
         ), row=2, col=2)
         
         # 5. Pilot Weapon Mastery Heatmap (Row 3, Col 1)
@@ -1575,6 +1602,366 @@ class MissionAnalyzer:
             yaxis_title="Pilot",
             height=max(400, len(names) * 40)
         )
+        
+        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    def create_air_to_ground_analysis(self, data):
+        """Create comprehensive air-to-ground analysis dashboard"""
+        pilots = data.get('pilots', {})
+        
+        # Collect air-to-ground data
+        ag_pilots = []
+        for pilot_name, pilot_data in pilots.items():
+            ag_shots = pilot_data.get('ag_shots_fired', 0)
+            ag_hits = pilot_data.get('ag_hits_scored', 0)
+            ag_accuracy = pilot_data.get('ag_accuracy', 0)
+            
+            if ag_shots > 0:  # Only include pilots who used air-to-ground weapons
+                ag_pilots.append({
+                    'name': pilot_name,
+                    'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
+                    'coalition': pilot_data.get('coalition', 0),
+                    'shots': ag_shots,
+                    'hits': ag_hits,
+                    'accuracy': ag_accuracy,
+                    'weapons': pilot_data.get('ag_weapons_used', {}),
+                    'time_to_first_ag': pilot_data.get('time_to_first_ag_shot', None)
+                })
+        
+        if not ag_pilots:
+            # No air-to-ground activity
+            fig = go.Figure()
+            fig.add_annotation(
+                text="No air-to-ground weapon activity detected in this mission",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, xanchor='center', yanchor='middle',
+                showarrow=False, font=dict(size=16)
+            )
+            fig.update_layout(
+                title="Air-to-Ground Analysis",
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                height=400
+            )
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        
+        # Create dashboard with multiple subplots
+        fig = make_subplots(
+            rows=2, cols=2,
+            subplot_titles=(
+                'A2G Shots vs Accuracy', 'A2G Weapon Usage Distribution',
+                'Coalition A2G Performance', 'A2G Response Time'
+            ),
+            specs=[[{"type": "scatter"}, {"type": "pie"}],
+                   [{"type": "bar"}, {"type": "bar"}]]
+        )
+        
+        # 1. Shots vs Accuracy scatter plot
+        red_pilots = [p for p in ag_pilots if p['coalition'] == 1]
+        blue_pilots = [p for p in ag_pilots if p['coalition'] == 2]
+        
+        if red_pilots:
+            fig.add_trace(go.Scatter(
+                x=[p['shots'] for p in red_pilots],
+                y=[p['accuracy'] for p in red_pilots],
+                mode='markers+text',
+                text=[p['name'] for p in red_pilots],
+                textposition="top center",
+                marker=dict(size=12, color='red', symbol='circle'),
+                name='Red Coalition',
+                hovertemplate='<b>%{text}</b><br>Shots: %{x}<br>Accuracy: %{y:.1f}%<extra></extra>'
+            ), row=1, col=1)
+        
+        if blue_pilots:
+            fig.add_trace(go.Scatter(
+                x=[p['shots'] for p in blue_pilots],
+                y=[p['accuracy'] for p in blue_pilots],
+                mode='markers+text',
+                text=[p['name'] for p in blue_pilots],
+                textposition="top center",
+                marker=dict(size=12, color='blue', symbol='circle'),
+                name='Blue Coalition',
+                hovertemplate='<b>%{text}</b><br>Shots: %{x}<br>Accuracy: %{y:.1f}%<extra></extra>'
+            ), row=1, col=1)
+        
+        # 2. Weapon usage pie chart
+        all_weapons = {}
+        for pilot in ag_pilots:
+            for weapon, count in pilot['weapons'].items():
+                all_weapons[weapon] = all_weapons.get(weapon, 0) + count
+        
+        if all_weapons:
+            fig.add_trace(go.Pie(
+                labels=list(all_weapons.keys()),
+                values=list(all_weapons.values()),
+                hole=.3
+            ), row=1, col=2)
+        
+        # 3. Coalition performance comparison
+        red_total_shots = sum(p['shots'] for p in red_pilots)
+        blue_total_shots = sum(p['shots'] for p in blue_pilots)
+        red_total_hits = sum(p['hits'] for p in red_pilots)
+        blue_total_hits = sum(p['hits'] for p in blue_pilots)
+        
+        fig.add_trace(go.Bar(
+            x=['Red Coalition', 'Blue Coalition'],
+            y=[red_total_shots, blue_total_shots],
+            name='A2G Shots',
+            marker_color=['red', 'blue'],
+            opacity=0.7
+        ), row=2, col=1)
+        
+        fig.add_trace(go.Bar(
+            x=['Red Coalition', 'Blue Coalition'],
+            y=[red_total_hits, blue_total_hits],
+            name='A2G Hits',
+            marker_color=['darkred', 'darkblue']
+        ), row=2, col=1)
+        
+        # 4. Response time (time to first A2G shot)
+        pilots_with_time = [p for p in ag_pilots if p['time_to_first_ag'] is not None]
+        if pilots_with_time:
+            fig.add_trace(go.Bar(
+                x=[p['name'] for p in pilots_with_time[:10]],  # Top 10
+                y=[p['time_to_first_ag'] for p in pilots_with_time[:10]],
+                marker_color=['red' if p['coalition'] == 1 else 'blue' for p in pilots_with_time[:10]],
+                name='Time to First A2G Shot'
+            ), row=2, col=2)
+        
+        fig.update_layout(
+            title="Air-to-Ground Combat Analysis",
+            height=800,
+            showlegend=True
+        )
+        
+        # Update axis labels
+        fig.update_xaxes(title_text="A2G Shots Fired", row=1, col=1)
+        fig.update_yaxes(title_text="A2G Accuracy (%)", row=1, col=1)
+        fig.update_yaxes(title_text="Count", row=2, col=1)
+        fig.update_xaxes(title_text="Pilot", row=2, col=2)
+        fig.update_yaxes(title_text="Time (seconds)", row=2, col=2)
+        
+        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    def create_ag_pilot_dashboard(self, data):
+        """Create air-to-ground statistics per pilot"""
+        pilots = data.get('pilots', {})
+        
+        # Collect and sort pilots by A2G activity
+        ag_pilots = []
+        for pilot_name, pilot_data in pilots.items():
+            ag_shots = pilot_data.get('ag_shots_fired', 0)
+            ag_hits = pilot_data.get('ag_hits_scored', 0)
+            ag_accuracy = pilot_data.get('ag_accuracy', 0)
+            
+            ag_pilots.append({
+                'name': pilot_name,
+                'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
+                'coalition': pilot_data.get('coalition', 0),
+                'shots': ag_shots,
+                'hits': ag_hits,
+                'accuracy': ag_accuracy,
+                'weapons': pilot_data.get('ag_weapons_used', {}),
+                'efficiency': pilot_data.get('efficiency_rating', 0)
+            })
+        
+        # Sort by A2G shots fired (most active first)
+        ag_pilots.sort(key=lambda x: x['shots'], reverse=True)
+        
+        # Take top 15 pilots
+        top_pilots = ag_pilots[:15]
+        
+        if not any(p['shots'] > 0 for p in top_pilots):
+            # No air-to-ground activity
+            fig = go.Figure()
+            fig.add_annotation(
+                text="No air-to-ground weapon activity detected in this mission",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, xanchor='center', yanchor='middle',
+                showarrow=False, font=dict(size=16)
+            )
+            fig.update_layout(
+                title="Air-to-Ground Statistics per Pilot",
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                height=600
+            )
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        
+        # Create grouped bar chart
+        pilot_names = [p['name'] for p in top_pilots]
+        ag_shots = [p['shots'] for p in top_pilots]
+        ag_hits = [p['hits'] for p in top_pilots]
+        ag_accuracy = [p['accuracy'] for p in top_pilots]
+        colors = ['red' if p['coalition'] == 1 else 'blue' for p in top_pilots]
+        
+        fig = make_subplots(
+            rows=2, cols=1,
+            subplot_titles=('Air-to-Ground Shots and Hits per Pilot', 'Air-to-Ground Accuracy per Pilot'),
+            specs=[[{"secondary_y": False}], [{"secondary_y": False}]]
+        )
+        
+        # Shots and hits
+        fig.add_trace(go.Bar(
+            x=pilot_names,
+            y=ag_shots,
+            name='A2G Shots',
+            marker_color=colors,
+            opacity=0.7
+        ), row=1, col=1)
+        
+        fig.add_trace(go.Bar(
+            x=pilot_names,
+            y=ag_hits,
+            name='A2G Hits',
+            marker_color=[c.replace('red', 'darkred').replace('blue', 'darkblue') for c in colors]
+        ), row=1, col=1)
+        
+        # Accuracy
+        fig.add_trace(go.Bar(
+            x=pilot_names,
+            y=ag_accuracy,
+            name='A2G Accuracy (%)',
+            marker_color=colors,
+            showlegend=False
+        ), row=2, col=1)
+        
+        fig.update_layout(
+            title="Air-to-Ground Performance by Pilot",
+            height=800,
+            barmode='group'
+        )
+        
+        # Update axis labels
+        fig.update_xaxes(title_text="Pilot", row=2, col=1)
+        fig.update_yaxes(title_text="Count", row=1, col=1)
+        fig.update_yaxes(title_text="Accuracy (%)", row=2, col=1)
+        
+        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    def create_ag_group_dashboard(self, data):
+        """Create air-to-ground statistics per group"""
+        groups = data.get('groups', {})
+        pilots = data.get('pilots', {})
+        
+        # Aggregate A2G stats by group
+        group_ag_stats = {}
+        
+        for group_id, group_data in groups.items():
+            group_name = group_data.get('name', f'Group {group_id}')
+            coalition = group_data.get('coalition', 0)
+            
+            # Calculate A2G stats from group data if available
+            total_ag_shots = group_data.get('total_ag_shots', 0)
+            total_ag_hits = group_data.get('total_ag_hits', 0)
+            ag_accuracy = group_data.get('group_ag_accuracy', 0)
+            most_ag_active = group_data.get('most_ag_active_pilot', '')
+            
+            group_ag_stats[group_id] = {
+                'name': group_name,
+                'coalition': coalition,
+                'total_ag_shots': total_ag_shots,
+                'total_ag_hits': total_ag_hits,
+                'ag_accuracy': ag_accuracy,
+                'most_ag_active': most_ag_active,
+                'pilot_count': group_data.get('total_pilots', 0)
+            }
+        
+        # Filter groups with A2G activity
+        active_groups = {gid: stats for gid, stats in group_ag_stats.items() 
+                        if stats['total_ag_shots'] > 0}
+        
+        if not active_groups:
+            # No air-to-ground activity
+            fig = go.Figure()
+            fig.add_annotation(
+                text="No air-to-ground weapon activity detected in any group",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, xanchor='center', yanchor='middle',
+                showarrow=False, font=dict(size=16)
+            )
+            fig.update_layout(
+                title="Air-to-Ground Statistics per Group",
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                height=600
+            )
+            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        
+        # Create comparison dashboard
+        fig = make_subplots(
+            rows=2, cols=2,
+            subplot_titles=(
+                'A2G Shots by Group', 'A2G Accuracy by Group',
+                'A2G Hits by Group', 'Group Efficiency Comparison'
+            ),
+            specs=[[{"type": "bar"}, {"type": "bar"}],
+                   [{"type": "bar"}, {"type": "scatter"}]]
+        )
+        
+        group_names = list(active_groups.keys())
+        group_labels = [active_groups[gid]['name'] for gid in group_names]
+        coalition_colors = ['red' if active_groups[gid]['coalition'] == 1 else 'blue' 
+                          for gid in group_names]
+        
+        # A2G Shots by group
+        ag_shots = [active_groups[gid]['total_ag_shots'] for gid in group_names]
+        fig.add_trace(go.Bar(
+            x=group_labels,
+            y=ag_shots,
+            marker_color=coalition_colors,
+            name='A2G Shots',
+            showlegend=False
+        ), row=1, col=1)
+        
+        # A2G Accuracy by group
+        ag_accuracy = [active_groups[gid]['ag_accuracy'] for gid in group_names]
+        fig.add_trace(go.Bar(
+            x=group_labels,
+            y=ag_accuracy,
+            marker_color=coalition_colors,
+            name='A2G Accuracy',
+            showlegend=False
+        ), row=1, col=2)
+        
+        # A2G Hits by group
+        ag_hits = [active_groups[gid]['total_ag_hits'] for gid in group_names]
+        fig.add_trace(go.Bar(
+            x=group_labels,
+            y=ag_hits,
+            marker_color=coalition_colors,
+            name='A2G Hits',
+            showlegend=False
+        ), row=2, col=1)
+        
+        # Group efficiency comparison (A2G shots vs accuracy)
+        fig.add_trace(go.Scatter(
+            x=ag_shots,
+            y=ag_accuracy,
+            mode='markers+text',
+            text=group_labels,
+            textposition="top center",
+            marker=dict(
+                size=[s/2 + 10 for s in ag_shots],  # Size based on shots
+                color=coalition_colors,
+                opacity=0.7
+            ),
+            name='Groups',
+            showlegend=False,
+            hovertemplate='<b>%{text}</b><br>A2G Shots: %{x}<br>A2G Accuracy: %{y:.1f}%<extra></extra>'
+        ), row=2, col=2)
+        
+        fig.update_layout(
+            title="Air-to-Ground Performance by Group",
+            height=800
+        )
+        
+        # Update axis labels
+        fig.update_yaxes(title_text="Shots", row=1, col=1)
+        fig.update_yaxes(title_text="Accuracy (%)", row=1, col=2)
+        fig.update_yaxes(title_text="Hits", row=2, col=1)
+        fig.update_xaxes(title_text="A2G Shots", row=2, col=2)
+        fig.update_yaxes(title_text="A2G Accuracy (%)", row=2, col=2)
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 

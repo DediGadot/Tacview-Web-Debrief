@@ -35,6 +35,18 @@
                 <i class="fas fa-project-diagram me-2"></i>
                 Kill Networks
             </div>
+            <div class="sidebar-item" data-target="air-to-ground">
+                <i class="fas fa-bomb me-2"></i>
+                Air-to-Ground Analysis
+            </div>
+            <div class="sidebar-item" data-target="ag-pilots">
+                <i class="fas fa-crosshairs me-2"></i>
+                A2G by Pilot
+            </div>
+            <div class="sidebar-item" data-target="ag-groups">
+                <i class="fas fa-users-cog me-2"></i>
+                A2G by Group
+            </div>
             <div class="sidebar-item" data-target="summary">
                 <i class="fas fa-file-alt me-2"></i>
                 Mission Summary
@@ -670,6 +682,185 @@
             </div>
         </div>
 
+        <!-- Air-to-Ground Analysis Section -->
+        <div id="air-to-ground-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-bomb me-2"></i>Air-to-Ground Combat Analysis</h3>
+                    <p class="text-muted">Comprehensive analysis of ground attack missions and surface target engagement</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="airToGroundChart"></div>
+            </div>
+            
+            <!-- Air-to-Ground Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Air-to-Ground Analysis Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">A2G Shots vs Accuracy</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>X-Axis:</strong> Total air-to-ground shots fired</li>
+                                        <li><strong>Y-Axis:</strong> Air-to-ground accuracy percentage</li>
+                                        <li><strong>Colors:</strong> Red for Red Coalition, Blue for Blue Coalition</li>
+                                        <li><strong>Analysis:</strong> Higher position = more accurate ground attack</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">Weapon Distribution</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Pie Chart:</strong> Air-to-ground weapon usage breakdown</li>
+                                        <li><strong>Weapons:</strong> Bombs, missiles, rockets, etc.</li>
+                                        <li><strong>Size:</strong> Proportional to usage frequency</li>
+                                        <li><strong>Insight:</strong> Shows preferred ground attack weapons</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">Coalition Performance</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> A2G shots (lighter) and hits (darker)</li>
+                                        <li><strong>Comparison:</strong> Red vs Blue coalition effectiveness</li>
+                                        <li><strong>Colors:</strong> Red/dark red, Blue/dark blue</li>
+                                        <li><strong>Assessment:</strong> Overall ground attack capability</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Response Time</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> Time to first air-to-ground shot</li>
+                                        <li><strong>Unit:</strong> Time in seconds from mission start</li>
+                                        <li><strong>Colors:</strong> Coalition-based coloring</li>
+                                        <li><strong>Tactical:</strong> Shows ground attack initiation speed</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Air-to-Ground by Pilot Section -->
+        <div id="ag-pilots-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-crosshairs me-2"></i>Air-to-Ground Performance by Pilot</h3>
+                    <p class="text-muted">Individual pilot statistics for ground attack missions</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="agPilotChart"></div>
+            </div>
+            
+            <!-- A2G Pilot Performance Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Pilot A2G Performance Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">Shots and Hits Chart</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Light Bars:</strong> Total air-to-ground shots fired</li>
+                                        <li><strong>Dark Bars:</strong> Successful air-to-ground hits</li>
+                                        <li><strong>Colors:</strong> Red for Red Coalition, Blue for Blue Coalition</li>
+                                        <li><strong>Ranking:</strong> Pilots sorted by total A2G activity</li>
+                                        <li><strong>Analysis:</strong> Compare volume vs. effectiveness</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-success">Accuracy Chart</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> Air-to-ground accuracy percentage</li>
+                                        <li><strong>Scale:</strong> 0-100% accuracy rating</li>
+                                        <li><strong>Colors:</strong> Coalition-based pilot identification</li>
+                                        <li><strong>Selection:</strong> Top 15 most active A2G pilots</li>
+                                        <li><strong>Evaluation:</strong> Precision in ground target engagement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Air-to-Ground by Group Section -->
+        <div id="ag-groups-section" class="dashboard-section d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3><i class="fas fa-users-cog me-2"></i>Air-to-Ground Performance by Group</h3>
+                    <p class="text-muted">Formation-level statistics for ground attack effectiveness</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div id="agGroupChart"></div>
+            </div>
+            
+            <!-- A2G Group Performance Legend -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Group A2G Performance Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6 class="text-primary">A2G Shots by Group</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> Total air-to-ground shots per formation</li>
+                                        <li><strong>Colors:</strong> Red/Blue based on coalition</li>
+                                        <li><strong>Metric:</strong> Group's total ground attack volume</li>
+                                        <li><strong>Usage:</strong> Assess formation activity levels</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-success">A2G Accuracy by Group</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> Formation air-to-ground accuracy</li>
+                                        <li><strong>Scale:</strong> Percentage accuracy (0-100%)</li>
+                                        <li><strong>Colors:</strong> Coalition-based identification</li>
+                                        <li><strong>Analysis:</strong> Formation precision assessment</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-warning">A2G Hits by Group</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Bars:</strong> Successful air-to-ground hits per group</li>
+                                        <li><strong>Metric:</strong> Actual ground target damage achieved</li>
+                                        <li><strong>Colors:</strong> Coalition-based coloring</li>
+                                        <li><strong>Effectiveness:</strong> Real impact measurement</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6 class="text-info">Group Efficiency</h6>
+                                    <ul class="small text-muted mb-0">
+                                        <li><strong>Scatter:</strong> A2G shots (X) vs accuracy (Y)</li>
+                                        <li><strong>Size:</strong> Bubble size = total shots fired</li>
+                                        <li><strong>Position:</strong> Right-upper = high volume + accurate</li>
+                                        <li><strong>Comparison:</strong> Formation effectiveness matrix</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Summary Section -->
         <div id="summary-section" class="dashboard-section d-none">
             <div class="row mb-4">
@@ -947,6 +1138,24 @@ $(document).ready(function() {
     if (visualizations.kill_death_network) {
         const networkData = JSON.parse(visualizations.kill_death_network);
         Plotly.newPlot('networkChart', networkData.data, networkData.layout, {responsive: true});
+    }
+
+    // Air-to-Ground Analysis Chart
+    if (visualizations.air_to_ground_analysis) {
+        const agData = JSON.parse(visualizations.air_to_ground_analysis);
+        Plotly.newPlot('airToGroundChart', agData.data, agData.layout, {responsive: true});
+    }
+
+    // Air-to-Ground Pilot Dashboard Chart
+    if (visualizations.ag_pilot_dashboard) {
+        const agPilotData = JSON.parse(visualizations.ag_pilot_dashboard);
+        Plotly.newPlot('agPilotChart', agPilotData.data, agPilotData.layout, {responsive: true});
+    }
+
+    // Air-to-Ground Group Dashboard Chart
+    if (visualizations.ag_group_dashboard) {
+        const agGroupData = JSON.parse(visualizations.ag_group_dashboard);
+        Plotly.newPlot('agGroupChart', agGroupData.data, agGroupData.layout, {responsive: true});
     }
 
     // Handle window resize

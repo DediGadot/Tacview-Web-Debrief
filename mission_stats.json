@@ -22,6 +22,9 @@
       "weapons_used": {
         "AIM-120C": 2
       },
+      "weapons_hit_with": {
+        "PGU-28/B SAPHEI": 2
+      },
       "weapons_kills": {},
       "efficiency_rating": 30.0,
       "time_to_first_shot": 0,
@@ -49,6 +52,7 @@
       "kd_ratio": 0.0,
       "flight_time": 0.0,
       "weapons_used": {},
+      "weapons_hit_with": {},
       "weapons_kills": {},
       "efficiency_rating": 0.0,
       "time_to_first_shot": null,
@@ -74,6 +78,7 @@
       "kd_ratio": 0.0,
       "flight_time": 0.0,
       "weapons_used": {},
+      "weapons_hit_with": {},
       "weapons_kills": {},
       "efficiency_rating": 0.0,
       "time_to_first_shot": null,
@@ -100,6 +105,9 @@
       "flight_time": 152.15999999999997,
       "weapons_used": {
         "AIM-9M": 2
+      },
+      "weapons_hit_with": {
+        "AIM-9M": 1
       },
       "weapons_kills": {
         "AIM-9M": 1
@@ -132,6 +140,9 @@
       "weapons_used": {
         "AIM-9M": 2
       },
+      "weapons_hit_with": {
+        "AIM-9M": 1
+      },
       "weapons_kills": {
         "AIM-9M": 1
       },
@@ -163,6 +174,7 @@
       "weapons_used": {
         "AIM-9L": 2
       },
+      "weapons_hit_with": {},
       "weapons_kills": {},
       "efficiency_rating": 0.0,
       "time_to_first_shot": 0,
@@ -190,6 +202,7 @@
       "kd_ratio": 0.0,
       "flight_time": 0.0,
       "weapons_used": {},
+      "weapons_hit_with": {},
       "weapons_kills": {},
       "efficiency_rating": 0.0,
       "time_to_first_shot": null,
@@ -215,6 +228,7 @@
       "kd_ratio": 0.0,
       "flight_time": 0.0,
       "weapons_used": {},
+      "weapons_hit_with": {},
       "weapons_kills": {},
       "efficiency_rating": 0.0,
       "time_to_first_shot": null,

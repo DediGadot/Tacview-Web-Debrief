@@ -35,6 +35,12 @@ class PilotStats:
     weapons_hit_with: Counter = field(default_factory=Counter)
     weapons_kills_with: Counter = field(default_factory=Counter)
     
+    # Air-to-ground specific statistics
+    ag_shots_fired: int = 0
+    ag_hits_scored: int = 0
+    ag_weapons_used: Counter = field(default_factory=Counter)
+    ag_weapons_hit_with: Counter = field(default_factory=Counter)
+    
     # Mission events
     engine_startups: int = 0
     takeoffs: int = 0
@@ -47,6 +53,7 @@ class PilotStats:
     flight_time: float = 0.0
     time_to_first_shot: Optional[float] = None
     time_to_first_kill: Optional[float] = None
+    time_to_first_ag_shot: Optional[float] = None
     
     # Advanced combat metrics
     missiles_defeated: int = 0  # Times evaded incoming missiles
@@ -68,6 +75,10 @@ class PilotStats:
         """Calculate weapon accuracy percentage"""
         return (self.hits_scored / self.shots_fired * 100) if self.shots_fired > 0 else 0.0
     
+    def ag_accuracy(self) -> float:
+        """Calculate air-to-ground accuracy percentage"""
+        return (self.ag_hits_scored / self.ag_shots_fired * 100) if self.ag_shots_fired > 0 else 0.0
+    
     def kill_death_ratio(self) -> float:
         """Calculate kill/death ratio"""
         return self.kills / max(self.deaths, 1)
@@ -87,6 +98,22 @@ class PilotStats:
             efficiency_score = max(0, 40 - (shots_per_kill * 2))  # Lower shots per kill is better
         
         return min(100, accuracy_score + kd_score + efficiency_score)
+    
+    @staticmethod
+    def is_air_to_ground_weapon(weapon_name: str) -> bool:
+        """Determine if a weapon is air-to-ground"""
+        weapon = weapon_name.lower()
+        
+        # Air-to-ground weapons
+        ag_weapons = [
+            'mk-82', 'mk-84', 'gbu', 'jdam', 'agm', 'hellfire', 'maverick',
+            'bomb', 'rocket', 'hydra', 'ffar', 'cbk', 'rbs', 'kab', 'fab',
+            'betab', 'ofab', 'kgm', 'grom', 'storm shadow', 'jassm', 'jsow',
+            'ter_', 'mer_', 'blu', 'cbu', 'bru', 'tgp', 'targeting pod',
+            'pgm', 'walleye', 'skipper', 'shrike', 'harm', 'sidearm'
+        ]
+        
+        return any(ag_weapon in weapon for ag_weapon in ag_weapons)
 
 @dataclass 
 class GroupStats:
@@ -103,10 +130,15 @@ class GroupStats:
     total_kills: int = 0
     total_deaths: int = 0
     
+    # Air-to-ground aggregated stats
+    total_ag_shots: int = 0
+    total_ag_hits: int = 0
+    
     # Most active pilot
     most_active_pilot: str = ""
     most_kills_pilot: str = ""
     most_accurate_pilot: str = ""
+    most_ag_active_pilot: str = ""
     
     # Group effectiveness
     pilots: List[str] = field(default_factory=list)
@@ -121,6 +153,10 @@ class GroupStats:
     def group_accuracy(self) -> float:
         """Calculate group accuracy percentage"""
         return (self.total_hits / self.total_shots * 100) if self.total_shots > 0 else 0.0
+    
+    def group_ag_accuracy(self) -> float:
+        """Calculate group air-to-ground accuracy percentage"""
+        return (self.total_ag_hits / self.total_ag_shots * 100) if self.total_ag_shots > 0 else 0.0
     
     def group_kd_ratio(self) -> float:
         """Calculate group kill/death ratio"""
@@ -377,6 +413,15 @@ class DCSMissionAnalyzer:
         weapon = event_data.get('weapon', 'Unknown')
         pilot.weapons_used[weapon] += 1
         
+        # Track air-to-ground shots
+        if PilotStats.is_air_to_ground_weapon(weapon):
+            pilot.ag_shots_fired += 1
+            pilot.ag_weapons_used[weapon] += 1
+            
+            # Track time to first air-to-ground shot
+            if pilot.time_to_first_ag_shot is None and 't' in event_data:
+                pilot.time_to_first_ag_shot = event_data['t'] - pilot.first_seen if pilot.first_seen > 0 else 0
+        
         # Track time to first shot
         if pilot.time_to_first_shot is None and 't' in event_data:
             pilot.time_to_first_shot = event_data['t'] - pilot.first_seen if pilot.first_seen > 0 else 0
@@ -428,6 +473,11 @@ class DCSMissionAnalyzer:
             pilot._hit_events_seen.add(hit_signature)
             pilot.hits_scored += 1
             pilot.weapons_hit_with[weapon] += 1
+            
+            # Track air-to-ground hits
+            if PilotStats.is_air_to_ground_weapon(weapon):
+                pilot.ag_hits_scored += 1
+                pilot.ag_weapons_hit_with[weapon] += 1
     
     def process_kill_event(self, event_data: dict):
         """Process kill event with improved pilot tracking"""
@@ -570,6 +620,10 @@ class DCSMissionAnalyzer:
                 group.total_friendly_fire += pilot.friendly_fire_incidents
                 group.total_flight_hours += pilot.flight_time / 3600  # Convert to hours
                 
+                # Aggregate air-to-ground stats
+                group.total_ag_shots += pilot.ag_shots_fired
+                group.total_ag_hits += pilot.ag_hits_scored
+                
                 # Track most active pilots
                 if not group.most_active_pilot or pilot.shots_fired > self.pilot_stats.get(group.most_active_pilot, PilotStats("")).shots_fired:
                     group.most_active_pilot = pilot.name
@@ -579,6 +633,10 @@ class DCSMissionAnalyzer:
                 
                 if not group.most_accurate_pilot or (pilot.accuracy() > self.pilot_stats.get(group.most_accurate_pilot, PilotStats("")).accuracy() and pilot.shots_fired >= 3):
                     group.most_accurate_pilot = pilot.name
+                
+                # Track most air-to-ground active pilot
+                if not group.most_ag_active_pilot or pilot.ag_shots_fired > self.pilot_stats.get(group.most_ag_active_pilot, PilotStats("")).ag_shots_fired:
+                    group.most_ag_active_pilot = pilot.name
         
         # Calculate average pilot efficiency for each group
         for group in self.group_stats.values():
@@ -910,6 +968,7 @@ class DCSMissionAnalyzer:
                 'kd_ratio': pilot.kill_death_ratio(),
                 'flight_time': pilot.flight_time,
                 'weapons_used': dict(pilot.weapons_used),
+                'weapons_hit_with': dict(pilot.weapons_hit_with),
                 'weapons_kills': dict(pilot.weapons_kills_with),
                 'efficiency_rating': pilot.efficiency_rating(),
                 'time_to_first_shot': pilot.time_to_first_shot,
@@ -919,7 +978,14 @@ class DCSMissionAnalyzer:
                 'friendly_fire_incidents': pilot.friendly_fire_incidents,
                 'killed_by': pilot.killed_by,
                 'shots_per_kill': pilot.shots_per_kill,
-                'ejections': pilot.ejections
+                'ejections': pilot.ejections,
+                # Air-to-ground statistics
+                'ag_shots_fired': pilot.ag_shots_fired,
+                'ag_hits_scored': pilot.ag_hits_scored,
+                'ag_accuracy': pilot.ag_accuracy(),
+                'ag_weapons_used': dict(pilot.ag_weapons_used),
+                'ag_weapons_hit_with': dict(pilot.ag_weapons_hit_with),
+                'time_to_first_ag_shot': pilot.time_to_first_ag_shot
             }
         
         # Export group stats
@@ -940,7 +1006,12 @@ class DCSMissionAnalyzer:
                 'total_friendly_fire': group.total_friendly_fire,
                 'most_active_pilot': group.most_active_pilot,
                 'most_kills_pilot': group.most_kills_pilot,
-                'most_accurate_pilot': group.most_accurate_pilot
+                'most_accurate_pilot': group.most_accurate_pilot,
+                # Air-to-ground group statistics
+                'total_ag_shots': group.total_ag_shots,
+                'total_ag_hits': group.total_ag_hits,
+                'group_ag_accuracy': group.group_ag_accuracy(),
+                'most_ag_active_pilot': group.most_ag_active_pilot
             }
         
         try:
