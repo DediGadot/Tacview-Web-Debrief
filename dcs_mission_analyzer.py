@@ -141,6 +141,7 @@ class GroupStats:
     total_hits: int = 0
     total_kills: int = 0
     total_deaths: int = 0
+    total_ground_kills: int = 0
     
     # Air-to-ground aggregated stats
     total_ag_shots: int = 0
@@ -748,6 +749,7 @@ class DCSMissionAnalyzer:
                 # Aggregate air-to-ground stats
                 group.total_ag_shots += pilot.ag_shots_fired
                 group.total_ag_hits += pilot.ag_hits_scored
+                group.total_ground_kills += len(pilot.ground_units_killed)  # Add ground kills
                 
                 # Track most active pilots
                 if not group.most_active_pilot or pilot.shots_fired > self.pilot_stats.get(group.most_active_pilot, PilotStats("")).shots_fired:
@@ -760,9 +762,15 @@ class DCSMissionAnalyzer:
                 if not group.most_accurate_pilot or (pilot.accuracy() > self.pilot_stats.get(group.most_accurate_pilot, PilotStats("")).accuracy() and pilot.shots_fired >= 3):
                     group.most_accurate_pilot = pilot.name
                 
-                # Track most air-to-ground active pilot
-                if not group.most_ag_active_pilot or pilot.ag_shots_fired > self.pilot_stats.get(group.most_ag_active_pilot, PilotStats("")).ag_shots_fired:
+                # Track most air-to-ground active pilot (by shots + ground kills)
+                current_ag_activity = pilot.ag_shots_fired + len(pilot.ground_units_killed)
+                if not group.most_ag_active_pilot:
                     group.most_ag_active_pilot = pilot.name
+                else:
+                    current_best = self.pilot_stats.get(group.most_ag_active_pilot, PilotStats(""))
+                    current_best_activity = current_best.ag_shots_fired + len(current_best.ground_units_killed)
+                    if current_ag_activity > current_best_activity:
+                        group.most_ag_active_pilot = pilot.name
         
         # Calculate average pilot efficiency for each group
         for group in self.group_stats.values():
@@ -1153,6 +1161,7 @@ class DCSMissionAnalyzer:
                 # Air-to-ground group statistics
                 'total_ag_shots': group.total_ag_shots,
                 'total_ag_hits': group.total_ag_hits,
+                'total_ground_kills': group.total_ground_kills,
                 'group_ag_accuracy': group.group_ag_accuracy(),
                 'most_ag_active_pilot': group.most_ag_active_pilot
             }

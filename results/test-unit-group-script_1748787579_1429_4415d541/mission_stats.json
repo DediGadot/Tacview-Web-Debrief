@@ -7,7 +7,7 @@
     "mission_name": "test-unit-group-script",
     "mission_file_mark": 1748787579,
     "mission_id": "test-unit-group-script_1748787579_1429_4415d541",
-    "analysis_timestamp": "2025-06-01T21:10:27.619291"
+    "analysis_timestamp": "2025-06-01T21:19:14.661142"
   },
   "pilots": {
     "Aerial-1-1": {
@@ -296,6 +296,7 @@
       "most_accurate_pilot": "Aerial-1-1",
       "total_ag_shots": 0,
       "total_ag_hits": 0,
+      "total_ground_kills": 0,
       "group_ag_accuracy": 0.0,
       "most_ag_active_pilot": "Aerial-1-1"
     },
@@ -318,6 +319,7 @@
       "most_accurate_pilot": "Aerial-2-1",
       "total_ag_shots": 12,
       "total_ag_hits": 5,
+      "total_ground_kills": 4,
       "group_ag_accuracy": 41.66666666666667,
       "most_ag_active_pilot": "Aerial-2-1"
     },
@@ -340,6 +342,7 @@
       "most_accurate_pilot": "",
       "total_ag_shots": 0,
       "total_ag_hits": 0,
+      "total_ground_kills": 0,
       "group_ag_accuracy": 0.0,
       "most_ag_active_pilot": ""
     }
