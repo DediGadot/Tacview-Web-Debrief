@@ -1260,33 +1260,56 @@ class MissionAnalyzer:
         return phases
     
     def create_kill_death_network(self, data):
-        """Create comprehensive kill/death relationship network visualization"""
+        """Create comprehensive kill/death relationship network visualization including ground units"""
         pilots = data.get('pilots', {})
         
         # Find kill relationships and build network data
-        relationships = []
-        all_pilots = set()
+        pilot_to_pilot_relationships = []
+        pilot_to_ground_relationships = []
+        all_entities = set()  # Both pilots and ground units
         
+        # Process pilot-to-pilot kills
         for pilot_name, pilot_data in pilots.items():
-            all_pilots.add(pilot_name)
+            all_entities.add(pilot_name)
             if pilot_data.get('killed_by'):
                 killer = pilot_data['killed_by']
-                all_pilots.add(killer)
-                relationships.append({
+                all_entities.add(killer)
+                pilot_to_pilot_relationships.append({
                     'killer': killer,
                     'victim': pilot_name,
                     'killer_data': pilots.get(killer, {}),
-                    'victim_data': pilot_data
+                    'victim_data': pilot_data,
+                    'relationship_type': 'pilot_to_pilot'
                 })
         
-        if not relationships:
+        # Process pilot-to-ground kills
+        for pilot_name, pilot_data in pilots.items():
+            ground_kills = pilot_data.get('ground_units_killed', [])
+            for ground_kill in ground_kills:
+                ground_unit_name = f"{ground_kill['unit_type']}_{int(ground_kill['time'])}"
+                all_entities.add(ground_unit_name)
+                pilot_to_ground_relationships.append({
+                    'killer': pilot_name,
+                    'victim': ground_unit_name,
+                    'killer_data': pilot_data,
+                    'victim_data': ground_kill,
+                    'relationship_type': 'pilot_to_ground',
+                    'weapon': ground_kill.get('weapon', 'Unknown'),
+                    'time': ground_kill.get('time', 0),
+                    'victim_coalition': ground_kill.get('coalition', 0)
+                })
+        
+        all_relationships = pilot_to_pilot_relationships + pilot_to_ground_relationships
+        
+        if not all_relationships:
             # Create informative empty state
             fig = go.Figure()
             fig.add_annotation(
-                text="No Direct Kill Relationships Found<br><br>" +
+                text="No Kill Relationships Found<br><br>" +
                      "This could mean:<br>" +
                      "• No pilots were shot down by other pilots<br>" +
-                     "• Deaths were caused by crashes, system failures, or ground fire<br>" +
+                     "• No ground units were destroyed by pilots<br>" +
+                     "• Deaths were caused by crashes, system failures, or other causes<br>" +
                      "• Kill attribution data is not available in the logs",
                 xref="paper", yref="paper",
                 x=0.5, y=0.5, 
@@ -1308,81 +1331,136 @@ class MissionAnalyzer:
         import math
         import random
         
-        # Position nodes in a circular layout with some randomization
-        pilot_positions = {}
-        pilot_list = list(all_pilots)
-        n_pilots = len(pilot_list)
+        # Separate pilots from ground units for positioning
+        pilot_entities = [entity for entity in all_entities if entity in pilots]
+        ground_entities = [entity for entity in all_entities if entity not in pilots]
         
-        if n_pilots == 1:
-            pilot_positions[pilot_list[0]] = (0, 0)
-        else:
-            for i, pilot in enumerate(pilot_list):
-                angle = 2 * math.pi * i / n_pilots
-                radius = max(1, n_pilots / 4)  # Adjust radius based on number of pilots
-                x = radius * math.cos(angle) + random.uniform(-0.3, 0.3)
-                y = radius * math.sin(angle) + random.uniform(-0.3, 0.3)
-                pilot_positions[pilot] = (x, y)
+        # Position nodes in a circular layout with some randomization
+        entity_positions = {}
+        
+        # Position pilots in the center area
+        n_pilots = len(pilot_entities)
+        if n_pilots > 0:
+            if n_pilots == 1:
+                entity_positions[pilot_entities[0]] = (0, 0)
+            else:
+                for i, pilot in enumerate(pilot_entities):
+                    angle = 2 * math.pi * i / n_pilots
+                    radius = max(1, n_pilots / 6)  # Smaller radius for pilots
+                    x = radius * math.cos(angle) + random.uniform(-0.2, 0.2)
+                    y = radius * math.sin(angle) + random.uniform(-0.2, 0.2)
+                    entity_positions[pilot] = (x, y)
+        
+        # Position ground units in an outer ring
+        n_ground = len(ground_entities)
+        if n_ground > 0:
+            outer_radius = max(2, n_pilots / 4 + 1.5)  # Outer ring for ground units
+            for i, ground_unit in enumerate(ground_entities):
+                angle = 2 * math.pi * i / n_ground
+                x = outer_radius * math.cos(angle) + random.uniform(-0.3, 0.3)
+                y = outer_radius * math.sin(angle) + random.uniform(-0.3, 0.3)
+                entity_positions[ground_unit] = (x, y)
         
         # Create the network visualization
         fig = go.Figure()
         
         # Add edges (kill relationships) first so they appear behind nodes
-        edge_x = []
-        edge_y = []
-        edge_info = []
+        pilot_edge_x = []
+        pilot_edge_y = []
+        ground_edge_x = []
+        ground_edge_y = []
         
-        for rel in relationships:
+        for rel in all_relationships:
             killer = rel['killer']
             victim = rel['victim']
             
-            if killer in pilot_positions and victim in pilot_positions:
-                x0, y0 = pilot_positions[killer]
-                x1, y1 = pilot_positions[victim]
+            if killer in entity_positions and victim in entity_positions:
+                x0, y0 = entity_positions[killer]
+                x1, y1 = entity_positions[victim]
                 
-                # Add edge coordinates
-                edge_x.extend([x0, x1, None])
-                edge_y.extend([y0, y1, None])
-                
-                # Add arrow annotation for direction
-                fig.add_annotation(
-                    x=(x0 + x1) / 2,
-                    y=(y0 + y1) / 2,
-                    ax=x0, ay=y0,
-                    axref='x', ayref='y',
-                    xref='x', yref='y',
-                    showarrow=True,
-                    arrowhead=2,
-                    arrowsize=1.5,
-                    arrowwidth=2,
-                    arrowcolor='darkred',
-                    text="",
-                    bgcolor="rgba(255,255,255,0.8)",
-                    bordercolor="darkred",
-                    borderwidth=1
-                )
+                if rel['relationship_type'] == 'pilot_to_pilot':
+                    # Add pilot-to-pilot edge coordinates
+                    pilot_edge_x.extend([x0, x1, None])
+                    pilot_edge_y.extend([y0, y1, None])
+                    
+                    # Add arrow annotation for direction
+                    fig.add_annotation(
+                        x=(x0 + x1) / 2,
+                        y=(y0 + y1) / 2,
+                        ax=x0, ay=y0,
+                        axref='x', ayref='y',
+                        xref='x', yref='y',
+                        showarrow=True,
+                        arrowhead=2,
+                        arrowsize=1.5,
+                        arrowwidth=2,
+                        arrowcolor='darkred',
+                        text="",
+                        bgcolor="rgba(255,255,255,0.8)",
+                        bordercolor="darkred",
+                        borderwidth=1
+                    )
+                else:  # pilot_to_ground
+                    # Add pilot-to-ground edge coordinates
+                    ground_edge_x.extend([x0, x1, None])
+                    ground_edge_y.extend([y0, y1, None])
+                    
+                    # Add arrow annotation for ground kills
+                    fig.add_annotation(
+                        x=(x0 + x1) / 2,
+                        y=(y0 + y1) / 2,
+                        ax=x0, ay=y0,
+                        axref='x', ayref='y',
+                        xref='x', yref='y',
+                        showarrow=True,
+                        arrowhead=2,
+                        arrowsize=1.2,
+                        arrowwidth=1.5,
+                        arrowcolor='darkorange',
+                        text="",
+                        bgcolor="rgba(255,255,255,0.6)",
+                        bordercolor="darkorange",
+                        borderwidth=1
+                    )
         
-        # Add edges as a single trace
-        if edge_x:
+        # Add pilot-to-pilot edges
+        if pilot_edge_x:
             fig.add_trace(go.Scatter(
-                x=edge_x, y=edge_y,
+                x=pilot_edge_x, y=pilot_edge_y,
                 mode='lines',
-                line=dict(width=2, color='darkred'),
+                line=dict(width=3, color='darkred'),
                 hoverinfo='none',
-                showlegend=False,
-                name='Kill Relationships'
+                showlegend=True,
+                name='Pilot vs Pilot Kills'
+            ))
+        
+        # Add pilot-to-ground edges
+        if ground_edge_x:
+            fig.add_trace(go.Scatter(
+                x=ground_edge_x, y=ground_edge_y,
+                mode='lines',
+                line=dict(width=2, color='darkorange', dash='dot'),
+                hoverinfo='none',
+                showlegend=True,
+                name='Ground Unit Kills'
             ))
         
         # Separate pilots by coalition and role
         red_pilots = []
         blue_pilots = []
         neutral_pilots = []
-        killers = set([r['killer'] for r in relationships])
-        victims = set([r['victim'] for r in relationships])
+        killers = set([r['killer'] for r in all_relationships])
+        victims = set([r['victim'] for r in all_relationships])
         
-        for pilot in all_pilots:
+        for pilot in pilot_entities:
             pilot_data = pilots.get(pilot, {})
             coalition = pilot_data.get('coalition', 0)
-            x, y = pilot_positions[pilot]
+            x, y = entity_positions[pilot]
+            
+            # Count different types of kills
+            pilot_kills = pilot_data.get('kills', 0)
+            ground_kills = len(pilot_data.get('ground_units_killed', []))
+            total_kills = pilot_kills + ground_kills
             
             pilot_info = {
                 'name': pilot,
@@ -1390,7 +1468,9 @@ class MissionAnalyzer:
                 'y': y,
                 'coalition': coalition,
                 'aircraft': pilot_data.get('aircraft_type', 'Unknown'),
-                'kills': pilot_data.get('kills', 0),
+                'pilot_kills': pilot_kills,
+                'ground_kills': ground_kills,
+                'total_kills': total_kills,
                 'deaths': pilot_data.get('deaths', 0),
                 'is_killer': pilot in killers,
                 'is_victim': pilot in victims,
@@ -1406,21 +1486,21 @@ class MissionAnalyzer:
         
         # Add pilot nodes by coalition
         for coalition_pilots, color, name in [
-            (red_pilots, 'red', 'Red Coalition'),
-            (blue_pilots, 'blue', 'Blue Coalition'),
-            (neutral_pilots, 'gray', 'Unknown Coalition')
+            (red_pilots, 'red', 'Red Coalition Pilots'),
+            (blue_pilots, 'blue', 'Blue Coalition Pilots'),
+            (neutral_pilots, 'gray', 'Unknown Coalition Pilots')
         ]:
             if not coalition_pilots:
                 continue
                 
-            # Determine node sizes based on kills and role
+            # Determine node sizes based on total kills and role
             node_sizes = []
             node_symbols = []
             hover_texts = []
             
             for pilot in coalition_pilots:
-                # Base size on total kills, minimum 15, maximum 40
-                base_size = 15 + min(pilot['kills'] * 5, 25)
+                # Base size on total kills, minimum 15, maximum 50
+                base_size = 15 + min(pilot['total_kills'] * 4, 35)
                 
                 # Increase size for killers, decrease for victims
                 if pilot['is_killer'] and pilot['is_victim']:
@@ -1452,7 +1532,9 @@ class MissionAnalyzer:
                     f"<b>{pilot['name']}</b><br>"
                     f"Aircraft: {pilot['aircraft']}<br>"
                     f"Role: {', '.join(role_text)}<br>"
-                    f"Kills: {pilot['kills']}<br>"
+                    f"Pilot Kills: {pilot['pilot_kills']}<br>"
+                    f"Ground Kills: {pilot['ground_kills']}<br>"
+                    f"Total Kills: {pilot['total_kills']}<br>"
                     f"Deaths: {pilot['deaths']}<br>"
                     f"Efficiency: {pilot['efficiency']:.1f}"
                 )
@@ -1478,8 +1560,89 @@ class MissionAnalyzer:
                 showlegend=True
             ))
         
+        # Add ground units by coalition
+        red_ground = []
+        blue_ground = []
+        neutral_ground = []
+        
+        for ground_unit in ground_entities:
+            x, y = entity_positions[ground_unit]
+            
+            # Find the ground unit data from relationships
+            ground_data = None
+            for rel in pilot_to_ground_relationships:
+                if rel['victim'] == ground_unit:
+                    ground_data = rel['victim_data']
+                    break
+            
+            if ground_data:
+                coalition = ground_data.get('coalition', 0)
+                unit_type = ground_data.get('unit_type', 'Unknown')
+                weapon = ground_data.get('weapon', 'Unknown')
+                time = ground_data.get('time', 0)
+                
+                ground_info = {
+                    'name': ground_unit,
+                    'x': x,
+                    'y': y,
+                    'coalition': coalition,
+                    'unit_type': unit_type,
+                    'weapon': weapon,
+                    'time': time
+                }
+                
+                if coalition == 1:
+                    red_ground.append(ground_info)
+                elif coalition == 2:
+                    blue_ground.append(ground_info)
+                else:
+                    neutral_ground.append(ground_info)
+        
+        # Add ground unit nodes by coalition
+        for coalition_ground, color, name in [
+            (red_ground, 'darkred', 'Red Ground Units'),
+            (blue_ground, 'darkblue', 'Blue Ground Units'),
+            (neutral_ground, 'darkgray', 'Unknown Ground Units')
+        ]:
+            if not coalition_ground:
+                continue
+                
+            hover_texts = []
+            for ground in coalition_ground:
+                hover_text = (
+                    f"<b>{ground['unit_type']}</b><br>"
+                    f"Destroyed by: {ground['weapon']}<br>"
+                    f"Time: {ground['time']:.1f}s<br>"
+                    f"Coalition: {['Neutral', 'Red', 'Blue'][ground['coalition']]}"
+                )
+                hover_texts.append(hover_text)
+            
+            fig.add_trace(go.Scatter(
+                x=[g['x'] for g in coalition_ground],
+                y=[g['y'] for g in coalition_ground],
+                mode='markers+text',
+                marker=dict(
+                    size=12,
+                    color=color,
+                    symbol='square',
+                    line=dict(width=1, color='white'),
+                    opacity=0.7
+                ),
+                text=[g['unit_type'] for g in coalition_ground],
+                textposition="bottom center",
+                textfont=dict(size=8, color='black'),
+                hovertemplate='%{hovertext}<extra></extra>',
+                hovertext=hover_texts,
+                name=name,
+                showlegend=True
+            ))
+        
         # Add relationship summary as annotations
-        summary_text = f"Network Analysis: {len(relationships)} kill relationship(s) between {len(all_pilots)} pilot(s)"
+        pilot_relationships = len(pilot_to_pilot_relationships)
+        ground_relationships = len(pilot_to_ground_relationships)
+        total_entities = len(all_entities)
+        
+        summary_text = f"Network Analysis: {pilot_relationships} pilot kill(s), {ground_relationships} ground kill(s) among {total_entities} entities"
         fig.add_annotation(
             text=summary_text,
             xref="paper", yref="paper",
@@ -1493,13 +1656,29 @@ class MissionAnalyzer:
         
         # Add detailed relationship list
         rel_text = "Kill Relationships:<br>"
-        for i, rel in enumerate(relationships):
+        rel_count = 0
+        
+        # Add pilot-to-pilot relationships
+        for rel in pilot_to_pilot_relationships:
+            if rel_count >= 8:  # Limit to avoid clutter
+                break
             killer_aircraft = rel['killer_data'].get('aircraft_type', 'Unknown')
             victim_aircraft = rel['victim_data'].get('aircraft_type', 'Unknown')
             rel_text += f"• {rel['killer']} ({killer_aircraft}) → {rel['victim']} ({victim_aircraft})<br>"
-            if i >= 5:  # Limit to first 6 relationships to avoid clutter
-                rel_text += f"... and {len(relationships) - 6} more"
+            rel_count += 1
+        
+        # Add pilot-to-ground relationships
+        for rel in pilot_to_ground_relationships:
+            if rel_count >= 8:  # Limit to avoid clutter
                 break
+            killer_aircraft = rel['killer_data'].get('aircraft_type', 'Unknown')
+            victim_type = rel['victim_data'].get('unit_type', 'Unknown')
+            weapon = rel.get('weapon', 'Unknown')
+            rel_text += f"• {rel['killer']} ({killer_aircraft}) → {victim_type} [{weapon}]<br>"
+            rel_count += 1
+        
+        if len(all_relationships) > 8:
+            rel_text += f"... and {len(all_relationships) - 8} more"
         
         fig.add_annotation(
             text=rel_text,
@@ -1517,32 +1696,32 @@ class MissionAnalyzer:
         # Update layout
         fig.update_layout(
             title={
-                'text': "Kill/Death Network - Combat Relationship Analysis",
+                'text': "Kill/Death Network - Combat Relationship Analysis (Pilots & Ground Units)",
                 'x': 0.5,
                 'font': {'size': 18}
             },
             xaxis=dict(
                 visible=False,
-                range=[min([pos[0] for pos in pilot_positions.values()]) - 1,
-                       max([pos[0] for pos in pilot_positions.values()]) + 1]
+                range=[min([pos[0] for pos in entity_positions.values()]) - 1,
+                       max([pos[0] for pos in entity_positions.values()]) + 1]
             ),
             yaxis=dict(
                 visible=False,
-                range=[min([pos[1] for pos in pilot_positions.values()]) - 1,
-                       max([pos[1] for pos in pilot_positions.values()]) + 1],
+                range=[min([pos[1] for pos in entity_positions.values()]) - 1,
+                       max([pos[1] for pos in entity_positions.values()]) + 1],
                 scaleanchor="x",
                 scaleratio=1
             ),
-            height=600,
+            height=700,
             plot_bgcolor='rgba(240,240,240,0.3)',
             paper_bgcolor='white',
             hovermode='closest',
             legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="left",
+                x=1.02
             )
         )
         
@@ -2064,4 +2243,4 @@ def download_file(session_id, file_type):
         return jsonify({'error': str(e)}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001) 
+    app.run(debug=True, host='0.0.0.0', port=5002) 

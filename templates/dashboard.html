@@ -623,6 +623,7 @@
             <div class="row mb-4">
                 <div class="col-12">
                     <h3><i class="fas fa-project-diagram me-2"></i>Kill/Death Networks</h3>
+                    <p class="text-muted">Comprehensive combat relationship analysis including pilot-to-pilot and pilot-to-ground engagements</p>
                 </div>
             </div>
             
@@ -642,37 +643,41 @@
                                 <div class="col-md-3">
                                     <h6 class="text-primary">Network Structure</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Arrows:</strong> Show kill relationships</li>
-                                        <li><strong>Format:</strong> "Killer → Victim"</li>
-                                        <li><strong>Direction:</strong> Points from killer to victim</li>
-                                        <li><strong>List View:</strong> Simple text-based display</li>
+                                        <li><strong>Pilots:</strong> Circular nodes in center area</li>
+                                        <li><strong>Ground Units:</strong> Square nodes in outer ring</li>
+                                        <li><strong>Red Lines:</strong> Pilot-to-pilot kills (solid)</li>
+                                        <li><strong>Orange Lines:</strong> Ground unit kills (dotted)</li>
+                                        <li><strong>Arrows:</strong> Point from killer to victim</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-success">Relationship Analysis</h6>
+                                    <h6 class="text-success">Node Symbols</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Direct Kills:</strong> Confirmed pilot-to-pilot eliminations</li>
-                                        <li><strong>Attribution:</strong> Based on weapon hit data</li>
-                                        <li><strong>Chronological:</strong> Listed in order of occurrence</li>
-                                        <li><strong>Verification:</strong> Cross-referenced with event logs</li>
+                                        <li><strong>Triangle Up:</strong> Pure killer (no deaths)</li>
+                                        <li><strong>Diamond:</strong> Both killer and victim</li>
+                                        <li><strong>X Symbol:</strong> Pure victim (no kills)</li>
+                                        <li><strong>Circle:</strong> Observer (no direct involvement)</li>
+                                        <li><strong>Size:</strong> Proportional to total kills</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-warning">Tactical Insights</h6>
+                                    <h6 class="text-warning">Coalition Colors</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Ace Identification:</strong> Pilots with multiple kills</li>
-                                        <li><strong>Vulnerability Analysis:</strong> Frequently targeted pilots</li>
-                                        <li><strong>Engagement Patterns:</strong> Who fights whom</li>
-                                        <li><strong>Coalition Dynamics:</strong> Inter-coalition combat flow</li>
+                                        <li><strong>Red Pilots:</strong> Red circles/symbols</li>
+                                        <li><strong>Blue Pilots:</strong> Blue circles/symbols</li>
+                                        <li><strong>Red Ground:</strong> Dark red squares</li>
+                                        <li><strong>Blue Ground:</strong> Dark blue squares</li>
+                                        <li><strong>Hover Info:</strong> Detailed statistics on mouseover</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-info">Data Limitations</h6>
+                                    <h6 class="text-info">Tactical Analysis</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Direct Kills Only:</strong> Excludes crashes, system failures</li>
-                                        <li><strong>Attribution Required:</strong> Must have clear killer data</li>
-                                        <li><strong>Simple Display:</strong> Text format for clarity</li>
-                                        <li><strong>No Relationships:</strong> Message shown if no data available</li>
+                                        <li><strong>Air Superiority:</strong> Pilot-to-pilot kill patterns</li>
+                                        <li><strong>Ground Attack:</strong> CAS/SEAD effectiveness</li>
+                                        <li><strong>Multi-Role:</strong> Pilots with both air and ground kills</li>
+                                        <li><strong>Weapon Types:</strong> Shown in ground kill details</li>
+                                        <li><strong>Timeline:</strong> Kill times available in hover data</li>
                                     </ul>
                                 </div>
                             </div>

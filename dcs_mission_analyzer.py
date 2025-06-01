@@ -41,6 +41,9 @@ class PilotStats:
     ag_weapons_used: Counter = field(default_factory=Counter)
     ag_weapons_hit_with: Counter = field(default_factory=Counter)
     
+    # Ground unit kills tracking
+    ground_units_killed: List[Dict] = field(default_factory=list)
+    
     # Mission events
     engine_startups: int = 0
     takeoffs: int = 0
@@ -185,6 +188,65 @@ class DCSMissionAnalyzer:
         self.mission_time_end: float = 0.0
         self.total_events: int = 0
         
+    def is_ground_unit_type(self, unit_type: str) -> bool:
+        """Check if a unit type represents a ground unit (not a pilot)"""
+        if not unit_type:
+            return False
+            
+        unit_type_lower = unit_type.lower()
+        
+        # Comprehensive list of ground unit types in DCS
+        ground_unit_keywords = [
+            # Tanks
+            'm-1', 'abrams', 't-80', 't-72', 't-90', 'leopard', 'challenger', 'leclerc', 
+            'merkava', 'zttz96', 'type 99', 'chieftain', 'centurion',
+            
+            # Infantry Fighting Vehicles / APCs
+            'bmp-', 'btr-', 'bradley', 'm-113', 'warrior', 'marder', 'cv90', 'lav-25',
+            'aav7', 'mtlb', 'bmd-', 'bmpt',
+            
+            # Artillery
+            'mlrs', 'smerch', 'uragan', 'grad', 'katyusha', 'paladin', 'caesar', 
+            'pzh 2000', 'msta', 'nona', 'gvozdika', 'akatsiya', 'giatsint',
+            
+            # Missiles and Launchers
+            'scud', 'tochka', 'iskander', 'elbrus', 'luna', 'frog', 'ss-', 'r-',
+            'launcher', 'tei', 'mim-', 'sam', 'missile',
+            
+            # Air Defense
+            'sa-', 's-300', 's-400', 'patriot', 'nasams', 'hawk', 'roland', 'rapier',
+            'stinger', 'zu-23', 'vulcan', 'gepard', 'tunguska', 'shilka', 'tor',
+            'kub', 'osa', 'buk', 'strela', 'igla', 'chaparral', 'avenger',
+            
+            # Logistics and Support
+            'hemtt', 'ural', 'kamaz', 'maz', 'zil', 'gaz', 'hmmwv', 'humvee',
+            'fuel truck', 'ammo truck', 'supply', 'farp', 'invisible farp',
+            
+            # Infantry
+            'soldier', 'infantry', 'paratrooper', 'manpads', 'mortar', 'sniper',
+            'rpg', 'at team', 'aa team', 'mg team',
+            
+            # Static Objects
+            'comms tower', 'power plant', 'warehouse', 'hangar', 'bunker', 'shelter',
+            'fuel tank', 'ammo depot', 'radar', 'ewr', 'command center',
+            
+            # Naval (should also be excluded from pilot stats)
+            'ship', 'boat', 'carrier', 'cruiser', 'destroyer', 'frigate', 'corvette',
+            'submarine', 'lha', 'lhd', 'cvn', 'cv', 'ddg', 'cg', 'ffg',
+            'arleigh', 'burke', 'oliver', 'perry', 'ticonderoga', 'nimitz', 'stennis'
+        ]
+        
+        return any(keyword in unit_type_lower for keyword in ground_unit_keywords)
+    
+    def is_aircraft_unit(self, group_id: int) -> bool:
+        """Check if a group represents aircraft units (pilots)"""
+        if group_id in self.group_stats:
+            category = self.group_stats[group_id].category
+            # Category 0: Aircraft, Category 1: Helicopters
+            # Category 2: Ground units, Category 3: Ships, Category 4: Static objects
+            return category in [0, 1]  # Only aircraft and helicopters are pilots
+        return False
+    
     def load_unit_mapping(self):
         """Load unit to group mappings from XML file"""
         try:
@@ -211,22 +273,24 @@ class DCSMissionAnalyzer:
                 self.unit_to_group[unit_id] = group_id
                 self.unit_to_pilot[unit_id] = pilot_name
                 
-                # Initialize pilot stats
-                if pilot_name not in self.pilot_stats:
-                    self.pilot_stats[pilot_name] = PilotStats(
-                        name=pilot_name,
-                        aircraft_type=unit.get('type'),
-                        coalition=int(unit.get('coalition')),
-                        group_id=group_id,
-                        group_name=unit.get('group_name'),
-                        is_player_controlled=is_player_controlled
-                    )
-                
-                # Add pilot to group
-                if group_id in self.group_stats:
-                    if pilot_name not in self.group_stats[group_id].pilots:
-                        self.group_stats[group_id].pilots.append(pilot_name)
-                        self.group_stats[group_id].total_pilots += 1
+                # Only initialize pilot stats for aircraft units (exclude ground units, ships, static objects)
+                if self.is_aircraft_unit(group_id):
+                    # Initialize pilot stats
+                    if pilot_name not in self.pilot_stats:
+                        self.pilot_stats[pilot_name] = PilotStats(
+                            name=pilot_name,
+                            aircraft_type=unit.get('type'),
+                            coalition=int(unit.get('coalition')),
+                            group_id=group_id,
+                            group_name=unit.get('group_name'),
+                            is_player_controlled=is_player_controlled
+                        )
+                    
+                    # Add pilot to group
+                    if group_id in self.group_stats:
+                        if pilot_name not in self.group_stats[group_id].pilots:
+                            self.group_stats[group_id].pilots.append(pilot_name)
+                            self.group_stats[group_id].total_pilots += 1
                         
         except Exception as e:
             print(f"Error loading XML mapping: {e}")
@@ -333,6 +397,12 @@ class DCSMissionAnalyzer:
         if object_key in event_data:
             object_id = event_data[object_key]
             
+            # Check if this is an aircraft unit before proceeding
+            if object_id in self.unit_to_group:
+                group_id = self.unit_to_group[object_id]
+                if not self.is_aircraft_unit(group_id):
+                    return None  # Skip ground units, ships, static objects
+            
             # Check if we have a mapping for this object ID
             if object_id in self.unit_to_pilot:
                 mapped_pilot = self.unit_to_pilot[object_id]
@@ -340,13 +410,21 @@ class DCSMissionAnalyzer:
                 if mapped_pilot:
                     return mapped_pilot
         
+        # Additional check for unit type in event data
+        unit_type_key = f"{role}_unit_type"
+        if unit_type_key in event_data:
+            unit_type = event_data[unit_type_key]
+            # Filter out ground unit types
+            if self.is_ground_unit_type(unit_type):
+                return None  # Skip ground units
+        
         # If we have a pilot name but no mapping, create a mapping for future use
         # But only if the pilot name is not a generic aircraft type
         if pilot_name and object_key in event_data:
             object_id = event_data[object_key]
             if object_id not in self.unit_to_pilot:
                 # Only create mapping if pilot name is not generic aircraft type
-                if pilot_name not in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C', 'A-10C', 'AV-8B']:
+                if pilot_name not in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']:
                     self.unit_to_pilot[object_id] = pilot_name
                 else:
                     # For generic aircraft types, create a unique name based on object ID
@@ -359,6 +437,14 @@ class DCSMissionAnalyzer:
     def ensure_pilot_exists(self, pilot_name: str, event_data: dict):
         """Ensure pilot exists in stats, create if needed with improved data extraction"""
         if pilot_name and pilot_name not in self.pilot_stats:
+            # Try to get object ID to check if this is an aircraft unit
+            object_id = event_data.get('initiator_object_id')
+            if object_id and object_id in self.unit_to_group:
+                group_id = self.unit_to_group[object_id]
+                # Only create pilot stats for aircraft units
+                if not self.is_aircraft_unit(group_id):
+                    return  # Skip ground units, ships, static objects
+            
             # Try to get more info from event
             aircraft_type = event_data.get('initiator_unit_type', pilot_name)
             coalition = event_data.get('initiator_coalition', 0)
@@ -367,7 +453,6 @@ class DCSMissionAnalyzer:
             is_player_controlled = False
             
             # Try to get object ID for better mapping
-            object_id = event_data.get('initiator_object_id')
             if object_id:
                 # Check if we have group mapping for this object ID
                 if object_id in self.unit_to_group:
@@ -385,6 +470,10 @@ class DCSMissionAnalyzer:
                         group_name = existing_pilot.group_name
                         is_player_controlled = existing_pilot.is_player_controlled
                         break
+            
+            # Additional check: filter out obvious ground unit types
+            if self.is_ground_unit_type(aircraft_type):
+                return  # Skip ground units
             
             # If pilot name contains object ID suffix, extract aircraft type from it
             if '_' in pilot_name and pilot_name.split('_')[0] in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']:
@@ -480,7 +569,7 @@ class DCSMissionAnalyzer:
                 pilot.ag_weapons_hit_with[weapon] += 1
     
     def process_kill_event(self, event_data: dict):
-        """Process kill event with improved pilot tracking"""
+        """Process kill event with improved pilot tracking and ground unit kill detection"""
         killer_name = self.get_pilot_from_event(event_data, 'initiator')
         victim_name = self.get_pilot_from_event(event_data, 'target')
         
@@ -489,7 +578,34 @@ class DCSMissionAnalyzer:
             
         self.ensure_pilot_exists(killer_name, event_data)
         killer = self.pilot_stats[killer_name]
-        killer.kills += 1
+        
+        # Check if this is a ground unit kill
+        target_unit_type = event_data.get('target_unit_type', '')
+        target_ws_type1 = event_data.get('target_ws_type1', 0)
+        
+        # Ground units typically have ws_type1 = 2 (ground) vs 1 (air)
+        # Also check if the target unit type is a known ground unit
+        is_ground_kill = (target_ws_type1 == 2 or 
+                         self.is_ground_unit_type(target_unit_type) or
+                         (target_unit_type and not victim_name))  # No pilot name usually means ground unit
+        
+        if is_ground_kill:
+            # Track ground unit kill
+            ground_kill_data = {
+                'unit_type': target_unit_type,
+                'weapon': event_data.get('weapon', 'Unknown'),
+                'time': event_data.get('t', 0),
+                'coalition': event_data.get('target_coalition', 0),
+                'target_object_id': event_data.get('target_object_id'),
+                'mission_id': event_data.get('targetMissionID', '')
+            }
+            killer.ground_units_killed.append(ground_kill_data)
+            
+            # Still count as a kill for overall statistics
+            killer.kills += 1
+        else:
+            # Regular pilot-to-pilot kill
+            killer.kills += 1
         
         # Track weapon kills
         weapon = event_data.get('weapon', 'Unknown')
@@ -504,7 +620,7 @@ class DCSMissionAnalyzer:
         killer.max_kill_streak = max(killer.max_kill_streak, killer.kill_streak)
         
         # Track who killed whom (for the victim) - improved victim tracking
-        if victim_name:
+        if victim_name and not is_ground_kill:
             # Ensure victim exists in our tracking
             victim_event_data = {
                 'initiator_unit_type': event_data.get('target_unit_type', 'Unknown'),
@@ -985,7 +1101,9 @@ class DCSMissionAnalyzer:
                 'ag_accuracy': pilot.ag_accuracy(),
                 'ag_weapons_used': dict(pilot.ag_weapons_used),
                 'ag_weapons_hit_with': dict(pilot.ag_weapons_hit_with),
-                'time_to_first_ag_shot': pilot.time_to_first_ag_shot
+                'time_to_first_ag_shot': pilot.time_to_first_ag_shot,
+                # Ground unit kills
+                'ground_units_killed': pilot.ground_units_killed
             }
         
         # Export group stats
