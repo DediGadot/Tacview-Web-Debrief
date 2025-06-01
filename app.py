@@ -9,6 +9,9 @@ import json
 import subprocess
 import tempfile
 import shutil
+import uuid
+import hashlib
+import re
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_file, flash, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -33,10 +36,72 @@ os.makedirs(RESULTS_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def extract_mission_metadata(debrief_log_path):
+    """Extract mission metadata from debrief log to create unique identifier"""
+    try:
+        with open(debrief_log_path, 'r', encoding='utf-8', errors='ignore') as file:
+            content = file.read()
+        
+        metadata = {}
+        
+        # Extract mission file path
+        mission_path_match = re.search(r'mission_file_path\s*=\s*"([^"]*)"', content)
+        if mission_path_match:
+            full_path = mission_path_match.group(1)
+            # Extract just the mission filename without path and extension
+            # Handle both Windows and Unix paths
+            mission_filename = os.path.basename(full_path.replace('\\', '/'))
+            if mission_filename.endswith('.miz'):
+                mission_filename = mission_filename[:-4]  # Remove .miz extension
+            # Clean up the filename for use in filesystem
+            mission_filename = re.sub(r'[^\w\-_.]', '_', mission_filename)
+            metadata['mission_name'] = mission_filename
+        else:
+            metadata['mission_name'] = 'unknown_mission'
+        
+        # Extract mission file mark (timestamp)
+        file_mark_match = re.search(r'mission_file_mark\s*=\s*(\d+)', content)
+        if file_mark_match:
+            metadata['mission_file_mark'] = int(file_mark_match.group(1))
+        else:
+            metadata['mission_file_mark'] = 0
+        
+        # Extract mission time (duration)
+        mission_time_match = re.search(r'mission_time\s*=\s*([0-9.]+)', content)
+        if mission_time_match:
+            metadata['mission_time'] = float(mission_time_match.group(1))
+        else:
+            metadata['mission_time'] = 0.0
+        
+        # Create a unique mission identifier
+        # Format: missionname_timestamp_duration
+        mission_id = f"{metadata['mission_name']}_{metadata['mission_file_mark']}_{int(metadata['mission_time'])}"
+        
+        # Add a short hash to ensure uniqueness in case of collisions
+        content_hash = hashlib.md5(content[:1000].encode('utf-8')).hexdigest()[:8]
+        mission_id = f"{mission_id}_{content_hash}"
+        
+        metadata['mission_id'] = mission_id
+        
+        return metadata
+        
+    except Exception as e:
+        print(f"Error extracting mission metadata: {e}")
+        # Fallback to timestamp-based ID
+        now = datetime.now()
+        fallback_id = f"mission_{now.strftime('%Y%m%d_%H%M%S')}_{now.microsecond:06d}"
+        return {
+            'mission_id': fallback_id,
+            'mission_name': 'unknown_mission',
+            'mission_file_mark': 0,
+            'mission_time': 0.0
+        }
+
 class MissionAnalyzer:
-    def __init__(self, session_id):
-        self.session_id = session_id
-        self.session_dir = os.path.join(RESULTS_FOLDER, session_id)
+    def __init__(self, mission_id, mission_metadata=None):
+        self.mission_id = mission_id
+        self.mission_metadata = mission_metadata or {}
+        self.session_dir = os.path.join(RESULTS_FOLDER, mission_id)
         os.makedirs(self.session_dir, exist_ok=True)
         
     def process_files(self, dcs_log_path, debrief_log_path):
@@ -72,9 +137,24 @@ class MissionAnalyzer:
             if result.returncode != 0:
                 return False, f"Mission analysis failed: {result.stderr}"
             
-            # Step 4: Load and return the results
+            # Step 4: Load and enhance the results with mission metadata
             with open(json_output_path, 'r') as f:
                 mission_data = json.load(f)
+            
+            # Add mission metadata to the results
+            if 'mission_summary' not in mission_data:
+                mission_data['mission_summary'] = {}
+            
+            mission_data['mission_summary'].update({
+                'mission_name': self.mission_metadata.get('mission_name', 'Unknown Mission'),
+                'mission_file_mark': self.mission_metadata.get('mission_file_mark', 0),
+                'mission_id': self.mission_id,
+                'analysis_timestamp': datetime.now().isoformat()
+            })
+            
+            # Save the enhanced mission data
+            with open(json_output_path, 'w') as f:
+                json.dump(mission_data, f, indent=2)
             
             return True, mission_data
             
@@ -2144,9 +2224,120 @@ class MissionAnalyzer:
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
+def get_past_analyses():
+    """Get list of past analyses from the results folder"""
+    past_analyses = []
+    
+    try:
+        if not os.path.exists(RESULTS_FOLDER):
+            return past_analyses
+            
+        for mission_id in os.listdir(RESULTS_FOLDER):
+            session_dir = os.path.join(RESULTS_FOLDER, mission_id)
+            
+            # Skip if not a directory
+            if not os.path.isdir(session_dir):
+                continue
+                
+            # Check if session has valid data
+            session_file = os.path.join(session_dir, 'session_data.json')
+            mission_stats_file = os.path.join(session_dir, 'mission_stats.json')
+            
+            if os.path.exists(session_file) and os.path.exists(mission_stats_file):
+                try:
+                    # Load session data to get mission metadata
+                    with open(session_file, 'r') as f:
+                        session_data = json.load(f)
+                    
+                    # Load mission stats to get summary
+                    with open(mission_stats_file, 'r') as f:
+                        mission_data = json.load(f)
+                    
+                    # Extract analysis metadata
+                    mission_summary = mission_data.get('mission_summary', {})
+                    mission_metadata = session_data.get('mission_metadata', {})
+                    pilots = mission_data.get('pilots', {})
+                    groups = mission_data.get('groups', {})
+                    
+                    # Calculate some quick stats
+                    total_kills = sum(p.get('kills', 0) for p in pilots.values())
+                    total_shots = sum(p.get('shots_fired', 0) for p in pilots.values())
+                    active_pilots = len([p for p in pilots.values() if p.get('shots_fired', 0) > 0])
+                    
+                    # Determine coalitions present
+                    coalitions = set(p.get('coalition', 0) for p in pilots.values())
+                    coalition_names = []
+                    if 1 in coalitions:
+                        coalition_names.append('Red')
+                    if 2 in coalitions:
+                        coalition_names.append('Blue')
+                    
+                    # Get mission name and metadata
+                    mission_name = mission_metadata.get('mission_name', mission_summary.get('mission_name', 'Unknown Mission'))
+                    mission_file_mark = mission_metadata.get('mission_file_mark', mission_summary.get('mission_file_mark', 0))
+                    
+                    # Format timestamp from mission file mark if available
+                    if mission_file_mark > 0:
+                        try:
+                            # Convert Unix timestamp to readable format
+                            mission_datetime = datetime.fromtimestamp(mission_file_mark)
+                            formatted_timestamp = mission_datetime.strftime('%Y-%m-%d %H:%M:%S')
+                        except:
+                            formatted_timestamp = f"Mark: {mission_file_mark}"
+                    else:
+                        # Fallback to analysis timestamp
+                        analysis_timestamp = session_data.get('timestamp', mission_summary.get('analysis_timestamp', ''))
+                        if analysis_timestamp:
+                            try:
+                                dt = datetime.fromisoformat(analysis_timestamp.replace('Z', '+00:00'))
+                                formatted_timestamp = dt.strftime('%Y-%m-%d %H:%M:%S')
+                            except:
+                                formatted_timestamp = analysis_timestamp
+                        else:
+                            formatted_timestamp = mission_id
+                    
+                    # Get file sizes
+                    session_file_size = os.path.getsize(session_file)
+                    mission_file_size = os.path.getsize(mission_stats_file)
+                    
+                    analysis_info = {
+                        'session_id': mission_id,  # Keep this for URL compatibility
+                        'mission_id': mission_id,
+                        'mission_name': mission_name,
+                        'timestamp': formatted_timestamp,
+                        'duration': mission_summary.get('duration', mission_metadata.get('mission_time', 0)),
+                        'duration_minutes': round(mission_summary.get('duration', mission_metadata.get('mission_time', 0)) / 60, 1),
+                        'total_events': mission_summary.get('total_events', 0),
+                        'active_pilots': active_pilots,
+                        'total_pilots': len(pilots),
+                        'active_groups': len(groups),
+                        'total_kills': total_kills,
+                        'total_shots': total_shots,
+                        'coalitions': coalition_names,
+                        'file_size_mb': round((session_file_size + mission_file_size) / (1024 * 1024), 2),
+                        'has_air_to_ground': any(p.get('ag_shots_fired', 0) > 0 for p in pilots.values()),
+                        'has_ground_kills': any(len(p.get('ground_units_killed', [])) > 0 for p in pilots.values()),
+                        'mission_file_mark': mission_file_mark
+                    }
+                    
+                    past_analyses.append(analysis_info)
+                    
+                except Exception as e:
+                    print(f"Error processing mission {mission_id}: {e}")
+                    continue
+    
+    except Exception as e:
+        print(f"Error reading past analyses: {e}")
+    
+    # Sort by mission file mark (mission time) if available, otherwise by mission_id
+    past_analyses.sort(key=lambda x: (x['mission_file_mark'], x['mission_id']), reverse=True)
+    
+    return past_analyses
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    past_analyses = get_past_analyses()
+    return render_template('index.html', past_analyses=past_analyses)
 
 @app.route('/upload', methods=['POST'])
 def upload_files():
@@ -2162,42 +2353,73 @@ def upload_files():
         return redirect(request.url)
     
     if dcs_file and allowed_file(dcs_file.filename) and debrief_file and allowed_file(debrief_file.filename):
-        # Create session ID
-        session_id = datetime.now().strftime('%Y%m%d_%H%M%S')
+        # Save uploaded files temporarily to extract mission metadata
+        temp_dcs_path = tempfile.mktemp(suffix='.log')
+        temp_debrief_path = tempfile.mktemp(suffix='.log')
         
-        # Save uploaded files
-        dcs_filename = secure_filename(dcs_file.filename)
-        debrief_filename = secure_filename(debrief_file.filename)
-        
-        dcs_path = os.path.join(UPLOAD_FOLDER, f"{session_id}_dcs.log")
-        debrief_path = os.path.join(UPLOAD_FOLDER, f"{session_id}_debrief.log")
-        
-        dcs_file.save(dcs_path)
-        debrief_file.save(debrief_path)
-        
-        # Process files
-        analyzer = MissionAnalyzer(session_id)
-        success, result = analyzer.process_files(dcs_path, debrief_path)
-        
-        if success:
-            # Create visualizations
-            visualizations = analyzer.create_visualizations(result)
+        try:
+            dcs_file.save(temp_dcs_path)
+            debrief_file.save(temp_debrief_path)
             
-            # Store session data
-            session_data = {
-                'mission_data': result,
-                'visualizations': visualizations,
-                'timestamp': datetime.now().isoformat()
-            }
+            # Extract mission metadata from debrief log
+            mission_metadata = extract_mission_metadata(temp_debrief_path)
+            mission_id = mission_metadata['mission_id']
             
-            session_file = os.path.join(analyzer.session_dir, 'session_data.json')
-            with open(session_file, 'w') as f:
-                json.dump(session_data, f)
+            # Check if this mission has already been analyzed
+            existing_session_dir = os.path.join(RESULTS_FOLDER, mission_id)
+            if os.path.exists(existing_session_dir):
+                # Mission already exists, redirect to existing analysis
+                flash(f'Mission "{mission_metadata["mission_name"]}" has already been analyzed. Showing existing results.')
+                return redirect(url_for('dashboard', session_id=mission_id))
             
-            return redirect(url_for('dashboard', session_id=session_id))
-        else:
-            flash(f'Processing failed: {result}')
+            # Save files with mission-based naming
+            dcs_filename = secure_filename(dcs_file.filename)
+            debrief_filename = secure_filename(debrief_file.filename)
+            
+            dcs_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_dcs.log")
+            debrief_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_debrief.log")
+            
+            # Move temp files to final locations
+            shutil.move(temp_dcs_path, dcs_path)
+            shutil.move(temp_debrief_path, debrief_path)
+            
+            # Process files with mission-based analyzer
+            analyzer = MissionAnalyzer(mission_id, mission_metadata)
+            success, result = analyzer.process_files(dcs_path, debrief_path)
+            
+            if success:
+                # Create visualizations
+                visualizations = analyzer.create_visualizations(result)
+                
+                # Store session data with mission metadata
+                session_data = {
+                    'mission_data': result,
+                    'visualizations': visualizations,
+                    'mission_metadata': mission_metadata,
+                    'timestamp': datetime.now().isoformat()
+                }
+                
+                session_file = os.path.join(analyzer.session_dir, 'session_data.json')
+                with open(session_file, 'w') as f:
+                    json.dump(session_data, f)
+                
+                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}"')
+                return redirect(url_for('dashboard', session_id=mission_id))
+            else:
+                flash(f'Processing failed: {result}')
+                return redirect(url_for('index'))
+                
+        except Exception as e:
+            flash(f'Error processing files: {str(e)}')
             return redirect(url_for('index'))
+        finally:
+            # Clean up temp files if they still exist
+            for temp_file in [temp_dcs_path, temp_debrief_path]:
+                if os.path.exists(temp_file):
+                    try:
+                        os.remove(temp_file)
+                    except:
+                        pass
     
     flash('Invalid file format. Please upload .log files only.')
     return redirect(url_for('index'))

@@ -95,6 +95,166 @@
                 </div>
             </div>
 
+            <!-- Past Analyses Section -->
+            {% if past_analyses %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="fas fa-history me-2"></i>
+                        Past Mission Analyses
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">Click on any past analysis to review the results</p>
+                    
+                    <div class="row">
+                        {% for analysis in past_analyses[:6] %}
+                        <div class="col-lg-6 mb-3">
+                            <div class="card border-secondary h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0 text-primary">
+                                            <i class="fas fa-map me-1"></i>
+                                            {{ analysis.mission_name }}
+                                        </h5>
+                                        <span class="badge bg-secondary">{{ analysis.file_size_mb }} MB</span>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ analysis.timestamp }}
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="row text-center mb-3">
+                                        <div class="col-4">
+                                            <div class="text-primary fw-bold">{{ analysis.duration_minutes }}m</div>
+                                            <small class="text-muted">Duration</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-success fw-bold">{{ analysis.active_pilots }}</div>
+                                            <small class="text-muted">Active Pilots</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-danger fw-bold">{{ analysis.total_kills }}</div>
+                                            <small class="text-muted">Total Kills</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        {% if analysis.coalitions %}
+                                            <span class="text-muted">Coalitions: </span>
+                                            {% for coalition in analysis.coalitions %}
+                                                <span class="badge {% if coalition == 'Red' %}bg-danger{% else %}bg-primary{% endif %} me-1">{{ coalition }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        {% if analysis.has_air_to_ground %}
+                                            <span class="badge bg-warning text-dark me-1">
+                                                <i class="fas fa-bomb me-1"></i>Air-to-Ground
+                                            </span>
+                                        {% endif %}
+                                        {% if analysis.has_ground_kills %}
+                                            <span class="badge bg-info me-1">
+                                                <i class="fas fa-crosshairs me-1"></i>Ground Kills
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <a href="{{ url_for('dashboard', session_id=analysis.session_id) }}" 
+                                       class="btn btn-outline-primary btn-sm w-100">
+                                        <i class="fas fa-chart-line me-1"></i>
+                                        View Analysis
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if past_analyses|length > 6 %}
+                    <div class="text-center mt-3">
+                        <button class="btn btn-outline-secondary" id="showMoreAnalyses">
+                            <i class="fas fa-chevron-down me-1"></i>
+                            Show {{ past_analyses|length - 6 }} More Analyses
+                        </button>
+                    </div>
+                    
+                    <div class="row d-none" id="additionalAnalyses">
+                        {% for analysis in past_analyses[6:] %}
+                        <div class="col-lg-6 mb-3">
+                            <div class="card border-secondary h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0 text-primary">
+                                            <i class="fas fa-map me-1"></i>
+                                            {{ analysis.mission_name }}
+                                        </h5>
+                                        <span class="badge bg-secondary">{{ analysis.file_size_mb }} MB</span>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ analysis.timestamp }}
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="row text-center mb-3">
+                                        <div class="col-4">
+                                            <div class="text-primary fw-bold">{{ analysis.duration_minutes }}m</div>
+                                            <small class="text-muted">Duration</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-success fw-bold">{{ analysis.active_pilots }}</div>
+                                            <small class="text-muted">Active Pilots</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-danger fw-bold">{{ analysis.total_kills }}</div>
+                                            <small class="text-muted">Total Kills</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        {% if analysis.coalitions %}
+                                            <span class="text-muted">Coalitions: </span>
+                                            {% for coalition in analysis.coalitions %}
+                                                <span class="badge {% if coalition == 'Red' %}bg-danger{% else %}bg-primary{% endif %} me-1">{{ coalition }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        {% if analysis.has_air_to_ground %}
+                                            <span class="badge bg-warning text-dark me-1">
+                                                <i class="fas fa-bomb me-1"></i>Air-to-Ground
+                                            </span>
+                                        {% endif %}
+                                        {% if analysis.has_ground_kills %}
+                                            <span class="badge bg-info me-1">
+                                                <i class="fas fa-crosshairs me-1"></i>Ground Kills
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <a href="{{ url_for('dashboard', session_id=analysis.session_id) }}" 
+                                       class="btn btn-outline-primary btn-sm w-100">
+                                        <i class="fas fa-chart-line me-1"></i>
+                                        View Analysis
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Instructions -->
             <div class="card mt-4">
                 <div class="card-header">
@@ -308,6 +468,21 @@ $(document).ready(function() {
     // Add file validation to inputs
     $('#dcs_log, #debrief_log').change(function() {
         validateFile(this);
+    });
+
+    // Show more analyses functionality
+    $('#showMoreAnalyses').click(function() {
+        const additionalAnalyses = $('#additionalAnalyses');
+        const button = $(this);
+        
+        if (additionalAnalyses.hasClass('d-none')) {
+            additionalAnalyses.removeClass('d-none');
+            button.html('<i class="fas fa-chevron-up me-1"></i>Show Less');
+        } else {
+            additionalAnalyses.addClass('d-none');
+            const count = additionalAnalyses.find('.col-lg-6').length;
+            button.html(`<i class="fas fa-chevron-down me-1"></i>Show ${count} More Analyses`);
+        }
     });
 });
 </script>
