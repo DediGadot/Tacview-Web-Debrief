@@ -83,21 +83,30 @@ class PilotStats:
         return (self.ag_hits_scored / self.ag_shots_fired * 100) if self.ag_shots_fired > 0 else 0.0
     
     def kill_death_ratio(self) -> float:
-        """Calculate kill/death ratio"""
+        """Calculate kill/death ratio using air kills only"""
         return self.kills / max(self.deaths, 1)
+    
+    def total_kills(self) -> int:
+        """Calculate total kills (air + ground)"""
+        return self.kills + len(self.ground_units_killed)
+    
+    def total_kill_death_ratio(self) -> float:
+        """Calculate kill/death ratio using total kills (air + ground)"""
+        return self.total_kills() / max(self.deaths, 1)
     
     def efficiency_rating(self) -> float:
         """Calculate overall pilot efficiency (0-100)"""
         if self.shots_fired == 0:
             return 0.0
         
-        # Factors: accuracy, K/D ratio, shots per kill
+        # Factors: accuracy, K/D ratio (using total kills), shots per kill
         accuracy_score = self.accuracy() * 0.3
-        kd_score = min(self.kill_death_ratio() * 20, 30)  # Cap at 30 points
+        kd_score = min(self.total_kill_death_ratio() * 20, 30)  # Cap at 30 points
         efficiency_score = 0
         
-        if self.kills > 0:
-            shots_per_kill = self.shots_fired / self.kills
+        total_kills = self.total_kills()
+        if total_kills > 0:
+            shots_per_kill = self.shots_fired / total_kills
             efficiency_score = max(0, 40 - (shots_per_kill * 2))  # Lower shots per kill is better
         
         return min(100, accuracy_score + kd_score + efficiency_score)
@@ -601,21 +610,20 @@ class DCSMissionAnalyzer:
             }
             killer.ground_units_killed.append(ground_kill_data)
             
-            # Still count as a kill for overall statistics
-            killer.kills += 1
+            # DO NOT count ground kills as regular kills - only track in ground_units_killed
         else:
-            # Regular pilot-to-pilot kill
+            # Regular pilot-to-pilot kill - only count these as 'kills'
             killer.kills += 1
         
         # Track weapon kills
         weapon = event_data.get('weapon', 'Unknown')
         killer.weapons_kills_with[weapon] += 1
         
-        # Track time to first kill
+        # Track time to first kill (for any type of kill)
         if killer.time_to_first_kill is None and 't' in event_data and killer.first_seen > 0:
             killer.time_to_first_kill = event_data['t'] - killer.first_seen
         
-        # Update kill streak
+        # Update kill streak (for any type of kill)
         killer.kill_streak += 1
         killer.max_kill_streak = max(killer.max_kill_streak, killer.kill_streak)
         
@@ -714,9 +722,10 @@ class DCSMissionAnalyzer:
     def calculate_advanced_statistics(self):
         """Calculate advanced derived statistics"""
         for pilot in self.pilot_stats.values():
-            # Calculate shots per kill
-            if pilot.kills > 0:
-                pilot.shots_per_kill = pilot.shots_fired / pilot.kills
+            # Calculate shots per kill using total kills (air + ground)
+            total_kills = pilot.total_kills()
+            if total_kills > 0:
+                pilot.shots_per_kill = pilot.shots_fired / total_kills
             
             # Calculate average engagement time (simplified - time active divided by targets engaged)
             if len(pilot.targets_engaged) > 0 and pilot.flight_time > 0:
@@ -728,10 +737,10 @@ class DCSMissionAnalyzer:
             if pilot.group_id and pilot.group_id in self.group_stats:
                 group = self.group_stats[pilot.group_id]
                 
-                # Aggregate combat stats
+                # Aggregate combat stats (using total kills for group totals)
                 group.total_shots += pilot.shots_fired
                 group.total_hits += pilot.hits_scored
-                group.total_kills += pilot.kills
+                group.total_kills += pilot.total_kills()  # Use total kills (air + ground)
                 group.total_deaths += pilot.deaths
                 group.total_friendly_fire += pilot.friendly_fire_incidents
                 group.total_flight_hours += pilot.flight_time / 3600  # Convert to hours
@@ -744,7 +753,8 @@ class DCSMissionAnalyzer:
                 if not group.most_active_pilot or pilot.shots_fired > self.pilot_stats.get(group.most_active_pilot, PilotStats("")).shots_fired:
                     group.most_active_pilot = pilot.name
                 
-                if not group.most_kills_pilot or pilot.kills > self.pilot_stats.get(group.most_kills_pilot, PilotStats("")).kills:
+                # Track pilot with most total kills (air + ground)
+                if not group.most_kills_pilot or pilot.total_kills() > self.pilot_stats.get(group.most_kills_pilot, PilotStats("")).total_kills():
                     group.most_kills_pilot = pilot.name
                 
                 if not group.most_accurate_pilot or (pilot.accuracy() > self.pilot_stats.get(group.most_accurate_pilot, PilotStats("")).accuracy() and pilot.shots_fired >= 3):
@@ -794,12 +804,16 @@ class DCSMissionAnalyzer:
         # Overall combat statistics
         total_shots = sum(p.shots_fired for p in self.pilot_stats.values())
         total_hits = sum(p.hits_scored for p in self.pilot_stats.values())
-        total_kills = sum(p.kills for p in self.pilot_stats.values())
+        total_air_kills = sum(p.kills for p in self.pilot_stats.values())
+        total_ground_kills = sum(len(p.ground_units_killed) for p in self.pilot_stats.values())
+        total_kills = total_air_kills + total_ground_kills
         total_deaths = sum(p.deaths for p in self.pilot_stats.values())
         
         print(f"\nOverall Combat Statistics:")
         print(f"  Total Shots Fired: {total_shots}")
         print(f"  Total Hits: {total_hits}")
+        print(f"  Total Air Kills: {total_air_kills}")
+        print(f"  Total Ground Kills: {total_ground_kills}")
         print(f"  Total Kills: {total_kills}")
         print(f"  Total Deaths: {total_deaths}")
         print(f"  Overall Accuracy: {(total_hits/total_shots*100) if total_shots > 0 else 0:.1f}%")
@@ -815,18 +829,21 @@ class DCSMissionAnalyzer:
             return
         
         # Sort pilots by different criteria
-        pilots_by_kills = sorted(self.pilot_stats.values(), key=lambda p: p.kills, reverse=True)
+        pilots_by_kills = sorted(self.pilot_stats.values(), key=lambda p: p.total_kills(), reverse=True)
         pilots_by_shots = sorted(self.pilot_stats.values(), key=lambda p: p.shots_fired, reverse=True)
         pilots_by_accuracy = sorted([p for p in self.pilot_stats.values() if p.shots_fired > 0], 
                                   key=lambda p: p.accuracy(), reverse=True)
         
         # Top killers
-        print(f"\nTop {top_n} Pilots by Kills:")
+        print(f"\nTop {top_n} Pilots by Total Kills:")
         print("-" * 40)
         for i, pilot in enumerate(pilots_by_kills[:top_n], 1):
             coalition_name = self.coalition_names.get(pilot.coalition, "Unknown")
+            air_kills = pilot.kills
+            ground_kills = len(pilot.ground_units_killed)
+            total_kills = pilot.total_kills()
             print(f"{i:2d}. {pilot.name:<20} ({pilot.aircraft_type:<12}) [{coalition_name}]")
-            print(f"     Kills: {pilot.kills:3d} | Deaths: {pilot.deaths:3d} | K/D: {pilot.kill_death_ratio():.2f}")
+            print(f"     Total Kills: {total_kills:3d} ({air_kills}A+{ground_kills}G) | Deaths: {pilot.deaths:3d} | K/D: {pilot.total_kill_death_ratio():.2f}")
         
         # Most active shooters
         print(f"\nTop {top_n} Pilots by Shots Fired:")
@@ -851,12 +868,15 @@ class DCSMissionAnalyzer:
         print("-" * 60)
         for i, pilot in enumerate(pilots_by_kills[:5], 1):
             coalition_name = self.coalition_names.get(pilot.coalition, "Unknown")
+            air_kills = pilot.kills
+            ground_kills = len(pilot.ground_units_killed)
+            total_kills = pilot.total_kills()
             print(f"\n{i}. {pilot.name} ({pilot.aircraft_type}) - {coalition_name} Coalition")
             print(f"   Group: {pilot.group_name} (ID: {pilot.group_id})")
-            print(f"   Combat: {pilot.kills} kills, {pilot.deaths} deaths, {pilot.ejections} ejections")
+            print(f"   Combat: {total_kills} total kills ({air_kills} air + {ground_kills} ground), {pilot.deaths} deaths, {pilot.ejections} ejections")
             print(f"   Shooting: {pilot.shots_fired} shots, {pilot.hits_scored} hits ({pilot.accuracy():.1f}% accuracy)")
             
-            if pilot.kills > 0:
+            if total_kills > 0:
                 print(f"   Efficiency: {pilot.shots_per_kill:.1f} shots/kill, {pilot.efficiency_rating():.1f}/100 rating")
             
             if pilot.max_kill_streak > 0:
@@ -876,6 +896,11 @@ class DCSMissionAnalyzer:
             
             if pilot.weapons_kills_with:
                 print(f"   Lethal weapons: {', '.join([f'{w}({n} kills)' for w, n in pilot.weapons_kills_with.most_common()])}")
+            
+            # Show ground kills details if any
+            if ground_kills > 0:
+                ground_targets = [gk["unit_type"] for gk in pilot.ground_units_killed]
+                print(f"   Ground targets destroyed: {', '.join(ground_targets)}")
     
     def print_group_statistics(self):
         """Print group-level statistics"""
@@ -942,7 +967,7 @@ class DCSMissionAnalyzer:
             return
         
         # Most efficient pilots
-        pilots_with_kills = [p for p in self.pilot_stats.values() if p.kills > 0]
+        pilots_with_kills = [p for p in self.pilot_stats.values() if p.total_kills() > 0]
         if pilots_with_kills:
             print("\nMost Efficient Killers (shots per kill):")
             print("-" * 40)

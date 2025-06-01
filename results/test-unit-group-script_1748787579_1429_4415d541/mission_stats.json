@@ -7,7 +7,7 @@
     "mission_name": "test-unit-group-script",
     "mission_file_mark": 1748787579,
     "mission_id": "test-unit-group-script_1748787579_1429_4415d541",
-    "analysis_timestamp": "2025-06-01T20:56:10.296555"
+    "analysis_timestamp": "2025-06-01T21:10:27.619291"
   },
   "pilots": {
     "Aerial-1-1": {
@@ -82,12 +82,12 @@
       "group_id": 2,
       "group_name": "f16-a",
       "is_player_controlled": false,
-      "kills": 5,
+      "kills": 1,
       "deaths": 0,
       "shots_fired": 6,
       "hits_scored": 6,
       "accuracy": 100.0,
-      "kd_ratio": 5.0,
+      "kd_ratio": 1.0,
       "flight_time": 29.050000000000068,
       "weapons_used": {
         "Mk-82": 4,

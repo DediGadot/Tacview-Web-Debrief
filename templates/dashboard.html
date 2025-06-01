@@ -884,6 +884,8 @@
                         <div class="card-body">
                             {% set top_pilots = session_data.mission_data.pilots.items() | sort(attribute='1.efficiency_rating', reverse=true) | list %}
                             {% for pilot_name, pilot_data in top_pilots[:5] %}
+                            {% set ground_kills = pilot_data.ground_units_killed | length %}
+                            {% set total_kills = pilot_data.kills + ground_kills %}
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <div>
                                     <strong>{{ pilot_name }}</strong>
@@ -891,7 +893,9 @@
                                 </div>
                                 <div class="text-end">
                                     <span class="badge bg-primary">{{ "%.1f"|format(pilot_data.efficiency_rating) }}</span>
-                                    <small class="text-muted d-block">{{ pilot_data.kills }}K / {{ pilot_data.deaths }}D</small>
+                                    <small class="text-muted d-block">
+                                        {{ total_kills }}K ({{ pilot_data.kills }}A+{{ ground_kills }}G) / {{ pilot_data.deaths }}D
+                                    </small>
                                 </div>
                             </div>
                             {% if not loop.last %}<hr class="my-2">{% endif %}
@@ -909,7 +913,9 @@
                         <div class="card-body">
                             {% set total_shots = session_data.mission_data.pilots.values() | selectattr('shots_fired') | sum(attribute='shots_fired') %}
                             {% set total_hits = session_data.mission_data.pilots.values() | selectattr('hits_scored') | sum(attribute='hits_scored') %}
-                            {% set total_kills = session_data.mission_data.pilots.values() | selectattr('kills') | sum(attribute='kills') %}
+                            {% set total_air_kills = session_data.mission_data.pilots.values() | selectattr('kills') | sum(attribute='kills') %}
+                            {% set total_ground_kills = session_data.mission_data.pilots.values() | map(attribute='ground_units_killed') | map('length') | sum %}
+                            {% set total_kills = total_air_kills + total_ground_kills %}
                             {% set total_deaths = session_data.mission_data.pilots.values() | selectattr('deaths') | sum(attribute='deaths') %}
                             
                             <div class="row text-center">
@@ -919,7 +925,7 @@
                                 </div>
                                 <div class="col-6 mb-3">
                                     <h4 class="text-success">{{ "%.2f"|format(total_kills / (total_deaths if total_deaths > 0 else 1)) }}</h4>
-                                    <small class="text-muted">K/D Ratio</small>
+                                    <small class="text-muted">K/D Ratio ({{ total_air_kills }}A+{{ total_ground_kills }}G)</small>
                                 </div>
                                 <div class="col-6">
                                     <h4 class="text-info">{{ session_data.mission_data.mission_summary.total_events }}</h4>
@@ -958,8 +964,11 @@
                                     <th class="sortable" data-column="type" data-type="text">
                                         Type <i class="fas fa-sort sort-icon"></i>
                                     </th>
-                                    <th class="sortable" data-column="kills" data-type="number">
-                                        Kills <i class="fas fa-sort sort-icon"></i>
+                                    <th class="sortable" data-column="air_kills" data-type="number">
+                                        Air Kills <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="ground_kills" data-type="number">
+                                        Ground Kills <i class="fas fa-sort sort-icon"></i>
                                     </th>
                                     <th class="sortable" data-column="deaths" data-type="number">
                                         Deaths <i class="fas fa-sort sort-icon"></i>
@@ -977,6 +986,7 @@
                             </thead>
                             <tbody>
                                 {% for pilot_name, pilot_data in session_data.mission_data.pilots.items() %}
+                                {% set ground_kills = pilot_data.ground_units_killed | length %}
                                 <tr>
                                     <td data-value="{{ pilot_name }}"><strong>{{ pilot_name }}</strong></td>
                                     <td data-value="{{ pilot_data.aircraft_type }}">{{ pilot_data.aircraft_type }}</td>
@@ -991,7 +1001,20 @@
                                             {{ 'Human' if pilot_data.is_player_controlled else 'AI' }}
                                         </span>
                                     </td>
-                                    <td data-value="{{ pilot_data.kills }}">{{ pilot_data.kills }}</td>
+                                    <td data-value="{{ pilot_data.kills }}">
+                                        {% if pilot_data.kills > 0 %}
+                                            <span class="badge bg-danger">{{ pilot_data.kills }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td data-value="{{ ground_kills }}">
+                                        {% if ground_kills > 0 %}
+                                            <span class="badge bg-warning text-dark">{{ ground_kills }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
                                     <td data-value="{{ pilot_data.deaths }}">{{ pilot_data.deaths }}</td>
                                     <td data-value="{{ pilot_data.kd_ratio }}">{{ "%.2f"|format(pilot_data.kd_ratio) }}</td>
                                     <td data-value="{{ pilot_data.accuracy }}">{{ "%.1f"|format(pilot_data.accuracy) }}%</td>
@@ -1071,11 +1094,12 @@ $(document).ready(function() {
             'aircraft': 1,
             'coalition': 2,
             'type': 3,
-            'kills': 4,
-            'deaths': 5,
-            'kd': 6,
-            'accuracy': 7,
-            'efficiency': 8
+            'air_kills': 4,
+            'ground_kills': 5,
+            'deaths': 6,
+            'kd': 7,
+            'accuracy': 8,
+            'efficiency': 9
         };
         return columnMap[column] || 0;
     }
