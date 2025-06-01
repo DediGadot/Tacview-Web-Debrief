@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import json
 from collections import defaultdict, Counter
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Any
 import argparse
 from datetime import datetime
 
@@ -192,6 +192,8 @@ class DCSMissionAnalyzer:
         self.unit_to_group: Dict[int, int] = {}  # unit_id -> group_id
         self.unit_to_pilot: Dict[int, str] = {}  # unit_id -> pilot_name
         self.coalition_names = {1: "Red", 2: "Blue", 0: "Neutral"}
+        self.human_controlled_units: Set[int] = set()  # Track human-controlled object IDs
+        self.mission_metadata: Dict[str, Any] = {}
         
         # Mission metadata
         self.mission_time_start: float = 0.0
@@ -395,30 +397,20 @@ class DCSMissionAnalyzer:
             self.process_landing_event(event_data)
         elif event_type == 'crash':
             self.process_crash_event(event_data)
+        elif event_type == 'under control':
+            self.process_under_control_event(event_data)
     
     def get_pilot_from_event(self, event_data: dict, role: str = 'initiator') -> Optional[str]:
-        """Extract pilot name from event data with improved object ID mapping"""
-        # First try to get pilot name directly
-        pilot_key = f"{role}PilotName"
-        pilot_name = event_data.get(pilot_key)
-        
-        # Try to map using object ID - this is the most reliable method
+        """Extract pilot name from event data with improved human vs AI pilot detection"""
+        # Get object ID first to check if it's human-controlled
         object_key = f"{role}_object_id"
-        if object_key in event_data:
-            object_id = event_data[object_key]
-            
-            # Check if this is an aircraft unit before proceeding
-            if object_id in self.unit_to_group:
-                group_id = self.unit_to_group[object_id]
-                if not self.is_aircraft_unit(group_id):
-                    return None  # Skip ground units, ships, static objects
-            
-            # Check if we have a mapping for this object ID
-            if object_id in self.unit_to_pilot:
-                mapped_pilot = self.unit_to_pilot[object_id]
-                # Always prefer the mapped pilot name from XML if available
-                if mapped_pilot:
-                    return mapped_pilot
+        object_id = event_data.get(object_key)
+        
+        # Check if this is an aircraft unit before proceeding
+        if object_id and object_id in self.unit_to_group:
+            group_id = self.unit_to_group[object_id]
+            if not self.is_aircraft_unit(group_id):
+                return None  # Skip ground units, ships, static objects
         
         # Additional check for unit type in event data
         unit_type_key = f"{role}_unit_type"
@@ -428,21 +420,48 @@ class DCSMissionAnalyzer:
             if self.is_ground_unit_type(unit_type):
                 return None  # Skip ground units
         
-        # If we have a pilot name but no mapping, create a mapping for future use
-        # But only if the pilot name is not a generic aircraft type
-        if pilot_name and object_key in event_data:
-            object_id = event_data[object_key]
-            if object_id not in self.unit_to_pilot:
-                # Only create mapping if pilot name is not generic aircraft type
-                if pilot_name not in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C']:
-                    self.unit_to_pilot[object_id] = pilot_name
-                else:
-                    # For generic aircraft types, create a unique name based on object ID
-                    unique_pilot_name = f"{pilot_name}_{object_id}"
-                    self.unit_to_pilot[object_id] = unique_pilot_name
-                    return unique_pilot_name
+        # Check if we already have a mapping for this object ID
+        if object_id and object_id in self.unit_to_pilot:
+            return self.unit_to_pilot[object_id]
         
-        return pilot_name
+        # Determine if this is a human-controlled unit
+        is_human_controlled = object_id and object_id in self.human_controlled_units
+        
+        if is_human_controlled:
+            # For human pilots, use the pilot name field
+            pilot_key = f"{role}PilotName"
+            pilot_name = event_data.get(pilot_key)
+            
+            # Create mapping for future use
+            if pilot_name and object_id:
+                self.unit_to_pilot[object_id] = pilot_name
+            
+            return pilot_name
+        else:
+            # For AI pilots, use the target field (unit name) or create unique name from aircraft type
+            if role == 'target':
+                # For targets, use the target field (unit name)
+                unit_name = event_data.get('target')
+                if unit_name:
+                    return unit_name
+            
+            # For AI initiators or when target field is not available, use aircraft type + object ID
+            pilot_key = f"{role}PilotName"
+            aircraft_type = event_data.get(pilot_key)
+            
+            if aircraft_type and object_id:
+                # Check if this is a generic aircraft type
+                if aircraft_type in ['F-16C_50', 'F-15C', 'MiG-23MLD', 'F/A-18C', 'A-10C', 'A-10C_2']:
+                    # Create unique name: aircraft_type + object_id
+                    unique_name = f"{aircraft_type}_{object_id}"
+                    self.unit_to_pilot[object_id] = unique_name
+                    return unique_name
+                else:
+                    # Use the aircraft type as-is if it's not generic
+                    self.unit_to_pilot[object_id] = aircraft_type
+                    return aircraft_type
+            
+            return aircraft_type
     
     def ensure_pilot_exists(self, pilot_name: str, event_data: dict):
         """Ensure pilot exists in stats, create if needed with improved data extraction"""
@@ -714,6 +733,17 @@ class DCSMissionAnalyzer:
         pilot = self.pilot_stats[pilot_name]
         pilot.crashes += 1
     
+    def process_under_control_event(self, event_data: dict):
+        """Process under control event to track human-controlled units"""
+        object_id = event_data.get('initiator_object_id')
+        pilot_name = event_data.get('initiatorPilotName')
+        
+        if object_id and pilot_name:
+            # Mark this object ID as human-controlled
+            self.human_controlled_units.add(object_id)
+            # Create mapping from object ID to pilot name
+            self.unit_to_pilot[object_id] = pilot_name
+    
     def calculate_flight_times(self):
         """Calculate flight times for all pilots"""
         for pilot in self.pilot_stats.values():
@@ -778,6 +808,40 @@ class DCSMissionAnalyzer:
                 total_efficiency = sum(self.pilot_stats[p].efficiency_rating() for p in group.pilots if p in self.pilot_stats)
                 group.average_pilot_efficiency = total_efficiency / len(group.pilots)
     
+    def cleanup_inactive_pilots(self):
+        """Remove pilots that have no activity in the debrief log"""
+        inactive_pilots = []
+        
+        for pilot_name, pilot in self.pilot_stats.items():
+            # Check if pilot has any activity
+            has_activity = (
+                pilot.shots_fired > 0 or
+                pilot.hits_scored > 0 or
+                pilot.kills > 0 or
+                pilot.deaths > 0 or
+                pilot.takeoffs > 0 or
+                pilot.landings > 0 or
+                pilot.crashes > 0 or
+                pilot.ejections > 0 or
+                pilot.engine_startups > 0 or
+                len(pilot.ground_units_killed) > 0 or
+                pilot.flight_time > 0
+            )
+            
+            if not has_activity:
+                inactive_pilots.append(pilot_name)
+        
+        # Remove inactive pilots
+        for pilot_name in inactive_pilots:
+            print(f"Removing inactive pilot: {pilot_name}")
+            del self.pilot_stats[pilot_name]
+            
+            # Also remove from group pilot lists
+            for group in self.group_stats.values():
+                if pilot_name in group.pilots:
+                    group.pilots.remove(pilot_name)
+                    group.total_pilots -= 1
+    
     def analyze(self):
         """Run the complete analysis"""
         print("Starting DCS Mission Analysis...")
@@ -789,6 +853,9 @@ class DCSMissionAnalyzer:
         
         print("Parsing debrief log...")
         self.parse_debrief_log()
+        
+        print("Cleaning up inactive pilots...")
+        self.cleanup_inactive_pilots()
         
         print("Calculating derived statistics...")
         self.calculate_flight_times()

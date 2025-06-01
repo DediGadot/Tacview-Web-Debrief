@@ -1,0 +1,4563 @@
+mission_file_path	=	"C:\\Users\\dedig\\Saved Games\\DCS\\Missions\\test-unit-group-script.miz"
+callsign	=	"New callsign"
+world_state = 
+{
+	[1] = 
+	{
+		alt	=	300.00131225586,
+		type	=	"Scud_B",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	8982.3076171875,
+		heading	=	6.2831853071796,
+		y	=	73520.0625,
+		speed	=	0,
+		unitId	=	14,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [1]
+	[2] = 
+	{
+		alt	=	300.00131225586,
+		type	=	"Scud_B",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	8962.3076171875,
+		heading	=	6.2831853071796,
+		y	=	73520.0625,
+		speed	=	0,
+		unitId	=	13,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [2]
+	[3] = 
+	{
+		alt	=	300.00131225586,
+		type	=	"Scud_B",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	8942.3076171875,
+		heading	=	6.2831853071796,
+		y	=	73520.0625,
+		speed	=	0,
+		unitId	=	12,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [3]
+	[4] = 
+	{
+		alt	=	300.00131225586,
+		type	=	"Scud_B",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	8922.3076171875,
+		heading	=	6.2831853071796,
+		y	=	73520.0625,
+		speed	=	0,
+		unitId	=	11,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [4]
+	[5] = 
+	{
+		alt	=	9233.80859375,
+		type	=	"F-16C_50",
+		groupId	=	2,
+		heading	=	1.1682232061969,
+		y	=	105252.546875,
+		goto	=	1,
+		coalition	=	"blue",
+		x	=	22980.666015625,
+		speed	=	158.52081298828,
+		payload = 
+		{
+			pylons = 
+			{
+				[5] = 
+				{
+					CLSID	=	"<CLEAN>",
+				}, -- end of [5]
+				[7] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						function_delay_ctrl_M904E4	=	0,
+						arm_delay_ctrl_M904E4	=	4,
+					}, -- end of settings
+				}, -- end of [7]
+				[3] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						function_delay_ctrl_M904E4	=	0,
+						arm_delay_ctrl_M904E4	=	4,
+					}, -- end of settings
+				}, -- end of [3]
+			}, -- end of pylons
+			fuel	=	2026,
+			flare	=	60,
+			ammo_type	=	5,
+			chaff	=	60,
+			gun	=	19,
+		}, -- end of payload
+		N_obj	=	1,
+		inAir	=	true,
+		unitId	=	2,
+		country	=	80,
+	}, -- end of [5]
+	[6] = 
+	{
+		alt	=	8566.2451171875,
+		type	=	"F-16C_50",
+		groupId	=	2,
+		heading	=	2.0114768187152,
+		y	=	96578.03125,
+		coalition	=	"blue",
+		x	=	26153.701171875,
+		speed	=	171.1654510498,
+		payload = 
+		{
+			pylons = 
+			{
+				[1] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [1]
+				[2] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [2]
+				[3] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						arm_delay_ctrl_M904E4	=	4,
+						function_delay_ctrl_M904E4	=	0,
+					}, -- end of settings
+				}, -- end of [3]
+				[4] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [4]
+				[5] = 
+				{
+					CLSID	=	"<CLEAN>",
+				}, -- end of [5]
+				[6] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [6]
+				[7] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						arm_delay_ctrl_M904E4	=	4,
+						function_delay_ctrl_M904E4	=	0,
+					}, -- end of settings
+				}, -- end of [7]
+				[8] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [8]
+				[9] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [9]
+			}, -- end of pylons
+			fuel	=	3249,
+			flare	=	60,
+			ammo_type	=	5,
+			chaff	=	60,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	2,
+		inAir	=	true,
+		unitId	=	18,
+		country	=	80,
+	}, -- end of [6]
+	[7] = 
+	{
+		alt	=	7541.2114257812,
+		type	=	"F-16C_50",
+		groupId	=	2,
+		heading	=	1.7805293242084,
+		y	=	91897.28125,
+		coalition	=	"blue",
+		x	=	25423.767578125,
+		speed	=	181.65126037598,
+		payload = 
+		{
+			pylons = 
+			{
+				[1] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [1]
+				[2] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [2]
+				[3] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						function_delay_ctrl_M904E4	=	0,
+						arm_delay_ctrl_M904E4	=	4,
+					}, -- end of settings
+				}, -- end of [3]
+				[4] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [4]
+				[5] = 
+				{
+					CLSID	=	"<CLEAN>",
+				}, -- end of [5]
+				[6] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [6]
+				[7] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						function_delay_ctrl_M904E4	=	0,
+						arm_delay_ctrl_M904E4	=	4,
+					}, -- end of settings
+				}, -- end of [7]
+				[8] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [8]
+				[9] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [9]
+			}, -- end of pylons
+			fuel	=	3249,
+			flare	=	60,
+			ammo_type	=	5,
+			chaff	=	60,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	3,
+		inAir	=	true,
+		unitId	=	19,
+		country	=	80,
+	}, -- end of [7]
+	[8] = 
+	{
+		alt	=	4851.6240234375,
+		type	=	"F-16C_50",
+		groupId	=	2,
+		heading	=	1.7118390242206,
+		y	=	85631.796875,
+		coalition	=	"blue",
+		x	=	26425.46484375,
+		speed	=	246.54301452637,
+		payload = 
+		{
+			pylons = 
+			{
+				[1] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [1]
+				[2] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [2]
+				[3] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						arm_delay_ctrl_M904E4	=	4,
+						function_delay_ctrl_M904E4	=	0,
+					}, -- end of settings
+				}, -- end of [3]
+				[4] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [4]
+				[5] = 
+				{
+					CLSID	=	"<CLEAN>",
+				}, -- end of [5]
+				[6] = 
+				{
+					CLSID	=	"{F376DBEE-4CAE-41BA-ADD9-B2910AC95DEC}",
+				}, -- end of [6]
+				[7] = 
+				{
+					CLSID	=	"{TER_9A_3*MK-82}",
+					settings = 
+					{
+						function_delay_ctrl_M905	=	0,
+						NFP_PRESID	=	"MDRN_B_A_GPLD",
+						NFP_fuze_type_tail	=	"M905",
+						NFP_fuze_type_nose	=	"M904E4",
+						NFP_VIS_DrawArgNo_57	=	0,
+						arm_delay_ctrl_M905	=	4,
+						NFP_PRESVER	=	1,
+						arm_delay_ctrl_M904E4	=	4,
+						function_delay_ctrl_M904E4	=	0,
+					}, -- end of settings
+				}, -- end of [7]
+				[8] = 
+				{
+					CLSID	=	"{5CE2FF2A-645A-4197-B48D-8720AC69394F}",
+				}, -- end of [8]
+				[9] = 
+				{
+					CLSID	=	"{40EF17B7-F508-45de-8566-6FFECC0C1AB8}",
+				}, -- end of [9]
+			}, -- end of pylons
+			fuel	=	3249,
+			flare	=	60,
+			ammo_type	=	5,
+			chaff	=	60,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	4,
+		inAir	=	true,
+		unitId	=	20,
+		country	=	80,
+	}, -- end of [8]
+} -- end of world_state
+mission_file_mark	=	1748804010
+mission_time	=	1251.861
+warehouses = 
+{
+	airports = 
+	{
+		[1] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [1]
+		[2] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [2]
+		[3] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [3]
+		[4] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [4]
+		[5] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [5]
+		[6] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [6]
+		[7] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [7]
+		[8] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [8]
+		[9] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [9]
+		[10] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [10]
+		[11] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [11]
+		[12] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [12]
+		[13] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [13]
+		[14] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [14]
+		[15] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [15]
+		[16] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [16]
+		[17] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [17]
+		[18] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [18]
+		[19] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [19]
+		[20] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [20]
+		[21] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [21]
+		[22] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [22]
+		[23] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [23]
+		[24] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [24]
+		[25] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [25]
+		[26] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [26]
+		[27] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [27]
+		[28] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [28]
+		[29] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [29]
+		[30] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [30]
+		[31] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [31]
+		[32] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [32]
+		[33] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [33]
+		[34] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [34]
+		[35] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [35]
+		[36] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [36]
+		[37] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [37]
+		[38] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [38]
+		[39] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [39]
+		[40] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [40]
+		[41] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [41]
+		[42] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [42]
+		[43] = 
+		{
+			gasoline = 
+			{
+				InitFuel	=	0,
+			}, -- end of gasoline
+			unlimitedMunitions	=	false,
+			methanol_mixture = 
+			{
+				InitFuel	=	0,
+			}, -- end of methanol_mixture
+			jet_fuel = 
+			{
+				InitFuel	=	0,
+			}, -- end of jet_fuel
+			diesel = 
+			{
+				InitFuel	=	0,
+			}, -- end of diesel
+			aircrafts = 
+			{
+				helicopters = 	{},
+				planes = 	{},
+			}, -- end of aircrafts
+			weapons = 	{},
+			unlimitedFuel	=	false,
+			unlimitedAircrafts	=	false,
+		}, -- end of [43]
+		[44] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [44]
+		[45] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [45]
+		[46] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [46]
+		[47] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [47]
+		[48] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [48]
+		[49] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [49]
+		[50] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [50]
+		[51] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [51]
+		[52] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [52]
+		[53] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [53]
+		[54] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [54]
+		[55] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [55]
+		[57] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [57]
+		[58] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [58]
+		[59] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [59]
+		[60] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [60]
+		[63] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [63]
+		[64] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [64]
+		[65] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [65]
+		[66] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [66]
+		[67] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [67]
+		[68] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [68]
+		[69] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [69]
+		[70] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [70]
+		[71] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [71]
+		[72] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [72]
+		[73] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [73]
+		[74] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [74]
+		[76] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [76]
+		[77] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [77]
+		[78] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [78]
+		[79] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [79]
+		[80] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [80]
+		[82] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [82]
+		[83] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [83]
+		[84] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [84]
+		[85] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [85]
+		[86] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [86]
+		[87] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [87]
+		[89] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [89]
+		[92] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [92]
+		[93] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [93]
+		[94] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [94]
+		[95] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [95]
+		[96] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [96]
+		[97] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [97]
+		[98] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [98]
+		[99] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [99]
+		[100] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [100]
+		[101] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [101]
+		[102] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [102]
+		[103] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [103]
+		[104] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [104]
+		[105] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [105]
+		[106] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [106]
+		[107] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [107]
+		[108] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [108]
+		[109] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [109]
+		[110] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [110]
+		[111] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [111]
+		[112] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [112]
+		[113] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [113]
+		[114] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [114]
+		[115] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [115]
+		[116] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [116]
+		[117] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [117]
+		[119] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [119]
+		[120] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [120]
+		[121] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [121]
+		[122] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [122]
+		[123] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [123]
+		[124] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [124]
+		[125] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [125]
+		[126] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [126]
+		[127] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [127]
+		[128] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [128]
+		[129] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [129]
+		[130] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [130]
+		[131] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [131]
+		[132] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [132]
+		[133] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [133]
+		[134] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [134]
+		[135] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [135]
+		[136] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [136]
+		[137] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [137]
+		[138] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [138]
+		[139] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [139]
+		[140] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [140]
+		[141] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [141]
+		[142] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [142]
+		[143] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [143]
+		[144] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [144]
+		[145] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [145]
+		[146] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [146]
+		[147] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [147]
+		[148] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [148]
+		[149] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [149]
+		[150] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [150]
+		[151] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [151]
+		[152] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [152]
+		[153] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [153]
+		[154] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [154]
+		[155] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [155]
+		[156] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [156]
+		[157] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [157]
+		[158] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [158]
+		[159] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [159]
+		[160] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [160]
+		[161] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [161]
+		[162] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [162]
+		[163] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [163]
+		[164] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [164]
+		[165] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [165]
+		[166] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [166]
+		[167] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [167]
+		[168] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [168]
+		[169] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [169]
+		[170] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [170]
+		[171] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [171]
+		[172] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [172]
+		[173] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [173]
+		[174] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [174]
+		[175] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [175]
+		[176] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [176]
+		[177] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [177]
+		[178] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [178]
+		[179] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [179]
+		[180] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [180]
+		[181] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [181]
+		[182] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [182]
+		[184] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [184]
+		[185] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [185]
+		[186] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [186]
+		[187] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [187]
+		[189] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [189]
+		[190] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [190]
+		[191] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [191]
+		[192] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [192]
+		[193] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [193]
+		[194] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [194]
+		[195] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [195]
+		[196] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [196]
+		[197] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [197]
+		[198] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [198]
+		[199] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [199]
+		[200] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [200]
+		[201] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [201]
+		[202] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [202]
+		[203] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [203]
+		[204] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [204]
+		[205] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [205]
+		[206] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [206]
+		[207] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [207]
+		[208] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [208]
+		[209] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [209]
+		[210] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [210]
+		[211] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [211]
+		[212] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [212]
+		[213] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [213]
+		[214] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [214]
+		[215] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [215]
+		[216] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [216]
+		[219] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [219]
+		[220] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [220]
+		[221] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [221]
+		[222] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [222]
+		[223] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [223]
+		[224] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [224]
+	}, -- end of airports
+	warehouses = 	{},
+} -- end of warehouses
+triggers_state = 	{}
+result	=	0
+events = 
+{
+	[1] = 
+	{
+		type	=	"mission start",
+		event_id	=	5,
+		t	=	0,
+		linked_event_id	=	0,
+		ta	=	28800,
+	}, -- end of [1]
+	[2] = 
+	{
+		linked_event_id	=	0,
+		t	=	0,
+		event_id	=	6,
+		type	=	"took control",
+	}, -- end of [2]
+	[3] = 
+	{
+		initiator_unit_type	=	"F-16C_50",
+		type	=	"under control",
+		initiator_object_id	=	16779008,
+		targetMissionID	=	"2",
+		target	=	"Aerial-2-1",
+		t	=	0,
+		initiatorPilotName	=	"New callsign",
+		initiator_coalition	=	2,
+	}, -- end of [3]
+	[4] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"New callsign",
+		place	=	"Abu al-Duhur",
+		t	=	93.84,
+		placeDisplayName	=	"Abu al-Duhur",
+		initiator_unit_type	=	"F-16C_50",
+		initiator_object_id	=	16779008,
+		linked_event_id	=	0,
+		event_id	=	53,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [4]
+	[5] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"F-16C_50",
+		place	=	"Abu al-Duhur",
+		t	=	430.5,
+		placeDisplayName	=	"Abu al-Duhur",
+		initiator_unit_type	=	"F-16C_50",
+		initiator_object_id	=	16779264,
+		linked_event_id	=	0,
+		event_id	=	56,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"18",
+	}, -- end of [5]
+	[6] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"F-16C_50",
+		place	=	"Abu al-Duhur",
+		t	=	441.4,
+		placeDisplayName	=	"Abu al-Duhur",
+		initiator_unit_type	=	"F-16C_50",
+		initiator_object_id	=	16779520,
+		linked_event_id	=	0,
+		event_id	=	57,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"19",
+	}, -- end of [6]
+	[7] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"F-16C_50",
+		place	=	"Abu al-Duhur",
+		t	=	454.25,
+		placeDisplayName	=	"Abu al-Duhur",
+		initiator_unit_type	=	"F-16C_50",
+		initiator_object_id	=	16779776,
+		linked_event_id	=	0,
+		event_id	=	59,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"20",
+	}, -- end of [7]
+	[8] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"F-15C",
+		place	=	"Rene Mouawad",
+		t	=	505.41,
+		placeDisplayName	=	"Rene Mouawad",
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	61,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"1",
+	}, -- end of [8]
+	[9] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"F-15C",
+		place	=	"Rene Mouawad",
+		t	=	523.75,
+		placeDisplayName	=	"Rene Mouawad",
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778752,
+		linked_event_id	=	0,
+		event_id	=	63,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"3",
+	}, -- end of [9]
+	[10] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"shot",
+		target_unit_type	=	"F-15C",
+		t	=	867.27,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	64,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [10]
+	[11] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"shot",
+		target_unit_type	=	"F-15C",
+		t	=	888.742,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	65,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [11]
+	[12] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	64,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	895.51,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	66,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [12]
+	[13] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	895.51,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	67,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [13]
+	[14] = 
+	{
+		type	=	"ai abort mission",
+		initiatorPilotName	=	"F-15C",
+		t	=	895.51,
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778752,
+		linked_event_id	=	0,
+		event_id	=	68,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"3",
+	}, -- end of [14]
+	[15] = 
+	{
+		weapon_type	=	8914708,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"shot",
+		target_unit_type	=	"F-15C",
+		t	=	897.472,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	69,
+		weapon	=	"AIM-9X",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [15]
+	[16] = 
+	{
+		initiatorPilotName	=	"F-15C",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16778752,
+		target	=	"",
+		target_object_id	=	33557760,
+		targetPilotName	=	"",
+		type	=	"eject",
+		target_unit_type	=	"",
+		t	=	897.53,
+		initiator_unit_type	=	"F-15C",
+		event_id	=	70,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"3",
+		initiator_coalition	=	1,
+	}, -- end of [16]
+	[17] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	66,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"kill",
+		target_unit_type	=	"F-15C",
+		t	=	897.53,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	71,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [17]
+	[18] = 
+	{
+		type	=	"score",
+		initiatorPilotName	=	"New callsign",
+		t	=	897.53,
+		linked_event_id	=	71,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	72,
+		initiator_object_id	=	16779008,
+		amount	=	50,
+		comment	=	"air",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [18]
+	[19] = 
+	{
+		weapon_type	=	8914708,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"shot",
+		target_unit_type	=	"F-15C",
+		t	=	901.121,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	74,
+		weapon	=	"AIM-9X",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [19]
+	[20] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	65,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	905.767,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	75,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [20]
+	[21] = 
+	{
+		weapon_type	=	6948644,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"3",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778752,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	905.767,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	76,
+		weapon	=	"AIM-120C",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [21]
+	[22] = 
+	{
+		initiatorPilotName	=	"",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16842496,
+		target	=	"",
+		target_object_id	=	33557760,
+		targetPilotName	=	"",
+		type	=	"pilot discard chair",
+		target_unit_type	=	"",
+		t	=	914.01,
+		initiator_unit_type	=	"",
+		event_id	=	77,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"0",
+		initiator_coalition	=	1,
+	}, -- end of [22]
+	[23] = 
+	{
+		type	=	"crash",
+		initiatorPilotName	=	"F-15C",
+		t	=	918.74,
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778752,
+		linked_event_id	=	0,
+		event_id	=	91,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"3",
+	}, -- end of [23]
+	[24] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	967.22,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	92,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [24]
+	[25] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	967.49,
+		linked_event_id	=	0,
+		event_id	=	93,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	27,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	27,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [25]
+	[26] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	970.32,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	94,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [26]
+	[27] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	970.42,
+		linked_event_id	=	0,
+		event_id	=	95,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	10,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	10,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [27]
+	[28] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	970.7,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	96,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [28]
+	[29] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	970.98,
+		linked_event_id	=	0,
+		event_id	=	97,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	28,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	28,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [29]
+	[30] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	992.42,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	98,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [30]
+	[31] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	992.85,
+		linked_event_id	=	0,
+		event_id	=	99,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	43,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	43,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [31]
+	[32] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	993.48,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	100,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [32]
+	[33] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	993.59,
+		linked_event_id	=	0,
+		event_id	=	101,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	11,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	11,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [33]
+	[34] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	995.04,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	102,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [34]
+	[35] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	995.42,
+		linked_event_id	=	0,
+		event_id	=	103,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	38,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	38,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [35]
+	[36] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	995.495,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	104,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [36]
+	[37] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	995.495,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	105,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [37]
+	[38] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	995.558,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	106,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [38]
+	[39] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	995.558,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	107,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [39]
+	[40] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	1002.54,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	108,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [40]
+	[41] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.026,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	109,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [41]
+	[42] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.026,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	110,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [42]
+	[43] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.031,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	111,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [43]
+	[44] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.031,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	112,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [44]
+	[45] = 
+	{
+		type	=	"ai abort mission",
+		initiatorPilotName	=	"F-15C",
+		t	=	1003.031,
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	113,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"1",
+	}, -- end of [45]
+	[46] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.055,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	114,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [46]
+	[47] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.055,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	115,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [47]
+	[48] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.072,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	116,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [48]
+	[49] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.072,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	117,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [49]
+	[50] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.078,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	118,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [50]
+	[51] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.078,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	119,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [51]
+	[52] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.089,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	120,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [52]
+	[53] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.089,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	121,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [53]
+	[54] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.11,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	122,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [54]
+	[55] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.11,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	123,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [55]
+	[56] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.143,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	124,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [56]
+	[57] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.143,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	125,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [57]
+	[58] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1003.145,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	126,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [58]
+	[59] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1003.145,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	127,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [59]
+	[60] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	1003.15,
+		linked_event_id	=	0,
+		event_id	=	128,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	61,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	61,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [60]
+	[61] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	1022.62,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	129,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [61]
+	[62] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	1022.83,
+		linked_event_id	=	0,
+		event_id	=	130,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	21,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	21,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [62]
+	[63] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	1032.2,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	131,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [63]
+	[64] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1032.752,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	132,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [64]
+	[65] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1032.752,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	133,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [65]
+	[66] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	1032.83,
+		linked_event_id	=	0,
+		event_id	=	134,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	63,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	63,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [66]
+	[67] = 
+	{
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"start shooting",
+		target_unit_type	=	"F-15C",
+		t	=	1033,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	135,
+		weapon	=	"M-61",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [67]
+	[68] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.191,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	136,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [68]
+	[69] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.191,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	137,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [69]
+	[70] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.205,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	138,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [70]
+	[71] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.205,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	139,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [71]
+	[72] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.237,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	140,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [72]
+	[73] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.237,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	141,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [73]
+	[74] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.277,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	142,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [74]
+	[75] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.277,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	143,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [75]
+	[76] = 
+	{
+		type	=	"ai abort mission",
+		initiatorPilotName	=	"F-15C",
+		t	=	1033.277,
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	144,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"1",
+	}, -- end of [76]
+	[77] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.283,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	145,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [77]
+	[78] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.283,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	146,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [78]
+	[79] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.326,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	147,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [79]
+	[80] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.326,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	148,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [80]
+	[81] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.332,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	149,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [81]
+	[82] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.332,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	150,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [82]
+	[83] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.347,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	151,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [83]
+	[84] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.347,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	152,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [84]
+	[85] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.361,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	153,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [85]
+	[86] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.361,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	154,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [86]
+	[87] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.365,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	155,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [87]
+	[88] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.365,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	156,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [88]
+	[89] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.381,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	157,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [89]
+	[90] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.381,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	158,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [90]
+	[91] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.383,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	159,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [91]
+	[92] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.383,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	160,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [92]
+	[93] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.399,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	161,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [93]
+	[94] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.399,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	162,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [94]
+	[95] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.414,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	163,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [95]
+	[96] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.414,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	164,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [96]
+	[97] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.426,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	165,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [97]
+	[98] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.426,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	166,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [98]
+	[99] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.432,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	167,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [99]
+	[100] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.432,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	168,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [100]
+	[101] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.44,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	169,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [101]
+	[102] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.44,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	170,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [102]
+	[103] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.463,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	171,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [103]
+	[104] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.463,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	172,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [104]
+	[105] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.472,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	173,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [105]
+	[106] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.472,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	174,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [106]
+	[107] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.479,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	175,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [107]
+	[108] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.479,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	176,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [108]
+	[109] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.497,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	177,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [109]
+	[110] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.497,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	178,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [110]
+	[111] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.5,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	179,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [111]
+	[112] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.5,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	180,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [112]
+	[113] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.508,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	181,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [113]
+	[114] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.508,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	182,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [114]
+	[115] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.522,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	183,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [115]
+	[116] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.522,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	184,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [116]
+	[117] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.53,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	185,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [117]
+	[118] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.53,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	186,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [118]
+	[119] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.536,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	187,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [119]
+	[120] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.536,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	188,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [120]
+	[121] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.549,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	189,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [121]
+	[122] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.549,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	190,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [122]
+	[123] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.559,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	191,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [123]
+	[124] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.559,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	192,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [124]
+	[125] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.568,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	193,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [125]
+	[126] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.568,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	194,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [126]
+	[127] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.574,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	195,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [127]
+	[128] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.574,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	196,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [128]
+	[129] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.585,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	197,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [129]
+	[130] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.585,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	198,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [130]
+	[131] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.618,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	199,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [131]
+	[132] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.618,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	200,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [132]
+	[133] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"hit",
+		target_unit_type	=	"F-15C",
+		t	=	1033.629,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	201,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [133]
+	[134] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"bda",
+		target_unit_type	=	"F-15C",
+		t	=	1033.629,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	202,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [134]
+	[135] = 
+	{
+		weapon_type	=	2566,
+		type	=	"end shooting",
+		initiatorPilotName	=	"New callsign",
+		t	=	1034.09,
+		linked_event_id	=	0,
+		event_id	=	203,
+		initiator_unit_type	=	"F-16C_50",
+		uin64_t_value	=	109,
+		initiator_object_id	=	16779008,
+		weapon	=	"M-61",
+		ammo_consumption	=	109,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [135]
+	[136] = 
+	{
+		initiatorPilotName	=	"F-15C",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16778496,
+		target	=	"",
+		target_object_id	=	33666048,
+		targetPilotName	=	"",
+		type	=	"eject",
+		target_unit_type	=	"",
+		t	=	1035.25,
+		initiator_unit_type	=	"F-15C",
+		event_id	=	204,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"1",
+		initiator_coalition	=	1,
+	}, -- end of [136]
+	[137] = 
+	{
+		weapon_type	=	9243142,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	201,
+		targetMissionID	=	"1",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16779008,
+		target	=	"F-15C",
+		target_object_id	=	16778496,
+		targetPilotName	=	"F-15C",
+		type	=	"kill",
+		target_unit_type	=	"F-15C",
+		t	=	1035.25,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	205,
+		weapon	=	"PGU-28/B SAPHEI",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+		initiator_coalition	=	2,
+	}, -- end of [137]
+	[138] = 
+	{
+		type	=	"score",
+		initiatorPilotName	=	"New callsign",
+		t	=	1035.25,
+		linked_event_id	=	205,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	206,
+		initiator_object_id	=	16779008,
+		amount	=	50,
+		comment	=	"air",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"2",
+	}, -- end of [138]
+	[139] = 
+	{
+		type	=	"crash",
+		initiatorPilotName	=	"F-15C",
+		t	=	1065.92,
+		initiator_unit_type	=	"F-15C",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	208,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"1",
+	}, -- end of [139]
+	[140] = 
+	{
+		initiatorPilotName	=	"",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16842752,
+		target	=	"",
+		target_object_id	=	33666048,
+		targetPilotName	=	"",
+		type	=	"pilot discard chair",
+		target_unit_type	=	"",
+		t	=	1085.99,
+		initiator_unit_type	=	"",
+		event_id	=	209,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"0",
+		initiator_coalition	=	0,
+	}, -- end of [140]
+	[141] = 
+	{
+		type	=	"mission end",
+		comment	=	"winner: , msg: ",
+		t	=	1251.861,
+		linked_event_id	=	0,
+		event_id	=	211,
+	}, -- end of [141]
+} -- end of events
