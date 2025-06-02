@@ -13,7 +13,7 @@
                     DCS Mission Debrief
                 </h1>
                 <p class="lead text-white-50">
-                    Upload your DCS.log and debrief.log files for comprehensive mission analysis
+                    Upload your debrief.log file for mission analysis. DCS.log is optional for enhanced unit mapping.
                 </p>
             </div>
 
@@ -31,14 +31,14 @@
                         <div class="mb-4">
                             <label for="dcs_log" class="form-label fw-bold">
                                 <i class="fas fa-file-alt me-2 text-primary"></i>
-                                DCS.log File
+                                DCS.log File <span class="text-muted">(Optional)</span>
                             </label>
                             <div class="upload-area" id="dcsUploadArea">
-                                <input type="file" class="form-control d-none" id="dcs_log" name="dcs_log" accept=".log" required>
+                                <input type="file" class="form-control d-none" id="dcs_log" name="dcs_log" accept=".log">
                                 <div class="upload-content">
                                     <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
                                     <h5>Drop DCS.log file here or click to browse</h5>
-                                    <p class="text-muted">Contains unit mapping and mission data</p>
+                                    <p class="text-muted">Optional: Provides enhanced unit mapping and group information</p>
                                     <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('dcs_log').click()">
                                         Choose File
                                     </button>
@@ -55,14 +55,14 @@
                         <div class="mb-4">
                             <label for="debrief_log" class="form-label fw-bold">
                                 <i class="fas fa-file-code me-2 text-success"></i>
-                                debrief.log File
+                                debrief.log File <span class="text-danger">*</span>
                             </label>
                             <div class="upload-area" id="debriefUploadArea">
                                 <input type="file" class="form-control d-none" id="debrief_log" name="debrief_log" accept=".log" required>
                                 <div class="upload-content">
                                     <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
                                     <h5>Drop debrief.log file here or click to browse</h5>
-                                    <p class="text-muted">Contains detailed mission events and combat data</p>
+                                    <p class="text-muted">Required: Contains detailed mission events and combat data</p>
                                     <button type="button" class="btn btn-outline-success" onclick="document.getElementById('debrief_log').click()">
                                         Choose File
                                     </button>
@@ -77,6 +77,11 @@
 
                         <!-- Submit Button -->
                         <div class="text-center">
+                            <div class="alert alert-info mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Note:</strong> DCS.log is optional but recommended for enhanced unit mapping and group information. 
+                                Analysis will work with just debrief.log.
+                            </div>
                             <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn" disabled>
                                 <i class="fas fa-rocket me-2"></i>
                                 Analyze Mission
@@ -413,7 +418,8 @@ $(document).ready(function() {
     // Update submit button state
     function updateSubmitButton() {
         const submitBtn = document.getElementById('submitBtn');
-        if (dcsFileSelected && debriefFileSelected) {
+        // Only require debrief.log file, dcs.log is optional
+        if (debriefFileSelected) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;

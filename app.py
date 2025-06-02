@@ -104,20 +104,33 @@ class MissionAnalyzer:
         self.session_dir = os.path.join(RESULTS_FOLDER, mission_id)
         os.makedirs(self.session_dir, exist_ok=True)
         
-    def process_files(self, dcs_log_path, debrief_log_path):
+    def process_files(self, dcs_log_path=None, debrief_log_path=None):
         """Process the uploaded files through the analysis pipeline"""
         try:
-            # Step 1: Extract XML using dcs_xml_extractor.py
             xml_output_path = os.path.join(self.session_dir, 'unit_group_mapping.xml')
             
-            result = subprocess.run([
-                'python3', 'dcs_xml_extractor.py',
-                '--log', dcs_log_path,
-                '--output', xml_output_path
-            ], capture_output=True, text=True, cwd='.')
-            
-            if result.returncode != 0:
-                return False, f"XML extraction failed: {result.stderr}"
+            # Step 1: Extract XML using dcs_xml_extractor.py (only if dcs.log is provided)
+            if dcs_log_path and os.path.exists(dcs_log_path):
+                result = subprocess.run([
+                    'python3', 'dcs_xml_extractor.py',
+                    '--log', dcs_log_path,
+                    '--output', xml_output_path
+                ], capture_output=True, text=True, cwd='.')
+                
+                if result.returncode != 0:
+                    return False, f"XML extraction failed: {result.stderr}"
+            else:
+                # Create a minimal XML file if no dcs.log is provided
+                # This allows the mission analyzer to work with just debrief.log
+                minimal_xml = '''<?xml version="1.0" encoding="UTF-8"?>
+<mission>
+    <groups>
+    </groups>
+    <units>
+    </units>
+</mission>'''
+                with open(xml_output_path, 'w') as f:
+                    f.write(minimal_xml)
             
             # Step 2: Copy debrief log to session directory
             session_debrief_path = os.path.join(self.session_dir, 'debrief.log')
@@ -149,7 +162,8 @@ class MissionAnalyzer:
                 'mission_name': self.mission_metadata.get('mission_name', 'Unknown Mission'),
                 'mission_file_mark': self.mission_metadata.get('mission_file_mark', 0),
                 'mission_id': self.mission_id,
-                'analysis_timestamp': datetime.now().isoformat()
+                'analysis_timestamp': datetime.now().isoformat(),
+                'has_dcs_log': dcs_log_path is not None and os.path.exists(dcs_log_path)
             })
             
             # Save the enhanced mission data
@@ -735,7 +749,7 @@ class MissionAnalyzer:
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     def create_group_comparison_chart(self, data):
-        """Create comprehensive group comparison with multiple engaging visualizations"""
+        """Create comprehensive group comparison with individual formation radar charts"""
         groups = data.get('groups', {})
         pilots = data.get('pilots', {})
         
@@ -763,25 +777,71 @@ class MissionAnalyzer:
             elif group_data.get('coalition') == 2:  # Blue coalition
                 blue_groups.append(group_info)
         
-        # Create comprehensive comparison dashboard
+        all_groups = red_groups + blue_groups
+        total_groups = len(all_groups)
+        
+        # Calculate layout for radar charts - arrange in a grid
+        if total_groups <= 2:
+            radar_rows = 1
+            radar_cols = 2
+        elif total_groups <= 4:
+            radar_rows = 2
+            radar_cols = 2
+        elif total_groups <= 6:
+            radar_rows = 2
+            radar_cols = 3
+        elif total_groups <= 9:
+            radar_rows = 3
+            radar_cols = 3
+        else:
+            radar_rows = 4
+            radar_cols = 3
+        
+        # Create subplots with radar charts for each formation and summary charts
+        specs = []
+        subplot_titles = []
+        
+        # Add individual radar chart specs
+        for i in range(radar_rows):
+            row_specs = []
+            for j in range(radar_cols):
+                group_index = i * radar_cols + j
+                if group_index < total_groups:
+                    row_specs.append({"type": "scatterpolar"})
+                    group_info = all_groups[group_index]
+                    coalition_name = "Red" if group_info['coalition'] == 1 else "Blue" if group_info['coalition'] == 2 else "Neutral"
+                    subplot_titles.append(f'{group_info["name"]} ({coalition_name})')
+                else:
+                    row_specs.append({"type": "scatter"})
+                    subplot_titles.append("")
+            specs.append(row_specs)
+        
+        # Add summary charts below the radar charts
+        specs.append([{"type": "bar", "colspan": radar_cols}, None, None][:radar_cols])
+        subplot_titles.extend(["Coalition Force Strength"] + [""] * (radar_cols - 1))
+        
+        specs.append([{"type": "scatter"}, {"type": "histogram"}, {"type": "indicator"}][:radar_cols])
+        if radar_cols >= 3:
+            subplot_titles.extend(["Combat Performance Matrix", "Pilot Quality Distribution", "Formation Survivability"])
+        elif radar_cols == 2:
+            subplot_titles.extend(["Combat Performance Matrix", "Formation Survivability"])
+        else:
+            subplot_titles.extend(["Combat Performance Matrix"])
+        
         fig = make_subplots(
-            rows=3, cols=2,
-            subplot_titles=(
-                'Formation Effectiveness Radar', 'Coalition Force Strength',
-                'Combat Performance Matrix', 'Pilot Quality Distribution', 
-                'Tactical Efficiency Comparison', 'Formation Survivability'
-            ),
-            specs=[
-                [{"type": "scatterpolar"}, {"type": "bar"}],
-                [{"type": "scatter"}, {"type": "histogram"}],
-                [{"type": "bar"}, {"type": "indicator"}]
-            ],
-            vertical_spacing=0.12,
+            rows=radar_rows + 2,
+            cols=radar_cols,
+            subplot_titles=subplot_titles,
+            specs=specs,
+            vertical_spacing=0.08,
             horizontal_spacing=0.1
         )
         
-        # 1. Formation Effectiveness Radar Chart (Row 1, Col 1)
-        for group_info in red_groups + blue_groups:
+        # 1. Create individual formation effectiveness radar charts
+        for i, group_info in enumerate(all_groups):
+            row = (i // radar_cols) + 1
+            col = (i % radar_cols) + 1
+            
             group_data = group_info['data']
             group_name = group_info['name']
             coalition = group_info['coalition']
@@ -793,18 +853,31 @@ class MissionAnalyzer:
             activity = min(group_data.get('total_shots', 0) * 5, 100)  # Scale activity
             lethality = min(group_data.get('total_kills', 0) * 25, 100)  # Scale kills
             
-            color = 'red' if coalition == 1 else 'blue'
+            # Add additional metrics
+            coordination = min(group_data.get('total_pilots', 1) * 15, 100)  # Formation size as coordination indicator
+            
+            color = '#dc2626' if coalition == 1 else '#2563eb' if coalition == 2 else '#6b7280'
+            fill_color = 'rgba(220, 38, 38, 0.3)' if coalition == 1 else 'rgba(37, 99, 235, 0.3)' if coalition == 2 else 'rgba(107, 114, 128, 0.3)'
             
             fig.add_trace(go.Scatterpolar(
-                r=[accuracy, survivability, efficiency, activity, lethality],
-                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity', 'Lethality'],
+                r=[accuracy, survivability, efficiency, activity, lethality, coordination],
+                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity', 'Lethality', 'Coordination'],
                 fill='toself',
-                name=f"{group_name} ({['Neutral', 'Red', 'Blue'][coalition]})",
+                name=f"{group_name}",
                 line_color=color,
-                fillcolor=f'rgba({255 if coalition == 1 else 0}, 0, {255 if coalition == 2 else 0}, 0.3)'
-            ), row=1, col=1)
+                fillcolor=fill_color,
+                hovertemplate="<b>" + group_name + "</b><br>" +
+                             "Accuracy: %{r[0]:.1f}%<br>" +
+                             "Survivability: %{r[1]:.1f}%<br>" +
+                             "Efficiency: %{r[2]:.1f}<br>" +
+                             "Activity: %{r[3]:.1f}<br>" +
+                             "Lethality: %{r[4]:.1f}<br>" +
+                             "Coordination: %{r[5]:.1f}<extra></extra>",
+                showlegend=False
+            ), row=row, col=col)
         
-        # 2. Coalition Force Strength (Row 1, Col 2)
+        # 2. Coalition Force Strength (spans full width)
+        summary_row = radar_rows + 1
         coalition_names = []
         coalition_pilots = []
         coalition_kills = []
@@ -819,13 +892,13 @@ class MissionAnalyzer:
             coalition_names.append('Red Coalition')
             coalition_pilots.append(red_total_pilots)
             coalition_kills.append(red_total_kills)
-            coalition_colors.append('red')
+            coalition_colors.append('#dc2626')
         
         if blue_total_pilots > 0:
             coalition_names.append('Blue Coalition')
             coalition_pilots.append(blue_total_pilots)
             coalition_kills.append(blue_total_kills)
-            coalition_colors.append('blue')
+            coalition_colors.append('#2563eb')
         
         fig.add_trace(go.Bar(
             x=coalition_names,
@@ -833,165 +906,157 @@ class MissionAnalyzer:
             name="Total Pilots",
             marker_color=coalition_colors,
             text=[f"{p} pilots<br>{k} kills" for p, k in zip(coalition_pilots, coalition_kills)],
-            textposition="inside"
-        ), row=1, col=2)
-        
-        # 3. Combat Performance Matrix (Row 2, Col 1)
-        group_names = []
-        group_accuracy = []
-        group_kills = []
-        group_colors = []
-        group_sizes = []
-        
-        for group_info in red_groups + blue_groups:
-            group_data = group_info['data']
-            group_names.append(group_info['name'])
-            group_accuracy.append(group_data.get('group_accuracy', 0))
-            group_kills.append(group_data.get('total_kills', 0))
-            group_colors.append('red' if group_info['coalition'] == 1 else 'blue')
-            group_sizes.append(max(group_data.get('total_pilots', 1) * 10, 20))  # Size based on pilot count
-        
-        fig.add_trace(go.Scatter(
-            x=group_accuracy,
-            y=group_kills,
-            mode='markers+text',
-            text=group_names,
-            textposition="top center",
-            marker=dict(
-                size=group_sizes,
-                color=group_colors,
-                opacity=0.7,
-                line=dict(width=2, color='white')
-            ),
-            name="Groups",
-            hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Kills: %{y}<extra></extra>"
-        ), row=2, col=1)
-        
-        # 4. Pilot Quality Distribution (Row 2, Col 2)
-        all_pilot_efficiencies = []
-        pilot_coalitions = []
-        
-        for pilot_name, pilot_data in pilots.items():
-            efficiency = pilot_data.get('efficiency_rating', 0)
-            coalition = pilot_data.get('coalition', 0)
-            if efficiency > 0:  # Only include active pilots
-                all_pilot_efficiencies.append(efficiency)
-                pilot_coalitions.append(coalition)
-        
-        # Create histogram for each coalition
-        red_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 1]
-        blue_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 2]
-        
-        if red_efficiencies:
-            fig.add_trace(go.Histogram(
-                x=red_efficiencies,
-                name="Red Pilots",
-                marker_color='red',
-                opacity=0.7,
-                nbinsx=10
-            ), row=2, col=2)
-        
-        if blue_efficiencies:
-            fig.add_trace(go.Histogram(
-                x=blue_efficiencies,
-                name="Blue Pilots",
-                marker_color='blue',
-                opacity=0.7,
-                nbinsx=10
-            ), row=2, col=2)
-        
-        # 5. Tactical Efficiency Comparison (Row 3, Col 1)
-        efficiency_names = []
-        efficiency_values = []
-        efficiency_colors = []
-        
-        for group_info in sorted(red_groups + blue_groups, 
-                               key=lambda x: x['data'].get('average_pilot_efficiency', 0), 
-                               reverse=True):
-            group_data = group_info['data']
-            efficiency_names.append(group_info['name'])
-            efficiency_values.append(group_data.get('average_pilot_efficiency', 0))
-            efficiency_colors.append('red' if group_info['coalition'] == 1 else 'blue')
-        
-        fig.add_trace(go.Bar(
-            y=efficiency_names,
-            x=efficiency_values,
-            orientation='h',
-            marker_color=efficiency_colors,
-            text=[f"{v:.1f}" for v in efficiency_values],
             textposition="inside",
-            name="Formation Efficiency"
-        ), row=3, col=1)
+            showlegend=False
+        ), row=summary_row, col=1)
         
-        # 6. Formation Survivability Indicator (Row 3, Col 2)
-        if red_groups and blue_groups:
-            red_survivability = sum(g['data'].get('group_survivability', 0) for g in red_groups) / len(red_groups)
-            blue_survivability = sum(g['data'].get('group_survivability', 0) for g in blue_groups) / len(blue_groups)
+        # 3. Combat Performance Matrix
+        detail_row = radar_rows + 2
+        if radar_cols >= 1:
+            group_names = []
+            group_accuracy = []
+            group_kills = []
+            group_colors = []
+            group_sizes = []
             
-            # Determine winner
-            if red_survivability > blue_survivability:
-                winner_text = f"Red Coalition<br>Superior Survivability<br>{red_survivability:.1f}% vs {blue_survivability:.1f}%"
-                winner_color = "red"
-            elif blue_survivability > red_survivability:
-                winner_text = f"Blue Coalition<br>Superior Survivability<br>{blue_survivability:.1f}% vs {red_survivability:.1f}%"
-                winner_color = "blue"
-            else:
-                winner_text = f"Equal Survivability<br>{red_survivability:.1f}%"
-                winner_color = "gray"
+            for group_info in all_groups:
+                group_data = group_info['data']
+                group_names.append(group_info['name'])
+                group_accuracy.append(group_data.get('group_accuracy', 0))
+                group_kills.append(group_data.get('total_kills', 0))
+                group_colors.append('#dc2626' if group_info['coalition'] == 1 else '#2563eb')
+                group_sizes.append(max(group_data.get('total_pilots', 1) * 10, 20))  # Size based on pilot count
             
-            fig.add_trace(go.Indicator(
-                mode="number+delta+gauge",
-                value=max(red_survivability, blue_survivability),
-                delta={'reference': 50, 'relative': True},
-                gauge={
-                    'axis': {'range': [None, 100]},
-                    'bar': {'color': winner_color},
-                    'steps': [
-                        {'range': [0, 50], 'color': "lightgray"},
-                        {'range': [50, 75], 'color': "yellow"},
-                        {'range': [75, 100], 'color': "lightgreen"}
-                    ],
-                    'threshold': {
-                        'line': {'color': "red", 'width': 4},
-                        'thickness': 0.75,
-                        'value': 90
-                    }
-                },
-                title={'text': winner_text, 'font': {'size': 14}},
-                number={'font': {'size': 20}}
-            ), row=3, col=2)
+            fig.add_trace(go.Scatter(
+                x=group_accuracy,
+                y=group_kills,
+                mode='markers+text',
+                text=group_names,
+                textposition="top center",
+                marker=dict(
+                    size=group_sizes,
+                    color=group_colors,
+                    opacity=0.7,
+                    line=dict(width=2, color='white')
+                ),
+                name="Groups",
+                hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Kills: %{y}<br>Pilots: %{marker.size}<extra></extra>",
+                showlegend=False
+            ), row=detail_row, col=1)
+        
+        # 4. Pilot Quality Distribution
+        if radar_cols >= 2:
+            all_pilot_efficiencies = []
+            pilot_coalitions = []
+            
+            for pilot_name, pilot_data in pilots.items():
+                efficiency = pilot_data.get('efficiency_rating', 0)
+                coalition = pilot_data.get('coalition', 0)
+                if efficiency > 0:  # Only include active pilots
+                    all_pilot_efficiencies.append(efficiency)
+                    pilot_coalitions.append(coalition)
+            
+            # Create histogram for each coalition
+            red_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 1]
+            blue_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 2]
+            
+            if red_efficiencies:
+                fig.add_trace(go.Histogram(
+                    x=red_efficiencies,
+                    name="Red Pilots",
+                    marker_color='#dc2626',
+                    opacity=0.7,
+                    nbinsx=10,
+                    showlegend=False
+                ), row=detail_row, col=2)
+            
+            if blue_efficiencies:
+                fig.add_trace(go.Histogram(
+                    x=blue_efficiencies,
+                    name="Blue Pilots",
+                    marker_color='#2563eb',
+                    opacity=0.7,
+                    nbinsx=10,
+                    showlegend=False
+                ), row=detail_row, col=2)
+        
+        # 5. Formation Survivability Indicator
+        if radar_cols >= 3:
+            if red_groups and blue_groups:
+                red_survivability = sum(g['data'].get('group_survivability', 0) for g in red_groups) / len(red_groups)
+                blue_survivability = sum(g['data'].get('group_survivability', 0) for g in blue_groups) / len(blue_groups)
+                
+                # Determine winner
+                if red_survivability > blue_survivability:
+                    winner_text = f"Red Coalition<br>Superior Survivability<br>{red_survivability:.1f}% vs {blue_survivability:.1f}%"
+                    winner_color = "#dc2626"
+                    winner_value = red_survivability
+                elif blue_survivability > red_survivability:
+                    winner_text = f"Blue Coalition<br>Superior Survivability<br>{blue_survivability:.1f}% vs {red_survivability:.1f}%"
+                    winner_color = "#2563eb"
+                    winner_value = blue_survivability
+                else:
+                    winner_text = f"Equal Survivability<br>{red_survivability:.1f}%"
+                    winner_color = "#6b7280"
+                    winner_value = red_survivability
+                
+                fig.add_trace(go.Indicator(
+                    mode="number+delta+gauge",
+                    value=winner_value,
+                    delta={'reference': 50, 'relative': True},
+                    gauge={
+                        'axis': {'range': [None, 100]},
+                        'bar': {'color': winner_color},
+                        'steps': [
+                            {'range': [0, 50], 'color': "lightgray"},
+                            {'range': [50, 75], 'color': "#fbbf24"},
+                            {'range': [75, 100], 'color': "#10b981"}
+                        ],
+                        'threshold': {
+                            'line': {'color': "#dc2626", 'width': 4},
+                            'thickness': 0.75,
+                            'value': 90
+                        }
+                    },
+                    title={'text': winner_text, 'font': {'size': 12}},
+                    number={'font': {'size': 16}},
+                    showlegend=False
+                ), row=detail_row, col=3)
         
         # Update layout
+        total_height = 400 + (radar_rows * 300) + 400  # Base + radar charts + summary charts
+        
         fig.update_layout(
             title={
-                'text': "Formation Analysis Dashboard - Tactical Performance Comparison",
+                'text': f"Formation Analysis Dashboard - Individual Formation Effectiveness ({len(all_groups)} Formations)",
                 'x': 0.5,
-                'font': {'size': 20}
+                'font': {'size': 20, 'color': '#1a202c'}
             },
-            showlegend=True,
-            height=1200,
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
+            showlegend=False,  # Individual charts don't need legend
+            height=total_height,
+            margin=dict(t=80, b=60, l=60, r=60)
+        )
+        
+        # Update polar charts for all radar charts
+        for i in range(total_groups):
+            row = (i // radar_cols) + 1
+            col = (i % radar_cols) + 1
+            fig.update_polars(
+                radialaxis=dict(visible=True, range=[0, 100], tickfont=dict(size=10)),
+                angularaxis=dict(tickfont=dict(size=10)),
+                row=row, col=col
             )
-        )
         
-        # Update polar chart
-        fig.update_polars(
-            radialaxis=dict(visible=True, range=[0, 100]),
-            row=1, col=1
-        )
+        # Update axis labels for summary charts
+        if radar_cols >= 1:
+            fig.update_xaxes(title_text="Accuracy (%)", row=detail_row, col=1)
+            fig.update_yaxes(title_text="Total Kills", row=detail_row, col=1)
         
-        # Update axis labels
-        fig.update_xaxes(title_text="Accuracy (%)", row=2, col=1)
-        fig.update_yaxes(title_text="Total Kills", row=2, col=1)
-        fig.update_xaxes(title_text="Pilot Efficiency Rating", row=2, col=2)
-        fig.update_yaxes(title_text="Number of Pilots", row=2, col=2)
-        fig.update_xaxes(title_text="Average Efficiency", row=3, col=1)
-        fig.update_yaxes(title_text="Formation", row=3, col=1)
+        if radar_cols >= 2:
+            fig.update_xaxes(title_text="Pilot Efficiency Rating", row=detail_row, col=2)
+            fig.update_yaxes(title_text="Number of Pilots", row=detail_row, col=2)
+        
+        fig.update_yaxes(title_text="Total Pilots", row=summary_row, col=1)
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
@@ -1382,28 +1447,37 @@ class MissionAnalyzer:
         all_relationships = pilot_to_pilot_relationships + pilot_to_ground_relationships
         
         if not all_relationships:
-            # Create informative empty state
+            # Create visually appealing empty state
             fig = go.Figure()
             fig.add_annotation(
-                text="No Kill Relationships Found<br><br>" +
-                     "This could mean:<br>" +
-                     "• No pilots were shot down by other pilots<br>" +
-                     "• No ground units were destroyed by pilots<br>" +
-                     "• Deaths were caused by crashes, system failures, or other causes<br>" +
-                     "• Kill attribution data is not available in the logs",
+                text="<b>No Kill Relationships Found</b><br><br>" +
+                     "<span style='color: #666;'>This mission shows:</span><br>" +
+                     "🎯 No pilot-to-pilot engagements<br>" +
+                     "🏗️ No ground targets destroyed<br>" +
+                     "✈️ Deaths from crashes or system failures<br>" +
+                     "📊 Limited combat engagement data",
                 xref="paper", yref="paper",
                 x=0.5, y=0.5, 
                 showarrow=False,
-                font=dict(size=16),
-                align="center"
+                font=dict(size=18, color='#2d3748'),
+                align="center",
+                bgcolor="rgba(255,255,255,0.95)",
+                bordercolor="#e2e8f0",
+                borderwidth=2,
+                borderpad=20
             )
             fig.update_layout(
-                title="Kill/Death Network Analysis",
+                title={
+                    'text': "<b>Kill/Death Network Analysis</b>",
+                    'x': 0.5,
+                    'font': {'size': 24, 'color': '#1a202c'}
+                },
                 xaxis=dict(visible=False),
                 yaxis=dict(visible=False),
-                height=400,
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)'
+                height=500,
+                plot_bgcolor='rgba(247,250,252,0.8)',
+                paper_bgcolor='linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                margin=dict(t=80, b=40, l=40, r=40)
             )
             return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         
@@ -1463,7 +1537,29 @@ class MissionAnalyzer:
                     pilot_edge_x.extend([x0, x1, None])
                     pilot_edge_y.extend([y0, y1, None])
                     
-                    # Add arrow annotation for direction
+                    # Add enhanced arrow annotation for direction
+                    fig.add_annotation(
+                        x=(x0 + x1) / 2,
+                        y=(y0 + y1) / 2,
+                        ax=x0, ay=y0,
+                        axref='x', ayref='y',
+                        xref='x', yref='y',
+                        showarrow=True,
+                        arrowhead=3,
+                        arrowsize=2,
+                        arrowwidth=3,
+                        arrowcolor='#dc2626',
+                        text="",
+                        bgcolor="rgba(255,255,255,0.95)",
+                        bordercolor="#dc2626",
+                        borderwidth=2
+                    )
+                else:  # pilot_to_ground
+                    # Add pilot-to-ground edge coordinates
+                    ground_edge_x.extend([x0, x1, None])
+                    ground_edge_y.extend([y0, y1, None])
+                    
+                    # Add enhanced arrow annotation for ground kills
                     fig.add_annotation(
                         x=(x0 + x1) / 2,
                         y=(y0 + y1) / 2,
@@ -1474,55 +1570,33 @@ class MissionAnalyzer:
                         arrowhead=2,
                         arrowsize=1.5,
                         arrowwidth=2,
-                        arrowcolor='darkred',
+                        arrowcolor='#f59e0b',
                         text="",
-                        bgcolor="rgba(255,255,255,0.8)",
-                        bordercolor="darkred",
-                        borderwidth=1
-                    )
-                else:  # pilot_to_ground
-                    # Add pilot-to-ground edge coordinates
-                    ground_edge_x.extend([x0, x1, None])
-                    ground_edge_y.extend([y0, y1, None])
-                    
-                    # Add arrow annotation for ground kills
-                    fig.add_annotation(
-                        x=(x0 + x1) / 2,
-                        y=(y0 + y1) / 2,
-                        ax=x0, ay=y0,
-                        axref='x', ayref='y',
-                        xref='x', yref='y',
-                        showarrow=True,
-                        arrowhead=2,
-                        arrowsize=1.2,
-                        arrowwidth=1.5,
-                        arrowcolor='darkorange',
-                        text="",
-                        bgcolor="rgba(255,255,255,0.6)",
-                        bordercolor="darkorange",
+                        bgcolor="rgba(255,255,255,0.9)",
+                        bordercolor="#f59e0b",
                         borderwidth=1
                     )
         
-        # Add pilot-to-pilot edges
+        # Add pilot-to-pilot edges with enhanced styling
         if pilot_edge_x:
             fig.add_trace(go.Scatter(
                 x=pilot_edge_x, y=pilot_edge_y,
                 mode='lines',
-                line=dict(width=3, color='darkred'),
+                line=dict(width=4, color='#dc2626', dash='solid'),
                 hoverinfo='none',
                 showlegend=True,
-                name='Pilot vs Pilot Kills'
+                name='🎯 Pilot vs Pilot Kills'
             ))
         
-        # Add pilot-to-ground edges
+        # Add pilot-to-ground edges with enhanced styling
         if ground_edge_x:
             fig.add_trace(go.Scatter(
                 x=ground_edge_x, y=ground_edge_y,
                 mode='lines',
-                line=dict(width=2, color='darkorange', dash='dot'),
+                line=dict(width=3, color='#f59e0b', dash='dash'),
                 hoverinfo='none',
                 showlegend=True,
-                name='Ground Unit Kills'
+                name='🏗️ Ground Unit Kills'
             ))
         
         # Separate pilots by coalition and role
@@ -1564,11 +1638,11 @@ class MissionAnalyzer:
             else:
                 neutral_pilots.append(pilot_info)
         
-        # Add pilot nodes by coalition
-        for coalition_pilots, color, name in [
-            (red_pilots, 'red', 'Red Coalition Pilots'),
-            (blue_pilots, 'blue', 'Blue Coalition Pilots'),
-            (neutral_pilots, 'gray', 'Unknown Coalition Pilots')
+        # Add pilot nodes by coalition with enhanced styling
+        for coalition_pilots, color_scheme, name in [
+            (red_pilots, {'primary': '#dc2626', 'secondary': '#fee2e2', 'border': '#991b1b'}, '🔴 Red Coalition Pilots'),
+            (blue_pilots, {'primary': '#2563eb', 'secondary': '#dbeafe', 'border': '#1d4ed8'}, '🔵 Blue Coalition Pilots'),
+            (neutral_pilots, {'primary': '#6b7280', 'secondary': '#f3f4f6', 'border': '#4b5563'}, '⚪ Unknown Coalition Pilots')
         ]:
             if not coalition_pilots:
                 continue
@@ -1577,46 +1651,52 @@ class MissionAnalyzer:
             node_sizes = []
             node_symbols = []
             hover_texts = []
+            node_colors = []
             
             for pilot in coalition_pilots:
-                # Base size on total kills, minimum 15, maximum 50
-                base_size = 15 + min(pilot['total_kills'] * 4, 35)
+                # Base size on total kills, minimum 20, maximum 60
+                base_size = 20 + min(pilot['total_kills'] * 5, 40)
                 
                 # Increase size for killers, decrease for victims
                 if pilot['is_killer'] and pilot['is_victim']:
-                    size = base_size + 5  # Both killer and victim
+                    size = base_size + 8  # Both killer and victim
                     symbol = 'diamond'
+                    node_color = color_scheme['primary']
                 elif pilot['is_killer']:
-                    size = base_size + 8  # Pure killer
+                    size = base_size + 12  # Pure killer
                     symbol = 'triangle-up'
+                    node_color = color_scheme['primary']
                 elif pilot['is_victim']:
-                    size = base_size - 3  # Pure victim
+                    size = base_size  # Pure victim
                     symbol = 'x'
+                    node_color = color_scheme['border']
                 else:
-                    size = base_size  # No direct involvement
+                    size = base_size - 2  # No direct involvement
                     symbol = 'circle'
+                    node_color = color_scheme['secondary']
                 
                 node_sizes.append(size)
                 node_symbols.append(symbol)
+                node_colors.append(node_color)
                 
-                # Create detailed hover text
+                # Create enhanced hover text
                 role_text = []
                 if pilot['is_killer']:
-                    role_text.append("Killer")
+                    role_text.append("🎯 Killer")
                 if pilot['is_victim']:
-                    role_text.append("Victim")
+                    role_text.append("💀 Victim")
                 if not role_text:
-                    role_text.append("Observer")
+                    role_text.append("👁️ Observer")
                 
                 hover_text = (
-                    f"<b>{pilot['name']}</b><br>"
-                    f"Aircraft: {pilot['aircraft']}<br>"
-                    f"Role: {', '.join(role_text)}<br>"
-                    f"Pilot Kills: {pilot['pilot_kills']}<br>"
-                    f"Ground Kills: {pilot['ground_kills']}<br>"
-                    f"Total Kills: {pilot['total_kills']}<br>"
-                    f"Deaths: {pilot['deaths']}<br>"
-                    f"Efficiency: {pilot['efficiency']:.1f}"
+                    f"<b>🛩️ {pilot['name']}</b><br>"
+                    f"✈️ Aircraft: {pilot['aircraft']}<br>"
+                    f"🎭 Role: {', '.join(role_text)}<br>"
+                    f"🎯 Pilot Kills: {pilot['pilot_kills']}<br>"
+                    f"🏗️ Ground Kills: {pilot['ground_kills']}<br>"
+                    f"💥 Total Kills: {pilot['total_kills']}<br>"
+                    f"💀 Deaths: {pilot['deaths']}<br>"
+                    f"⭐ Efficiency: {pilot['efficiency']:.1f}"
                 )
                 hover_texts.append(hover_text)
             
@@ -1626,21 +1706,21 @@ class MissionAnalyzer:
                 mode='markers+text',
                 marker=dict(
                     size=node_sizes,
-                    color=color,
+                    color=node_colors,
                     symbol=node_symbols,
-                    line=dict(width=2, color='white'),
-                    opacity=0.8
+                    line=dict(width=3, color='white'),
+                    opacity=0.9
                 ),
                 text=[p['name'] for p in coalition_pilots],
                 textposition="bottom center",
-                textfont=dict(size=10, color='black'),
+                textfont=dict(size=11, color='#1a202c', family='Arial Black'),
                 hovertemplate='%{hovertext}<extra></extra>',
                 hovertext=hover_texts,
                 name=name,
                 showlegend=True
             ))
         
-        # Add ground units by coalition
+        # Add ground units by coalition with enhanced styling
         red_ground = []
         blue_ground = []
         neutral_ground = []
@@ -1678,11 +1758,11 @@ class MissionAnalyzer:
                 else:
                     neutral_ground.append(ground_info)
         
-        # Add ground unit nodes by coalition
-        for coalition_ground, color, name in [
-            (red_ground, 'darkred', 'Red Ground Units'),
-            (blue_ground, 'darkblue', 'Blue Ground Units'),
-            (neutral_ground, 'darkgray', 'Unknown Ground Units')
+        # Add ground unit nodes by coalition with enhanced styling
+        for coalition_ground, color_scheme, name in [
+            (red_ground, {'primary': '#7f1d1d', 'border': '#dc2626'}, '🟥 Red Ground Units'),
+            (blue_ground, {'primary': '#1e3a8a', 'border': '#2563eb'}, '🟦 Blue Ground Units'),
+            (neutral_ground, {'primary': '#374151', 'border': '#6b7280'}, '⬜ Unknown Ground Units')
         ]:
             if not coalition_ground:
                 continue
@@ -1690,10 +1770,10 @@ class MissionAnalyzer:
             hover_texts = []
             for ground in coalition_ground:
                 hover_text = (
-                    f"<b>{ground['unit_type']}</b><br>"
-                    f"Destroyed by: {ground['weapon']}<br>"
-                    f"Time: {ground['time']:.1f}s<br>"
-                    f"Coalition: {['Neutral', 'Red', 'Blue'][ground['coalition']]}"
+                    f"<b>🏗️ {ground['unit_type']}</b><br>"
+                    f"💥 Destroyed by: {ground['weapon']}<br>"
+                    f"⏰ Time: {ground['time']:.1f}s<br>"
+                    f"🎌 Coalition: {['Neutral', 'Red', 'Blue'][ground['coalition']]}"
                 )
                 hover_texts.append(hover_text)
             
@@ -1702,40 +1782,41 @@ class MissionAnalyzer:
                 y=[g['y'] for g in coalition_ground],
                 mode='markers+text',
                 marker=dict(
-                    size=12,
-                    color=color,
+                    size=16,
+                    color=color_scheme['primary'],
                     symbol='square',
-                    line=dict(width=1, color='white'),
-                    opacity=0.7
+                    line=dict(width=2, color=color_scheme['border']),
+                    opacity=0.8
                 ),
                 text=[g['unit_type'] for g in coalition_ground],
                 textposition="bottom center",
-                textfont=dict(size=8, color='black'),
+                textfont=dict(size=9, color='#1a202c', family='Arial'),
                 hovertemplate='%{hovertext}<extra></extra>',
                 hovertext=hover_texts,
                 name=name,
                 showlegend=True
             ))
         
-        # Add relationship summary as annotations
+        # Add relationship summary as enhanced annotations
         pilot_relationships = len(pilot_to_pilot_relationships)
         ground_relationships = len(pilot_to_ground_relationships)
         total_entities = len(all_entities)
         
-        summary_text = f"Network Analysis: {pilot_relationships} pilot kill(s), {ground_relationships} ground kill(s) among {total_entities} entities"
+        summary_text = f"📊 Network Analysis: {pilot_relationships} pilot kill(s), {ground_relationships} ground kill(s) among {total_entities} entities"
         fig.add_annotation(
             text=summary_text,
             xref="paper", yref="paper",
-            x=0.5, y=0.95,
+            x=0.5, y=0.97,
             showarrow=False,
-            font=dict(size=14, color='black'),
-            bgcolor="rgba(255,255,255,0.8)",
-            bordercolor="gray",
-            borderwidth=1
+            font=dict(size=16, color='#1a202c', family='Arial Black'),
+            bgcolor="rgba(255,255,255,0.95)",
+            bordercolor="#e2e8f0",
+            borderwidth=2,
+            borderpad=10
         )
         
-        # Add detailed relationship list
-        rel_text = "Kill Relationships:<br>"
+        # Add detailed relationship list with enhanced styling
+        rel_text = "<b>🔥 Kill Relationships:</b><br>"
         rel_count = 0
         
         # Add pilot-to-pilot relationships
@@ -1744,7 +1825,7 @@ class MissionAnalyzer:
                 break
             killer_aircraft = rel['killer_data'].get('aircraft_type', 'Unknown')
             victim_aircraft = rel['victim_data'].get('aircraft_type', 'Unknown')
-            rel_text += f"• {rel['killer']} ({killer_aircraft}) → {rel['victim']} ({victim_aircraft})<br>"
+            rel_text += f"🎯 {rel['killer']} ({killer_aircraft}) ➤ {rel['victim']} ({victim_aircraft})<br>"
             rel_count += 1
         
         # Add pilot-to-ground relationships
@@ -1754,55 +1835,62 @@ class MissionAnalyzer:
             killer_aircraft = rel['killer_data'].get('aircraft_type', 'Unknown')
             victim_type = rel['victim_data'].get('unit_type', 'Unknown')
             weapon = rel.get('weapon', 'Unknown')
-            rel_text += f"• {rel['killer']} ({killer_aircraft}) → {victim_type} [{weapon}]<br>"
+            rel_text += f"🏗️ {rel['killer']} ({killer_aircraft}) ➤ {victim_type} [{weapon}]<br>"
             rel_count += 1
         
         if len(all_relationships) > 8:
-            rel_text += f"... and {len(all_relationships) - 8} more"
+            rel_text += f"<i>... and {len(all_relationships) - 8} more</i>"
         
         fig.add_annotation(
             text=rel_text,
             xref="paper", yref="paper",
             x=0.02, y=0.98,
             showarrow=False,
-            font=dict(size=10, color='black'),
-            bgcolor="rgba(255,255,255,0.9)",
-            bordercolor="gray",
-            borderwidth=1,
+            font=dict(size=11, color='#2d3748', family='Arial'),
+            bgcolor="rgba(255,255,255,0.95)",
+            bordercolor="#cbd5e0",
+            borderwidth=2,
+            borderpad=8,
             align="left",
             valign="top"
         )
         
-        # Update layout
+        # Update layout with modern, appealing styling
         fig.update_layout(
             title={
-                'text': "Kill/Death Network - Combat Relationship Analysis (Pilots & Ground Units)",
+                'text': "<b>🌐 Kill/Death Network</b><br><span style='font-size:14px; color:#718096;'>Combat Relationship Analysis</span>",
                 'x': 0.5,
-                'font': {'size': 18}
+                'font': {'size': 24, 'color': '#1a202c', 'family': 'Arial Black'}
             },
             xaxis=dict(
                 visible=False,
-                range=[min([pos[0] for pos in entity_positions.values()]) - 1,
-                       max([pos[0] for pos in entity_positions.values()]) + 1]
+                range=[min([pos[0] for pos in entity_positions.values()]) - 1.5,
+                       max([pos[0] for pos in entity_positions.values()]) + 1.5]
             ),
             yaxis=dict(
                 visible=False,
-                range=[min([pos[1] for pos in entity_positions.values()]) - 1,
-                       max([pos[1] for pos in entity_positions.values()]) + 1],
+                range=[min([pos[1] for pos in entity_positions.values()]) - 1.5,
+                       max([pos[1] for pos in entity_positions.values()]) + 1.5],
                 scaleanchor="x",
                 scaleratio=1
             ),
-            height=700,
-            plot_bgcolor='rgba(240,240,240,0.3)',
-            paper_bgcolor='white',
+            height=750,
+            plot_bgcolor='rgba(247,250,252,0.9)',
+            paper_bgcolor='rgba(255,255,255,0.95)',
             hovermode='closest',
             legend=dict(
                 orientation="v",
                 yanchor="top",
-                y=1,
+                y=0.98,
                 xanchor="left",
-                x=1.02
-            )
+                x=1.01,
+                bgcolor="rgba(255,255,255,0.95)",
+                bordercolor="#e2e8f0",
+                borderwidth=2,
+                font=dict(size=12, color='#2d3748')
+            ),
+            margin=dict(t=120, b=60, l=60, r=200),
+            font=dict(family='Arial', size=12, color='#2d3748')
         )
         
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -2416,88 +2504,113 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_files():
-    if 'dcs_log' not in request.files or 'debrief_log' not in request.files:
-        flash('Both DCS.log and debrief.log files are required')
+    # debrief.log is required, dcs.log is optional
+    if 'debrief_log' not in request.files:
+        flash('debrief.log file is required')
         return redirect(request.url)
     
-    dcs_file = request.files['dcs_log']
+    dcs_file = request.files.get('dcs_log')
     debrief_file = request.files['debrief_log']
     
-    if dcs_file.filename == '' or debrief_file.filename == '':
-        flash('Please select both files')
+    # Check if debrief.log is provided
+    if debrief_file.filename == '':
+        flash('Please select a debrief.log file')
         return redirect(request.url)
     
-    if dcs_file and allowed_file(dcs_file.filename) and debrief_file and allowed_file(debrief_file.filename):
-        # Save uploaded files temporarily to extract mission metadata
-        temp_dcs_path = tempfile.mktemp(suffix='.log')
-        temp_debrief_path = tempfile.mktemp(suffix='.log')
-        
-        try:
-            dcs_file.save(temp_dcs_path)
-            debrief_file.save(temp_debrief_path)
-            
-            # Extract mission metadata from debrief log
-            mission_metadata = extract_mission_metadata(temp_debrief_path)
-            mission_id = mission_metadata['mission_id']
-            
-            # Check if this mission has already been analyzed
-            existing_session_dir = os.path.join(RESULTS_FOLDER, mission_id)
-            if os.path.exists(existing_session_dir):
-                # Mission already exists, redirect to existing analysis
-                flash(f'Mission "{mission_metadata["mission_name"]}" has already been analyzed. Showing existing results.')
-                return redirect(url_for('dashboard', session_id=mission_id))
-            
-            # Save files with mission-based naming
-            dcs_filename = secure_filename(dcs_file.filename)
-            debrief_filename = secure_filename(debrief_file.filename)
-            
-            dcs_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_dcs.log")
-            debrief_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_debrief.log")
-            
-            # Move temp files to final locations
-            shutil.move(temp_dcs_path, dcs_path)
-            shutil.move(temp_debrief_path, debrief_path)
-            
-            # Process files with mission-based analyzer
-            analyzer = MissionAnalyzer(mission_id, mission_metadata)
-            success, result = analyzer.process_files(dcs_path, debrief_path)
-            
-            if success:
-                # Create visualizations
-                visualizations = analyzer.create_visualizations(result)
-                
-                # Store session data with mission metadata
-                session_data = {
-                    'mission_data': result,
-                    'visualizations': visualizations,
-                    'mission_metadata': mission_metadata,
-                    'timestamp': datetime.now().isoformat()
-                }
-                
-                session_file = os.path.join(analyzer.session_dir, 'session_data.json')
-                with open(session_file, 'w') as f:
-                    json.dump(session_data, f)
-                
-                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}"')
-                return redirect(url_for('dashboard', session_id=mission_id))
-            else:
-                flash(f'Processing failed: {result}')
-                return redirect(url_for('index'))
-                
-        except Exception as e:
-            flash(f'Error processing files: {str(e)}')
-            return redirect(url_for('index'))
-        finally:
-            # Clean up temp files if they still exist
-            for temp_file in [temp_dcs_path, temp_debrief_path]:
-                if os.path.exists(temp_file):
-                    try:
-                        os.remove(temp_file)
-                    except:
-                        pass
+    # Validate debrief.log file
+    if not (debrief_file and allowed_file(debrief_file.filename)):
+        flash('Invalid debrief.log file format. Please upload a .log file.')
+        return redirect(url_for('index'))
     
-    flash('Invalid file format. Please upload .log files only.')
-    return redirect(url_for('index'))
+    # Validate dcs.log file if provided
+    dcs_file_valid = True
+    if dcs_file and dcs_file.filename != '':
+        if not allowed_file(dcs_file.filename):
+            flash('Invalid dcs.log file format. Please upload a .log file.')
+            return redirect(url_for('index'))
+    else:
+        dcs_file = None  # No dcs.log provided
+        dcs_file_valid = True
+    
+    # Save uploaded files temporarily to extract mission metadata
+    temp_dcs_path = None
+    temp_debrief_path = tempfile.mktemp(suffix='.log')
+    
+    try:
+        # Always save debrief.log
+        debrief_file.save(temp_debrief_path)
+        
+        # Save dcs.log only if provided
+        if dcs_file:
+            temp_dcs_path = tempfile.mktemp(suffix='.log')
+            dcs_file.save(temp_dcs_path)
+        
+        # Extract mission metadata from debrief log
+        mission_metadata = extract_mission_metadata(temp_debrief_path)
+        mission_id = mission_metadata['mission_id']
+        
+        # Check if this mission has already been analyzed
+        existing_session_dir = os.path.join(RESULTS_FOLDER, mission_id)
+        if os.path.exists(existing_session_dir):
+            # Mission already exists, redirect to existing analysis
+            flash(f'Mission "{mission_metadata["mission_name"]}" has already been analyzed. Showing existing results.')
+            return redirect(url_for('dashboard', session_id=mission_id))
+        
+        # Save files with mission-based naming
+        debrief_filename = secure_filename(debrief_file.filename)
+        debrief_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_debrief.log")
+        
+        dcs_path = None
+        if dcs_file:
+            dcs_filename = secure_filename(dcs_file.filename)
+            dcs_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_dcs.log")
+            shutil.move(temp_dcs_path, dcs_path)
+        
+        # Move debrief file to final location
+        shutil.move(temp_debrief_path, debrief_path)
+        
+        # Process files with mission-based analyzer
+        analyzer = MissionAnalyzer(mission_id, mission_metadata)
+        success, result = analyzer.process_files(dcs_path, debrief_path)
+        
+        if success:
+            # Create visualizations
+            visualizations = analyzer.create_visualizations(result)
+            
+            # Store session data with mission metadata
+            session_data = {
+                'mission_data': result,
+                'visualizations': visualizations,
+                'mission_metadata': mission_metadata,
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            session_file = os.path.join(analyzer.session_dir, 'session_data.json')
+            with open(session_file, 'w') as f:
+                json.dump(session_data, f)
+            
+            # Create appropriate success message
+            if dcs_file:
+                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (with unit mapping)')
+            else:
+                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (debrief.log only)')
+            
+            return redirect(url_for('dashboard', session_id=mission_id))
+        else:
+            flash(f'Processing failed: {result}')
+            return redirect(url_for('index'))
+            
+    except Exception as e:
+        flash(f'Error processing files: {str(e)}')
+        return redirect(url_for('index'))
+    finally:
+        # Clean up temp files if they still exist
+        for temp_file in [temp_dcs_path, temp_debrief_path]:
+            if temp_file and os.path.exists(temp_file):
+                try:
+                    os.remove(temp_file)
+                except:
+                    pass
 
 @app.route('/dashboard/<session_id>')
 def dashboard(session_id):

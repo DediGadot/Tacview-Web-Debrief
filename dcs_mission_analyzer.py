@@ -762,8 +762,82 @@ class DCSMissionAnalyzer:
             if len(pilot.targets_engaged) > 0 and pilot.flight_time > 0:
                 pilot.average_engagement_time = pilot.flight_time / len(pilot.targets_engaged)
     
+    def create_synthetic_groups(self):
+        """Create synthetic groups when no XML mapping is available"""
+        if self.group_stats:
+            # We already have groups from XML, don't create synthetic ones
+            return
+        
+        print("Creating synthetic groups for debrief-only analysis...")
+        
+        # First, try to extract enhanced naming information from world_state
+        global_callsign, mission_name, world_state_units = self.extract_world_state_info()
+        
+        if world_state_units:
+            # Use enhanced naming based on world_state
+            self.create_enhanced_pilot_names(global_callsign, mission_name, world_state_units)
+            return
+        
+        # Fallback to original synthetic group creation if no world_state info
+        print("No world_state info available, using fallback synthetic group creation...")
+        
+        # Group pilots by coalition and aircraft type
+        coalition_aircraft_groups = {}
+        
+        for pilot_name, pilot in self.pilot_stats.items():
+            if pilot.coalition == 0:
+                continue  # Skip neutral/unknown coalition
+            
+            # Create a group key based on coalition and aircraft type
+            group_key = f"{pilot.coalition}_{pilot.aircraft_type}"
+            
+            if group_key not in coalition_aircraft_groups:
+                coalition_aircraft_groups[group_key] = {
+                    'coalition': pilot.coalition,
+                    'aircraft_type': pilot.aircraft_type,
+                    'pilots': []
+                }
+            
+            coalition_aircraft_groups[group_key]['pilots'].append(pilot_name)
+        
+        # Create synthetic group stats
+        group_id_counter = 1
+        for group_key, group_data in coalition_aircraft_groups.items():
+            coalition = group_data['coalition']
+            aircraft_type = group_data['aircraft_type']
+            pilots = group_data['pilots']
+            
+            # Create a meaningful group name
+            coalition_name = self.coalition_names.get(coalition, "Unknown")
+            group_name = f"{coalition_name} {aircraft_type} Squadron"
+            
+            # Create the group
+            self.group_stats[group_id_counter] = GroupStats(
+                id=group_id_counter,
+                name=group_name,
+                category=0,  # Aircraft category
+                coalition=coalition
+            )
+            
+            # Assign pilots to this group
+            for pilot_name in pilots:
+                if pilot_name in self.pilot_stats:
+                    pilot = self.pilot_stats[pilot_name]
+                    pilot.group_id = group_id_counter
+                    pilot.group_name = group_name
+                    
+                    # Add pilot to group
+                    self.group_stats[group_id_counter].pilots.append(pilot_name)
+                    self.group_stats[group_id_counter].total_pilots += 1
+            
+            print(f"Created synthetic group: {group_name} (ID: {group_id_counter}) with {len(pilots)} pilots")
+            group_id_counter += 1
+
     def aggregate_group_stats(self):
         """Aggregate pilot statistics into group statistics"""
+        # First, create synthetic groups if we don't have any
+        self.create_synthetic_groups()
+        
         for pilot in self.pilot_stats.values():
             if pilot.group_id and pilot.group_id in self.group_stats:
                 group = self.group_stats[pilot.group_id]
@@ -1239,6 +1313,270 @@ class DCSMissionAnalyzer:
             print(f"\nStatistics exported to: {filename}")
         except Exception as e:
             print(f"Error exporting to JSON: {e}")
+
+    def extract_world_state_info(self):
+        """Extract unit and group information from the world_state section of debrief log"""
+        try:
+            with open(self.debrief_log, 'r', encoding='utf-8', errors='ignore') as file:
+                content = file.read()
+            
+            # Extract global callsign (human player's callsign)
+            callsign_match = re.search(r'callsign\s*=\s*"([^"]*)"', content)
+            global_callsign = callsign_match.group(1) if callsign_match else None
+            
+            # Extract mission file name for better group naming
+            mission_file_match = re.search(r'mission_file_path\s*=\s*"[^"]*[/\\]([^/\\]*?)\.miz"', content)
+            mission_name = mission_file_match.group(1) if mission_file_match else "Mission"
+            
+            # Extract world_state section
+            world_state_match = re.search(r'world_state\s*=\s*\{(.*?)\}\s*--\s*end\s+of\s+world_state', content, re.DOTALL)
+            if not world_state_match:
+                print("No world_state section found in debrief log")
+                return global_callsign, mission_name, {}
+            
+            world_state_content = world_state_match.group(1)
+            
+            # Parse world_state content to find unit blocks
+            # Look for top-level array entries that contain unitId
+            world_state_units = {}
+            lines = world_state_content.split('\n')
+            
+            i = 0
+            while i < len(lines):
+                line = lines[i].strip()
+                
+                # Look for array entry start: [number] = (may be followed by { on next line)
+                unit_start_match = re.match(r'\[(\d+)\]\s*=\s*$', line)
+                if unit_start_match:
+                    unit_index = int(unit_start_match.group(1))
+                    
+                    # Check if next line is opening brace
+                    i += 1
+                    if i < len(lines) and lines[i].strip() == '{':
+                        unit_data = {}
+                        i += 1
+                        brace_count = 1
+                        unit_lines = []
+                        
+                        # Collect all lines until we close the unit block
+                        while i < len(lines) and brace_count > 0:
+                            current_line = lines[i]
+                            unit_lines.append(current_line)
+                            
+                            # Count braces to track nesting
+                            brace_count += current_line.count('{') - current_line.count('}')
+                            i += 1
+                        
+                        # Parse the unit data from collected lines
+                        for unit_line in unit_lines:
+                            key, value = self.parse_lua_value(unit_line)
+                            if key:
+                                unit_data[key] = value
+                        
+                        # Only add if this is actually a unit (has unitId)
+                        if 'unitId' in unit_data:
+                            world_state_units[unit_data['unitId']] = unit_data
+                            print(f"Found unit {unit_data['unitId']}: {unit_data.get('type', 'Unknown')} (coalition: {unit_data.get('coalition', 'unknown')})")
+                else:
+                    i += 1
+            
+            print(f"Extracted world_state info: {len(world_state_units)} units, global_callsign='{global_callsign}', mission='{mission_name}'")
+            return global_callsign, mission_name, world_state_units
+            
+        except Exception as e:
+            print(f"Error extracting world_state info: {e}")
+            return None, "Mission", {}
+    
+    def create_enhanced_pilot_names(self, global_callsign, mission_name, world_state_units):
+        """Create better pilot and group names using world_state information"""
+        if not world_state_units:
+            return  # No world_state info available, use existing logic
+        
+        print("Creating enhanced pilot and group names from world_state...")
+        
+        # First, create a mapping from initiatorMissionID to world_state units
+        # The initiatorMissionID in events corresponds to unitId in world_state
+        mission_id_to_unit = {}
+        for unit_id, unit_data in world_state_units.items():
+            mission_id_to_unit[str(unit_id)] = unit_data
+        
+        # Group units by coalition and groupId from world_state
+        coalition_groups = {}
+        
+        for unit_id, unit_data in world_state_units.items():
+            coalition = unit_data.get('coalition', 'unknown')
+            group_id = unit_data.get('groupId', 0)
+            aircraft_type = unit_data.get('type', 'Unknown')
+            
+            # Convert coalition string to number
+            coalition_num = 2 if coalition == 'blue' else (1 if coalition == 'red' else 0)
+            
+            group_key = f"{coalition_num}_{group_id}"
+            if group_key not in coalition_groups:
+                coalition_groups[group_key] = {
+                    'coalition': coalition_num,
+                    'coalition_name': coalition,
+                    'group_id': group_id,
+                    'aircraft_type': aircraft_type,
+                    'units': []
+                }
+            
+            coalition_groups[group_key]['units'].append({
+                'unit_id': unit_id,
+                'aircraft_type': aircraft_type,
+                'coalition': coalition_num
+            })
+        
+        # Clear existing synthetic groups (we'll recreate them)
+        self.group_stats.clear()
+        
+        # Create enhanced group names and assign pilot names
+        synthetic_group_id = 1
+        pilot_name_mapping = {}  # old_name -> new_name
+        pilots_assigned = set()  # Track which pilots have been assigned
+        
+        for group_key, group_data in coalition_groups.items():
+            coalition_num = group_data['coalition']
+            coalition_name = self.coalition_names.get(coalition_num, "Unknown")
+            aircraft_type = group_data['aircraft_type']
+            original_group_id = group_data['group_id']
+            units = group_data['units']
+            
+            # Create a meaningful group name
+            if len(coalition_groups) == 1:
+                # Single group - use mission name
+                group_name = f"{coalition_name} {aircraft_type} - {mission_name}"
+            else:
+                # Multiple groups - use squadron naming
+                group_name = f"{coalition_name} {aircraft_type} Squadron {original_group_id}"
+            
+            # Create the group
+            self.group_stats[synthetic_group_id] = GroupStats(
+                id=synthetic_group_id,
+                name=group_name,
+                category=0,  # Aircraft category
+                coalition=coalition_num
+            )
+            
+            # Sort units by unit_id to ensure consistent ordering
+            units.sort(key=lambda x: x['unit_id'])
+            
+            # Assign enhanced pilot names
+            for i, unit in enumerate(units, 1):
+                unit_id = unit['unit_id']
+                aircraft_type = unit['aircraft_type']
+                
+                # Create enhanced pilot name
+                if len(units) == 1:
+                    # Single pilot in group
+                    if global_callsign and coalition_num == 2:  # Assume human player is blue
+                        pilot_name = global_callsign
+                    else:
+                        pilot_name = f"{coalition_name} {aircraft_type} Pilot"
+                else:
+                    # Multiple pilots in group
+                    if global_callsign and coalition_num == 2 and i == 1:  # First blue pilot is human
+                        pilot_name = global_callsign
+                    else:
+                        # Use flight position naming
+                        positions = ["Lead", "Two", "Three", "Four", "Five", "Six"]
+                        position = positions[i-1] if i <= len(positions) else f"Pilot {i}"
+                        pilot_name = f"{coalition_name} {aircraft_type} {position}"
+                
+                # Find existing pilot that matches this unit
+                # Look for pilots with object IDs that might correspond to this unit
+                matching_pilot = None
+                for existing_pilot_name, pilot in list(self.pilot_stats.items()):
+                    # Check if this pilot's aircraft type and coalition match
+                    if (pilot.aircraft_type == aircraft_type and 
+                        pilot.coalition == coalition_num and
+                        existing_pilot_name not in pilots_assigned):
+                        # This could be our pilot - use the first match for now
+                        # In a more sophisticated approach, we'd need to map object IDs to unit IDs
+                        matching_pilot = existing_pilot_name
+                        break
+                
+                if matching_pilot:
+                    # Update the pilot with the new name and group assignment
+                    pilot = self.pilot_stats[matching_pilot]
+                    pilot.name = pilot_name
+                    pilot.group_id = synthetic_group_id
+                    pilot.group_name = group_name
+                    
+                    # Store the mapping for later reference
+                    pilot_name_mapping[matching_pilot] = pilot_name
+                    pilots_assigned.add(matching_pilot)
+                    
+                    # Remove old pilot entry and add with new name
+                    if matching_pilot != pilot_name:
+                        self.pilot_stats[pilot_name] = pilot
+                        if matching_pilot in self.pilot_stats:
+                            del self.pilot_stats[matching_pilot]
+                    
+                    # Add pilot to group
+                    if pilot_name not in self.group_stats[synthetic_group_id].pilots:
+                        self.group_stats[synthetic_group_id].pilots.append(pilot_name)
+                        self.group_stats[synthetic_group_id].total_pilots += 1
+                    
+                    print(f"Enhanced pilot: {matching_pilot} -> {pilot_name} (Group: {group_name})")
+            
+            synthetic_group_id += 1
+        
+        # Handle pilots not in world_state (like F-15Cs that spawn later)
+        unassigned_pilots = []
+        for pilot_name, pilot in self.pilot_stats.items():
+            if pilot.group_id is None:
+                unassigned_pilots.append((pilot_name, pilot))
+        
+        if unassigned_pilots:
+            print(f"Creating fallback groups for {len(unassigned_pilots)} unassigned pilots...")
+            
+            # Group unassigned pilots by coalition and aircraft type
+            fallback_groups = {}
+            for pilot_name, pilot in unassigned_pilots:
+                group_key = f"{pilot.coalition}_{pilot.aircraft_type}"
+                if group_key not in fallback_groups:
+                    fallback_groups[group_key] = {
+                        'coalition': pilot.coalition,
+                        'aircraft_type': pilot.aircraft_type,
+                        'pilots': []
+                    }
+                fallback_groups[group_key]['pilots'].append((pilot_name, pilot))
+            
+            # Create fallback groups
+            for group_key, group_data in fallback_groups.items():
+                coalition = group_data['coalition']
+                aircraft_type = group_data['aircraft_type']
+                pilots = group_data['pilots']
+                
+                coalition_name = self.coalition_names.get(coalition, "Unknown")
+                group_name = f"{coalition_name} {aircraft_type} Squadron"
+                
+                # Create the group
+                self.group_stats[synthetic_group_id] = GroupStats(
+                    id=synthetic_group_id,
+                    name=group_name,
+                    category=0,  # Aircraft category
+                    coalition=coalition
+                )
+                
+                # Assign pilots to this group
+                for i, (pilot_name, pilot) in enumerate(pilots, 1):
+                    pilot.group_id = synthetic_group_id
+                    pilot.group_name = group_name
+                    
+                    # Add pilot to group
+                    self.group_stats[synthetic_group_id].pilots.append(pilot_name)
+                    self.group_stats[synthetic_group_id].total_pilots += 1
+                    
+                    print(f"Assigned fallback pilot: {pilot_name} -> Group: {group_name}")
+                
+                synthetic_group_id += 1
+        
+        # Update any references to old pilot names in kill relationships
+        for pilot in self.pilot_stats.values():
+            if pilot.killed_by and pilot.killed_by in pilot_name_mapping:
+                pilot.killed_by = pilot_name_mapping[pilot.killed_by]
 
 def main():
     """Main function with command line argument handling"""
