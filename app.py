@@ -749,16 +749,11 @@ class MissionAnalyzer:
         return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     
     def create_group_comparison_chart(self, data):
-        """Create comprehensive group comparison with individual formation radar charts"""
+        """Create radar charts for all groups, organized by coalition (similar to pilot performance style)"""
         groups = data.get('groups', {})
-        pilots = data.get('pilots', {})
         
         if not groups:
-            fig = go.Figure()
-            fig.add_annotation(text="No group data available", 
-                             xref="paper", yref="paper",
-                             x=0.5, y=0.5, showarrow=False)
-            return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            return []
         
         # Separate groups by coalition
         red_groups = []
@@ -777,288 +772,103 @@ class MissionAnalyzer:
             elif group_data.get('coalition') == 2:  # Blue coalition
                 blue_groups.append(group_info)
         
-        all_groups = red_groups + blue_groups
-        total_groups = len(all_groups)
+        # Sort groups by average pilot efficiency within each coalition
+        red_groups.sort(key=lambda x: x['data'].get('average_pilot_efficiency', 0), reverse=True)
+        blue_groups.sort(key=lambda x: x['data'].get('average_pilot_efficiency', 0), reverse=True)
         
-        # Calculate layout for radar charts - arrange in a grid
-        if total_groups <= 2:
-            radar_rows = 1
-            radar_cols = 2
-        elif total_groups <= 4:
-            radar_rows = 2
-            radar_cols = 2
-        elif total_groups <= 6:
-            radar_rows = 2
-            radar_cols = 3
-        elif total_groups <= 9:
-            radar_rows = 3
-            radar_cols = 3
-        else:
-            radar_rows = 4
-            radar_cols = 3
+        charts = []
         
-        # Create subplots with radar charts for each formation and summary charts
-        specs = []
-        subplot_titles = []
-        
-        # Add individual radar chart specs
-        for i in range(radar_rows):
-            row_specs = []
-            for j in range(radar_cols):
-                group_index = i * radar_cols + j
-                if group_index < total_groups:
-                    row_specs.append({"type": "scatterpolar"})
-                    group_info = all_groups[group_index]
-                    coalition_name = "Red" if group_info['coalition'] == 1 else "Blue" if group_info['coalition'] == 2 else "Neutral"
-                    subplot_titles.append(f'{group_info["name"]} ({coalition_name})')
-                else:
-                    row_specs.append({"type": "scatter"})
-                    subplot_titles.append("")
-            specs.append(row_specs)
-        
-        # Add summary charts below the radar charts
-        specs.append([{"type": "bar", "colspan": radar_cols}, None, None][:radar_cols])
-        subplot_titles.extend(["Coalition Force Strength"] + [""] * (radar_cols - 1))
-        
-        specs.append([{"type": "scatter"}, {"type": "histogram"}, {"type": "indicator"}][:radar_cols])
-        if radar_cols >= 3:
-            subplot_titles.extend(["Combat Performance Matrix", "Pilot Quality Distribution", "Formation Survivability"])
-        elif radar_cols == 2:
-            subplot_titles.extend(["Combat Performance Matrix", "Formation Survivability"])
-        else:
-            subplot_titles.extend(["Combat Performance Matrix"])
-        
-        fig = make_subplots(
-            rows=radar_rows + 2,
-            cols=radar_cols,
-            subplot_titles=subplot_titles,
-            specs=specs,
-            vertical_spacing=0.08,
-            horizontal_spacing=0.1
-        )
-        
-        # 1. Create individual formation effectiveness radar charts
-        for i, group_info in enumerate(all_groups):
-            row = (i // radar_cols) + 1
-            col = (i % radar_cols) + 1
-            
-            group_data = group_info['data']
+        # Create charts for Red coalition groups
+        for group_info in red_groups:
             group_name = group_info['name']
-            coalition = group_info['coalition']
+            group_data = group_info['data']
             
-            # Normalize metrics for radar chart (0-100 scale)
+            # Normalize metrics to 0-100 scale (same as pilot performance)
             accuracy = group_data.get('group_accuracy', 0)
             survivability = group_data.get('group_survivability', 0)
             efficiency = group_data.get('average_pilot_efficiency', 0)
             activity = min(group_data.get('total_shots', 0) * 5, 100)  # Scale activity
-            lethality = min(group_data.get('total_kills', 0) * 25, 100)  # Scale kills
             
-            # Add additional metrics
-            coordination = min(group_data.get('total_pilots', 1) * 15, 100)  # Formation size as coordination indicator
-            
-            color = '#dc2626' if coalition == 1 else '#2563eb' if coalition == 2 else '#6b7280'
-            fill_color = 'rgba(220, 38, 38, 0.3)' if coalition == 1 else 'rgba(37, 99, 235, 0.3)' if coalition == 2 else 'rgba(107, 114, 128, 0.3)'
+            fig = go.Figure()
             
             fig.add_trace(go.Scatterpolar(
-                r=[accuracy, survivability, efficiency, activity, lethality, coordination],
-                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity', 'Lethality', 'Coordination'],
+                r=[accuracy, survivability, efficiency, activity],
+                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity'],
                 fill='toself',
-                name=f"{group_name}",
-                line_color=color,
-                fillcolor=fill_color,
-                hovertemplate="<b>" + group_name + "</b><br>" +
-                             "Accuracy: %{r[0]:.1f}%<br>" +
-                             "Survivability: %{r[1]:.1f}%<br>" +
-                             "Efficiency: %{r[2]:.1f}<br>" +
-                             "Activity: %{r[3]:.1f}<br>" +
-                             "Lethality: %{r[4]:.1f}<br>" +
-                             "Coordination: %{r[5]:.1f}<extra></extra>",
-                showlegend=False
-            ), row=row, col=col)
-        
-        # 2. Coalition Force Strength (spans full width)
-        summary_row = radar_rows + 1
-        coalition_names = []
-        coalition_pilots = []
-        coalition_kills = []
-        coalition_colors = []
-        
-        red_total_pilots = sum(g['data'].get('total_pilots', 0) for g in red_groups)
-        blue_total_pilots = sum(g['data'].get('total_pilots', 0) for g in blue_groups)
-        red_total_kills = sum(g['data'].get('total_kills', 0) for g in red_groups)
-        blue_total_kills = sum(g['data'].get('total_kills', 0) for g in blue_groups)
-        
-        if red_total_pilots > 0:
-            coalition_names.append('Red Coalition')
-            coalition_pilots.append(red_total_pilots)
-            coalition_kills.append(red_total_kills)
-            coalition_colors.append('#dc2626')
-        
-        if blue_total_pilots > 0:
-            coalition_names.append('Blue Coalition')
-            coalition_pilots.append(blue_total_pilots)
-            coalition_kills.append(blue_total_kills)
-            coalition_colors.append('#2563eb')
-        
-        fig.add_trace(go.Bar(
-            x=coalition_names,
-            y=coalition_pilots,
-            name="Total Pilots",
-            marker_color=coalition_colors,
-            text=[f"{p} pilots<br>{k} kills" for p, k in zip(coalition_pilots, coalition_kills)],
-            textposition="inside",
-            showlegend=False
-        ), row=summary_row, col=1)
-        
-        # 3. Combat Performance Matrix
-        detail_row = radar_rows + 2
-        if radar_cols >= 1:
-            group_names = []
-            group_accuracy = []
-            group_kills = []
-            group_colors = []
-            group_sizes = []
+                name=group_name,
+                line_color='red',
+                fillcolor='rgba(255, 0, 0, 0.3)'
+            ))
             
-            for group_info in all_groups:
-                group_data = group_info['data']
-                group_names.append(group_info['name'])
-                group_accuracy.append(group_data.get('group_accuracy', 0))
-                group_kills.append(group_data.get('total_kills', 0))
-                group_colors.append('#dc2626' if group_info['coalition'] == 1 else '#2563eb')
-                group_sizes.append(max(group_data.get('total_pilots', 1) * 10, 20))  # Size based on pilot count
+            # Add group details to title
+            total_pilots = group_data.get('total_pilots', 0)
+            total_kills = group_data.get('total_kills', 0)
             
-            fig.add_trace(go.Scatter(
-                x=group_accuracy,
-                y=group_kills,
-                mode='markers+text',
-                text=group_names,
-                textposition="top center",
-                marker=dict(
-                    size=group_sizes,
-                    color=group_colors,
-                    opacity=0.7,
-                    line=dict(width=2, color='white')
-                ),
-                name="Groups",
-                hovertemplate="<b>%{text}</b><br>Accuracy: %{x:.1f}%<br>Kills: %{y}<br>Pilots: %{marker.size}<extra></extra>",
-                showlegend=False
-            ), row=detail_row, col=1)
-        
-        # 4. Pilot Quality Distribution
-        if radar_cols >= 2:
-            all_pilot_efficiencies = []
-            pilot_coalitions = []
-            
-            for pilot_name, pilot_data in pilots.items():
-                efficiency = pilot_data.get('efficiency_rating', 0)
-                coalition = pilot_data.get('coalition', 0)
-                if efficiency > 0:  # Only include active pilots
-                    all_pilot_efficiencies.append(efficiency)
-                    pilot_coalitions.append(coalition)
-            
-            # Create histogram for each coalition
-            red_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 1]
-            blue_efficiencies = [e for e, c in zip(all_pilot_efficiencies, pilot_coalitions) if c == 2]
-            
-            if red_efficiencies:
-                fig.add_trace(go.Histogram(
-                    x=red_efficiencies,
-                    name="Red Pilots",
-                    marker_color='#dc2626',
-                    opacity=0.7,
-                    nbinsx=10,
-                    showlegend=False
-                ), row=detail_row, col=2)
-            
-            if blue_efficiencies:
-                fig.add_trace(go.Histogram(
-                    x=blue_efficiencies,
-                    name="Blue Pilots",
-                    marker_color='#2563eb',
-                    opacity=0.7,
-                    nbinsx=10,
-                    showlegend=False
-                ), row=detail_row, col=2)
-        
-        # 5. Formation Survivability Indicator
-        if radar_cols >= 3:
-            if red_groups and blue_groups:
-                red_survivability = sum(g['data'].get('group_survivability', 0) for g in red_groups) / len(red_groups)
-                blue_survivability = sum(g['data'].get('group_survivability', 0) for g in blue_groups) / len(blue_groups)
-                
-                # Determine winner
-                if red_survivability > blue_survivability:
-                    winner_text = f"Red Coalition<br>Superior Survivability<br>{red_survivability:.1f}% vs {blue_survivability:.1f}%"
-                    winner_color = "#dc2626"
-                    winner_value = red_survivability
-                elif blue_survivability > red_survivability:
-                    winner_text = f"Blue Coalition<br>Superior Survivability<br>{blue_survivability:.1f}% vs {red_survivability:.1f}%"
-                    winner_color = "#2563eb"
-                    winner_value = blue_survivability
-                else:
-                    winner_text = f"Equal Survivability<br>{red_survivability:.1f}%"
-                    winner_color = "#6b7280"
-                    winner_value = red_survivability
-                
-                fig.add_trace(go.Indicator(
-                    mode="number+delta+gauge",
-                    value=winner_value,
-                    delta={'reference': 50, 'relative': True},
-                    gauge={
-                        'axis': {'range': [None, 100]},
-                        'bar': {'color': winner_color},
-                        'steps': [
-                            {'range': [0, 50], 'color': "lightgray"},
-                            {'range': [50, 75], 'color': "#fbbf24"},
-                            {'range': [75, 100], 'color': "#10b981"}
-                        ],
-                        'threshold': {
-                            'line': {'color': "#dc2626", 'width': 4},
-                            'thickness': 0.75,
-                            'value': 90
-                        }
-                    },
-                    title={'text': winner_text, 'font': {'size': 12}},
-                    number={'font': {'size': 16}},
-                    showlegend=False
-                ), row=detail_row, col=3)
-        
-        # Update layout
-        total_height = 400 + (radar_rows * 300) + 400  # Base + radar charts + summary charts
-        
-        fig.update_layout(
-            title={
-                'text': f"Formation Analysis Dashboard - Individual Formation Effectiveness ({len(all_groups)} Formations)",
-                'x': 0.5,
-                'font': {'size': 20, 'color': '#1a202c'}
-            },
-            showlegend=False,  # Individual charts don't need legend
-            height=total_height,
-            margin=dict(t=80, b=60, l=60, r=60)
-        )
-        
-        # Update polar charts for all radar charts
-        for i in range(total_groups):
-            row = (i // radar_cols) + 1
-            col = (i % radar_cols) + 1
-            fig.update_polars(
-                radialaxis=dict(visible=True, range=[0, 100], tickfont=dict(size=10)),
-                angularaxis=dict(tickfont=dict(size=10)),
-                row=row, col=col
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 100]
+                    )),
+                title=f"{group_name} ({total_pilots} pilots, {total_kills} kills) - Red Formation",
+                showlegend=True,
+                height=400
             )
+            
+            charts.append({
+                'group': group_name,
+                'coalition': 'red',
+                'pilots': total_pilots,
+                'kills': total_kills,
+                'chart': json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            })
         
-        # Update axis labels for summary charts
-        if radar_cols >= 1:
-            fig.update_xaxes(title_text="Accuracy (%)", row=detail_row, col=1)
-            fig.update_yaxes(title_text="Total Kills", row=detail_row, col=1)
+        # Create charts for Blue coalition groups
+        for group_info in blue_groups:
+            group_name = group_info['name']
+            group_data = group_info['data']
+            
+            # Normalize metrics to 0-100 scale (same as pilot performance)
+            accuracy = group_data.get('group_accuracy', 0)
+            survivability = group_data.get('group_survivability', 0)
+            efficiency = group_data.get('average_pilot_efficiency', 0)
+            activity = min(group_data.get('total_shots', 0) * 5, 100)  # Scale activity
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatterpolar(
+                r=[accuracy, survivability, efficiency, activity],
+                theta=['Accuracy', 'Survivability', 'Efficiency', 'Activity'],
+                fill='toself',
+                name=group_name,
+                line_color='blue',
+                fillcolor='rgba(0, 0, 255, 0.3)'
+            ))
+            
+            # Add group details to title
+            total_pilots = group_data.get('total_pilots', 0)
+            total_kills = group_data.get('total_kills', 0)
+            
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 100]
+                    )),
+                title=f"{group_name} ({total_pilots} pilots, {total_kills} kills) - Blue Formation",
+                showlegend=True,
+                height=400
+            )
+            
+            charts.append({
+                'group': group_name,
+                'coalition': 'blue',
+                'pilots': total_pilots,
+                'kills': total_kills,
+                'chart': json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            })
         
-        if radar_cols >= 2:
-            fig.update_xaxes(title_text="Pilot Efficiency Rating", row=detail_row, col=2)
-            fig.update_yaxes(title_text="Number of Pilots", row=detail_row, col=2)
-        
-        fig.update_yaxes(title_text="Total Pilots", row=summary_row, col=1)
-        
-        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return charts
     
     def create_combat_timeline(self, data):
         """Create comprehensive combat timeline with multiple event tracks"""

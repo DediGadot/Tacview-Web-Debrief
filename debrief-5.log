@@ -1,0 +1,3227 @@
+mission_file_path	=	"C:\\Users\\dedig\\Saved Games\\DCS\\Missions\\hazor-takeoff.miz"
+callsign	=	"New callsign"
+world_state = 
+{
+	[1] = 
+	{
+		alt	=	779.30413818359,
+		type	=	"ammo_cargo",
+		country	=	0,
+		y	=	-808.37445068359,
+		x	=	-338438.8125,
+		speed	=	0,
+		heading	=	6.2831853071796,
+		coalition	=	"red",
+		unitId	=	39,
+	}, -- end of [1]
+	[2] = 
+	{
+		alt	=	4287.8725585938,
+		type	=	"MiG-23MLD",
+		groupId	=	4,
+		heading	=	3.1106703917133,
+		y	=	-26680.529296875,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-326185.03125,
+		speed	=	236.32566833496,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	2908,
+			flare	=	18,
+			chaff	=	20,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	2,
+		inAir	=	true,
+		unitId	=	36,
+		country	=	0,
+	}, -- end of [2]
+	[3] = 
+	{
+		alt	=	5495.8041992188,
+		type	=	"MiG-23MLD",
+		groupId	=	5,
+		heading	=	4.8255521694766,
+		y	=	-5410.6977539062,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-346131.375,
+		speed	=	307.0107421875,
+		payload = 
+		{
+			pylons = 
+			{
+				[2] = 
+				{
+					CLSID	=	"{CCF898C9-5BC7-49A4-9D1E-C3ED3D5166A1}",
+				}, -- end of [2]
+			}, -- end of pylons
+			fuel	=	3007,
+			flare	=	60,
+			chaff	=	60,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	1,
+		inAir	=	true,
+		unitId	=	37,
+		country	=	0,
+	}, -- end of [3]
+	[4] = 
+	{
+		alt	=	5167.1791992188,
+		type	=	"MiG-23MLD",
+		groupId	=	5,
+		heading	=	5.6800392905818,
+		y	=	470.32189941406,
+		coalition	=	"red",
+		x	=	-352721.90625,
+		speed	=	234.70193481445,
+		payload = 
+		{
+			pylons = 
+			{
+				[2] = 
+				{
+					CLSID	=	"{CCF898C9-5BC7-49A4-9D1E-C3ED3D5166A1}",
+				}, -- end of [2]
+			}, -- end of pylons
+			fuel	=	3012,
+			flare	=	60,
+			chaff	=	60,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	2,
+		inAir	=	true,
+		unitId	=	38,
+		country	=	0,
+	}, -- end of [4]
+	[5] = 
+	{
+		alt	=	1293.0240478516,
+		type	=	"Su-27",
+		groupId	=	10,
+		heading	=	4.8959477583515,
+		y	=	104009.7578125,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-319285.25,
+		speed	=	244.99833679199,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5396,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	1,
+		inAir	=	true,
+		unitId	=	50,
+		country	=	0,
+	}, -- end of [5]
+	[6] = 
+	{
+		alt	=	1277.4373779297,
+		type	=	"Su-27",
+		groupId	=	10,
+		heading	=	4.895515267049,
+		y	=	104844.3125,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-318368.5625,
+		speed	=	246.5682220459,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5429,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	2,
+		inAir	=	true,
+		unitId	=	51,
+		country	=	0,
+	}, -- end of [6]
+	[7] = 
+	{
+		alt	=	1261.4545898438,
+		type	=	"Su-27",
+		groupId	=	10,
+		heading	=	4.8955852429019,
+		y	=	105689.6328125,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-317453.84375,
+		speed	=	249.24464416504,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5429,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	3,
+		inAir	=	true,
+		unitId	=	52,
+		country	=	0,
+	}, -- end of [7]
+	[8] = 
+	{
+		alt	=	1243.7102050781,
+		type	=	"Su-27",
+		groupId	=	10,
+		heading	=	4.8951564470874,
+		y	=	106530.4921875,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-316539.25,
+		speed	=	251.64277648926,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5421,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	4,
+		inAir	=	true,
+		unitId	=	53,
+		country	=	0,
+	}, -- end of [8]
+	[9] = 
+	{
+		alt	=	1405.7153320312,
+		type	=	"Su-27",
+		groupId	=	11,
+		heading	=	4.1115923563587,
+		y	=	104217.3125,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-322617.34375,
+		speed	=	244.69465637207,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5397,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	1,
+		inAir	=	true,
+		unitId	=	54,
+		country	=	0,
+	}, -- end of [9]
+	[10] = 
+	{
+		alt	=	1392.3666992188,
+		type	=	"Su-27",
+		groupId	=	11,
+		heading	=	4.1115925947772,
+		y	=	104158.453125,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-321380.40625,
+		speed	=	245.66192626953,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5438,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	2,
+		inAir	=	true,
+		unitId	=	55,
+		country	=	0,
+	}, -- end of [10]
+	[11] = 
+	{
+		alt	=	1376.1273193359,
+		type	=	"Su-27",
+		groupId	=	11,
+		heading	=	4.1115987936603,
+		y	=	104112.9375,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-320134.375,
+		speed	=	248.44967651367,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5439,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	3,
+		inAir	=	true,
+		unitId	=	56,
+		country	=	0,
+	}, -- end of [11]
+	[12] = 
+	{
+		alt	=	1360.8666992188,
+		type	=	"Su-27",
+		groupId	=	11,
+		heading	=	4.1116097609149,
+		y	=	104059.0390625,
+		goto	=	1,
+		coalition	=	"red",
+		x	=	-318892.59375,
+		speed	=	249.46403503418,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5440,
+			flare	=	96,
+			chaff	=	96,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	4,
+		inAir	=	true,
+		unitId	=	57,
+		country	=	0,
+	}, -- end of [12]
+	[13] = 
+	{
+		alt	=	501.17407226562,
+		type	=	"A-10A",
+		groupId	=	12,
+		heading	=	4.5580546299564,
+		coalition	=	"red",
+		x	=	-357348.28125,
+		y	=	73571.515625,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	58,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [13]
+	[14] = 
+	{
+		alt	=	501.17407226562,
+		type	=	"A-10A",
+		groupId	=	12,
+		heading	=	4.5580546299564,
+		coalition	=	"red",
+		x	=	-357323.15625,
+		y	=	73589.8828125,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	59,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [14]
+	[15] = 
+	{
+		alt	=	501.17407226562,
+		type	=	"A-10A",
+		groupId	=	12,
+		heading	=	4.5580546299564,
+		coalition	=	"red",
+		x	=	-357341.8125,
+		y	=	73613.015625,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	60,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [15]
+	[16] = 
+	{
+		alt	=	501.1741027832,
+		type	=	"A-10A",
+		groupId	=	12,
+		heading	=	4.5580546299564,
+		coalition	=	"red",
+		x	=	-357316.6875,
+		y	=	73631.3828125,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	61,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [16]
+	[17] = 
+	{
+		alt	=	674.3876953125,
+		type	=	"A-10A",
+		groupId	=	13,
+		heading	=	5.4461743275272,
+		coalition	=	"red",
+		x	=	-297394.78125,
+		y	=	25817.72265625,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	62,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [17]
+	[18] = 
+	{
+		alt	=	674.3876953125,
+		type	=	"A-10A",
+		groupId	=	13,
+		heading	=	5.4461743275272,
+		coalition	=	"red",
+		x	=	-297393.1875,
+		y	=	25848.794921875,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	63,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [18]
+	[19] = 
+	{
+		alt	=	674.3876953125,
+		type	=	"A-10A",
+		groupId	=	13,
+		heading	=	5.4461743275272,
+		coalition	=	"red",
+		x	=	-297422.90625,
+		y	=	25848.9140625,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	64,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [19]
+	[20] = 
+	{
+		alt	=	674.3876953125,
+		type	=	"A-10A",
+		groupId	=	13,
+		heading	=	5.4461743275272,
+		coalition	=	"red",
+		x	=	-297421.3125,
+		y	=	25879.986328125,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	5029,
+			flare	=	120,
+			ammo_type	=	1,
+			chaff	=	240,
+			gun	=	100,
+		}, -- end of payload
+		speed	=	0,
+		unitId	=	65,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [20]
+	[21] = 
+	{
+		alt	=	660.625,
+		type	=	"SNR_75V",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306687.59375,
+		heading	=	0.0038884321795862,
+		y	=	20520.158203125,
+		speed	=	0,
+		unitId	=	5,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [21]
+	[22] = 
+	{
+		alt	=	663.10333251953,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306608.5,
+		heading	=	5.4803338090526,
+		y	=	20473.0625,
+		speed	=	0,
+		unitId	=	6,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [22]
+	[23] = 
+	{
+		alt	=	661.62512207031,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306687.375,
+		heading	=	1.5358894507038,
+		y	=	20626.958984375,
+		speed	=	0,
+		unitId	=	7,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [23]
+	[24] = 
+	{
+		alt	=	660.85070800781,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306689.4375,
+		heading	=	4.6774825493442,
+		y	=	20421.9140625,
+		speed	=	0,
+		unitId	=	8,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [24]
+	[25] = 
+	{
+		alt	=	659.13916015625,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306772.875,
+		heading	=	3.8048175016986,
+		y	=	20473.2890625,
+		speed	=	0,
+		unitId	=	9,
+		N_obj	=	5,
+		country	=	0,
+	}, -- end of [25]
+	[26] = 
+	{
+		alt	=	660.08697509766,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306775.375,
+		heading	=	2.3561943213092,
+		y	=	20578.0859375,
+		speed	=	0,
+		unitId	=	10,
+		N_obj	=	6,
+		country	=	0,
+	}, -- end of [26]
+	[27] = 
+	{
+		alt	=	662.59722900391,
+		type	=	"S_75M_Volhov",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306606.90625,
+		heading	=	0.92502433458437,
+		y	=	20574.447265625,
+		speed	=	0,
+		unitId	=	11,
+		N_obj	=	7,
+		country	=	0,
+	}, -- end of [27]
+	[28] = 
+	{
+		alt	=	661.40991210938,
+		type	=	"ZIL-131 KUNG",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306657.65625,
+		heading	=	4.1713371912586,
+		y	=	20564.794921875,
+		speed	=	0,
+		unitId	=	12,
+		N_obj	=	8,
+		country	=	0,
+	}, -- end of [28]
+	[29] = 
+	{
+		alt	=	661.38122558594,
+		type	=	"ZIL-131 KUNG",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306662.46875,
+		heading	=	4.1713371912586,
+		y	=	20568.048828125,
+		speed	=	0,
+		unitId	=	13,
+		N_obj	=	9,
+		country	=	0,
+	}, -- end of [29]
+	[30] = 
+	{
+		alt	=	661.42034912109,
+		type	=	"p-19 s-125 sr",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306748.75,
+		heading	=	2.2165682951557,
+		y	=	20685.814453125,
+		speed	=	0,
+		unitId	=	14,
+		N_obj	=	10,
+		country	=	0,
+	}, -- end of [30]
+	[31] = 
+	{
+		alt	=	661.54602050781,
+		type	=	"Ural-4320 APA-5D",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306737.5625,
+		heading	=	0.68067819276919,
+		y	=	20684.54296875,
+		speed	=	0,
+		unitId	=	15,
+		N_obj	=	11,
+		country	=	0,
+	}, -- end of [31]
+	[32] = 
+	{
+		alt	=	657.6923828125,
+		type	=	"ATMZ-5",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306805.90625,
+		heading	=	0.87266427675356,
+		y	=	20348.99609375,
+		speed	=	0,
+		unitId	=	16,
+		N_obj	=	12,
+		country	=	0,
+	}, -- end of [32]
+	[33] = 
+	{
+		alt	=	657.52404785156,
+		type	=	"ATMZ-5",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306824.96875,
+		heading	=	1.0297439734088,
+		y	=	20368.900390625,
+		speed	=	0,
+		unitId	=	17,
+		N_obj	=	13,
+		country	=	0,
+	}, -- end of [33]
+	[34] = 
+	{
+		alt	=	657.76635742188,
+		type	=	"Ural-4320T",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306855.65625,
+		heading	=	5.4279737512218,
+		y	=	20435.244140625,
+		speed	=	0,
+		unitId	=	18,
+		N_obj	=	14,
+		country	=	0,
+	}, -- end of [34]
+	[35] = 
+	{
+		alt	=	658.10198974609,
+		type	=	"Ural-4320T",
+		groupId	=	2,
+		coalition	=	"red",
+		x	=	-306839.0625,
+		heading	=	5.3407073060619,
+		y	=	20449.341796875,
+		speed	=	0,
+		unitId	=	19,
+		N_obj	=	15,
+		country	=	0,
+	}, -- end of [35]
+	[36] = 
+	{
+		alt	=	542.26763916016,
+		type	=	"SNR_75V",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354154.09375,
+		heading	=	0.0038884321795862,
+		y	=	68379.5859375,
+		speed	=	0,
+		unitId	=	20,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [36]
+	[37] = 
+	{
+		alt	=	542.53594970703,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354075,
+		heading	=	5.480333749448,
+		y	=	68332.4921875,
+		speed	=	0,
+		unitId	=	21,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [37]
+	[38] = 
+	{
+		alt	=	541.34210205078,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354153.875,
+		heading	=	1.5358894507038,
+		y	=	68486.390625,
+		speed	=	0,
+		unitId	=	22,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [38]
+	[39] = 
+	{
+		alt	=	543.59576416016,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354155.90625,
+		heading	=	4.6774825493442,
+		y	=	68281.34375,
+		speed	=	0,
+		unitId	=	23,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [39]
+	[40] = 
+	{
+		alt	=	543.83514404297,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354239.34375,
+		heading	=	3.8048175016986,
+		y	=	68332.71875,
+		speed	=	0,
+		unitId	=	24,
+		N_obj	=	5,
+		country	=	0,
+	}, -- end of [40]
+	[41] = 
+	{
+		alt	=	542.60943603516,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354241.84375,
+		heading	=	2.3561943213092,
+		y	=	68437.515625,
+		speed	=	0,
+		unitId	=	25,
+		N_obj	=	6,
+		country	=	0,
+	}, -- end of [41]
+	[42] = 
+	{
+		alt	=	541.27734375,
+		type	=	"S_75M_Volhov",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354073.40625,
+		heading	=	0.92502433458437,
+		y	=	68433.875,
+		speed	=	0,
+		unitId	=	26,
+		N_obj	=	7,
+		country	=	0,
+	}, -- end of [42]
+	[43] = 
+	{
+		alt	=	541.5703125,
+		type	=	"ZIL-131 KUNG",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354124.125,
+		heading	=	4.1713371912586,
+		y	=	68424.2265625,
+		speed	=	0,
+		unitId	=	27,
+		N_obj	=	8,
+		country	=	0,
+	}, -- end of [43]
+	[44] = 
+	{
+		alt	=	541.54217529297,
+		type	=	"ZIL-131 KUNG",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354128.96875,
+		heading	=	4.1713371912586,
+		y	=	68427.4765625,
+		speed	=	0,
+		unitId	=	28,
+		N_obj	=	9,
+		country	=	0,
+	}, -- end of [44]
+	[45] = 
+	{
+		alt	=	540.95867919922,
+		type	=	"p-19 s-125 sr",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354215.21875,
+		heading	=	2.2165682951557,
+		y	=	68545.2421875,
+		speed	=	0,
+		unitId	=	29,
+		N_obj	=	10,
+		country	=	0,
+	}, -- end of [45]
+	[46] = 
+	{
+		alt	=	540.93646240234,
+		type	=	"Ural-4320 APA-5D",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354204.03125,
+		heading	=	0.68067819276919,
+		y	=	68543.9765625,
+		speed	=	0,
+		unitId	=	30,
+		N_obj	=	11,
+		country	=	0,
+	}, -- end of [46]
+	[47] = 
+	{
+		alt	=	545.21026611328,
+		type	=	"ATMZ-5",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354272.375,
+		heading	=	0.87266427675356,
+		y	=	68208.4296875,
+		speed	=	0,
+		unitId	=	31,
+		N_obj	=	12,
+		country	=	0,
+	}, -- end of [47]
+	[48] = 
+	{
+		alt	=	545.39654541016,
+		type	=	"ATMZ-5",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354291.4375,
+		heading	=	1.0297439734088,
+		y	=	68228.328125,
+		speed	=	0,
+		unitId	=	32,
+		N_obj	=	13,
+		country	=	0,
+	}, -- end of [48]
+	[49] = 
+	{
+		alt	=	545.03051757812,
+		type	=	"Ural-4320T",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354322.125,
+		heading	=	5.4279738108264,
+		y	=	68294.671875,
+		speed	=	0,
+		unitId	=	33,
+		N_obj	=	14,
+		country	=	0,
+	}, -- end of [49]
+	[50] = 
+	{
+		alt	=	544.72882080078,
+		type	=	"Ural-4320T",
+		groupId	=	3,
+		coalition	=	"red",
+		x	=	-354305.5625,
+		heading	=	5.3407072464572,
+		y	=	68308.7734375,
+		speed	=	0,
+		unitId	=	34,
+		N_obj	=	15,
+		country	=	0,
+	}, -- end of [50]
+	[51] = 
+	{
+		alt	=	672.00158691406,
+		type	=	"Scud_B",
+		groupId	=	8,
+		coalition	=	"red",
+		x	=	-299045.21875,
+		heading	=	6.2831853071796,
+		y	=	24401.83984375,
+		speed	=	0,
+		unitId	=	45,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [51]
+	[52] = 
+	{
+		alt	=	672.00158691406,
+		type	=	"Scud_B",
+		groupId	=	8,
+		coalition	=	"red",
+		x	=	-299058.375,
+		heading	=	6.2831853071796,
+		y	=	24382.220703125,
+		speed	=	0,
+		unitId	=	44,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [52]
+	[53] = 
+	{
+		alt	=	672.00158691406,
+		type	=	"Scud_B",
+		groupId	=	8,
+		coalition	=	"red",
+		x	=	-299058.375,
+		heading	=	6.2831853071796,
+		y	=	24419.6328125,
+		speed	=	0,
+		unitId	=	43,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [53]
+	[54] = 
+	{
+		alt	=	672.00164794922,
+		type	=	"Scud_B",
+		groupId	=	8,
+		coalition	=	"red",
+		x	=	-299091.53125,
+		heading	=	6.2831853071796,
+		y	=	24403.396484375,
+		speed	=	0,
+		unitId	=	42,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [54]
+	[55] = 
+	{
+		alt	=	498.78799438477,
+		type	=	"Scud_B",
+		groupId	=	9,
+		coalition	=	"red",
+		x	=	-356519.9375,
+		heading	=	6.2831853071796,
+		y	=	72416.3203125,
+		speed	=	0,
+		unitId	=	46,
+		N_obj	=	1,
+		country	=	0,
+	}, -- end of [55]
+	[56] = 
+	{
+		alt	=	498.78799438477,
+		type	=	"Scud_B",
+		groupId	=	9,
+		coalition	=	"red",
+		x	=	-356526.0625,
+		heading	=	6.2831853071796,
+		y	=	72389.9921875,
+		speed	=	0,
+		unitId	=	47,
+		N_obj	=	2,
+		country	=	0,
+	}, -- end of [56]
+	[57] = 
+	{
+		alt	=	498.78799438477,
+		type	=	"Scud_B",
+		groupId	=	9,
+		coalition	=	"red",
+		x	=	-356541.03125,
+		heading	=	6.2831853071796,
+		y	=	72440.7109375,
+		speed	=	0,
+		unitId	=	48,
+		N_obj	=	3,
+		country	=	0,
+	}, -- end of [57]
+	[58] = 
+	{
+		alt	=	498.78799438477,
+		type	=	"Scud_B",
+		groupId	=	9,
+		coalition	=	"red",
+		x	=	-356566.9375,
+		heading	=	6.2831853071796,
+		y	=	72420.4609375,
+		speed	=	0,
+		unitId	=	49,
+		N_obj	=	4,
+		country	=	0,
+	}, -- end of [58]
+	[59] = 
+	{
+		alt	=	12000,
+		type	=	"E-3A",
+		groupId	=	16,
+		heading	=	0.57109624544253,
+		y	=	-82942.4609375,
+		goto	=	2,
+		coalition	=	"blue",
+		x	=	-311697.09375,
+		speed	=	211.20021057129,
+		payload = 
+		{
+			pylons = 	{},
+			fuel	=	63835,
+			flare	=	60,
+			chaff	=	120,
+			gun	=	100,
+		}, -- end of payload
+		N_obj	=	1,
+		inAir	=	true,
+		unitId	=	82,
+		country	=	2,
+	}, -- end of [59]
+	[60] = 
+	{
+		alt	=	760.62768554688,
+		type	=	"Soldier M249",
+		groupId	=	7,
+		coalition	=	"blue",
+		x	=	-338723.71875,
+		heading	=	1.7818892637836,
+		y	=	-927.51477050781,
+		speed	=	0,
+		unitId	=	40,
+		N_obj	=	1,
+		country	=	2,
+	}, -- end of [60]
+	[61] = 
+	{
+		alt	=	760.97045898438,
+		type	=	"Soldier M249",
+		groupId	=	7,
+		coalition	=	"blue",
+		x	=	-338763.71875,
+		heading	=	1.7818892637836,
+		y	=	-927.51477050781,
+		speed	=	0,
+		unitId	=	41,
+		N_obj	=	2,
+		country	=	2,
+	}, -- end of [61]
+	[62] = 
+	{
+		alt	=	3756.658203125,
+		type	=	"AIM_9",
+		country	=	80,
+		y	=	-26654.15625,
+		x	=	-323627.6875,
+		heading	=	0.35582572618593,
+		speed	=	427.23809814453,
+		inAir	=	true,
+		coalition	=	"blue",
+		unitId	=	0,
+	}, -- end of [62]
+	[63] = 
+	{
+		alt	=	3914.6140136719,
+		type	=	"AIM_9",
+		country	=	80,
+		y	=	-27439.7421875,
+		x	=	-323942.71875,
+		heading	=	0.2802212874042,
+		speed	=	619.84222412109,
+		inAir	=	true,
+		coalition	=	"blue",
+		unitId	=	0,
+	}, -- end of [63]
+} -- end of world_state
+mission_file_mark	=	1748865037
+mission_time	=	353.516
+warehouses = 
+{
+	airports = 
+	{
+		[1] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [1]
+		[2] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [2]
+		[3] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [3]
+		[4] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [4]
+		[5] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [5]
+		[6] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [6]
+		[7] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [7]
+		[8] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [8]
+		[9] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [9]
+		[10] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [10]
+		[11] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [11]
+		[12] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [12]
+		[13] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [13]
+		[14] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [14]
+		[15] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [15]
+		[16] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [16]
+		[17] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [17]
+		[18] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [18]
+		[19] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [19]
+		[20] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [20]
+		[21] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [21]
+		[22] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [22]
+		[23] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [23]
+		[24] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [24]
+		[25] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [25]
+		[26] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [26]
+		[27] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [27]
+		[28] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [28]
+		[29] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [29]
+		[30] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [30]
+		[31] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [31]
+		[32] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [32]
+		[33] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [33]
+		[34] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [34]
+		[35] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [35]
+		[36] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [36]
+		[37] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [37]
+		[38] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [38]
+		[39] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [39]
+		[40] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [40]
+		[41] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [41]
+		[42] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [42]
+		[43] = 
+		{
+			gasoline = 
+			{
+				InitFuel	=	0,
+			}, -- end of gasoline
+			unlimitedMunitions	=	false,
+			methanol_mixture = 
+			{
+				InitFuel	=	0,
+			}, -- end of methanol_mixture
+			jet_fuel = 
+			{
+				InitFuel	=	0,
+			}, -- end of jet_fuel
+			diesel = 
+			{
+				InitFuel	=	0,
+			}, -- end of diesel
+			aircrafts = 
+			{
+				helicopters = 	{},
+				planes = 	{},
+			}, -- end of aircrafts
+			weapons = 	{},
+			unlimitedFuel	=	false,
+			unlimitedAircrafts	=	false,
+		}, -- end of [43]
+		[44] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [44]
+		[45] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [45]
+		[46] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [46]
+		[47] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [47]
+		[48] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [48]
+		[49] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [49]
+		[50] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [50]
+		[51] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [51]
+		[52] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [52]
+		[53] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [53]
+		[54] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [54]
+		[55] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [55]
+		[57] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [57]
+		[58] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [58]
+		[59] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [59]
+		[60] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [60]
+		[63] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [63]
+		[64] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [64]
+		[65] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [65]
+		[66] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [66]
+		[67] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [67]
+		[68] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [68]
+		[69] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [69]
+		[70] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [70]
+		[71] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [71]
+		[72] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [72]
+		[73] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [73]
+		[74] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [74]
+		[76] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [76]
+		[77] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [77]
+		[78] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [78]
+		[79] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [79]
+		[80] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [80]
+		[82] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [82]
+		[83] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [83]
+		[84] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [84]
+		[85] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [85]
+		[86] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [86]
+		[87] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [87]
+		[89] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [89]
+		[92] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [92]
+		[93] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [93]
+		[94] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [94]
+		[95] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [95]
+		[96] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [96]
+		[97] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [97]
+		[98] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [98]
+		[99] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [99]
+		[100] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [100]
+		[101] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [101]
+		[102] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [102]
+		[103] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [103]
+		[104] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [104]
+		[105] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [105]
+		[106] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [106]
+		[107] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [107]
+		[108] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [108]
+		[109] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [109]
+		[110] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [110]
+		[111] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [111]
+		[112] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [112]
+		[113] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [113]
+		[114] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [114]
+		[115] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [115]
+		[116] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [116]
+		[117] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [117]
+		[119] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [119]
+		[120] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [120]
+		[121] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [121]
+		[122] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [122]
+		[123] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [123]
+		[124] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [124]
+		[125] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [125]
+		[126] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [126]
+		[127] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [127]
+		[128] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [128]
+		[129] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [129]
+		[130] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [130]
+		[131] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [131]
+		[132] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [132]
+		[133] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [133]
+		[134] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [134]
+		[135] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [135]
+		[136] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [136]
+		[137] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [137]
+		[138] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [138]
+		[139] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [139]
+		[140] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [140]
+		[141] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [141]
+		[142] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [142]
+		[143] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [143]
+		[144] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [144]
+		[145] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [145]
+		[146] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [146]
+		[147] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [147]
+		[148] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [148]
+		[149] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [149]
+		[150] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [150]
+		[151] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [151]
+		[152] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [152]
+		[153] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [153]
+		[154] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [154]
+		[155] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [155]
+		[156] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [156]
+		[157] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [157]
+		[158] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [158]
+		[159] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [159]
+		[160] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [160]
+		[161] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [161]
+		[162] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [162]
+		[163] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [163]
+		[164] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [164]
+		[165] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [165]
+		[166] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [166]
+		[167] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [167]
+		[168] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [168]
+		[169] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [169]
+		[170] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [170]
+		[171] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [171]
+		[172] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [172]
+		[173] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [173]
+		[174] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [174]
+		[175] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [175]
+		[176] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [176]
+		[177] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [177]
+		[178] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [178]
+		[179] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [179]
+		[180] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [180]
+		[181] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [181]
+		[182] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [182]
+		[184] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [184]
+		[185] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [185]
+		[186] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [186]
+		[187] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [187]
+		[189] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [189]
+		[190] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [190]
+		[191] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [191]
+		[192] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [192]
+		[193] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [193]
+		[194] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [194]
+		[195] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [195]
+		[196] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [196]
+		[197] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [197]
+		[198] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [198]
+		[199] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [199]
+		[200] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [200]
+		[201] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [201]
+		[202] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [202]
+		[203] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [203]
+		[204] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [204]
+		[205] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [205]
+		[206] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [206]
+		[207] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [207]
+		[208] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [208]
+		[209] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [209]
+		[210] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [210]
+		[211] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [211]
+		[212] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [212]
+		[213] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [213]
+		[214] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [214]
+		[215] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [215]
+		[216] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [216]
+		[219] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [219]
+		[220] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [220]
+		[221] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [221]
+		[222] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [222]
+		[223] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [223]
+		[224] = 
+		{
+			unlimitedFuel	=	true,
+			unlimitedMunitions	=	true,
+			unlimitedAircrafts	=	true,
+		}, -- end of [224]
+	}, -- end of airports
+	warehouses = 	{},
+} -- end of warehouses
+triggers_state = 	{}
+result	=	0
+events = 
+{
+	[1] = 
+	{
+		type	=	"mission start",
+		event_id	=	43,
+		t	=	0,
+		linked_event_id	=	0,
+		ta	=	28800,
+	}, -- end of [1]
+	[2] = 
+	{
+		linked_event_id	=	0,
+		t	=	0,
+		event_id	=	44,
+		type	=	"took control",
+	}, -- end of [2]
+	[3] = 
+	{
+		initiator_unit_type	=	"F-16C_50",
+		type	=	"under control",
+		initiator_object_id	=	16793344,
+		targetMissionID	=	"69",
+		target	=	"f16a-1-1",
+		t	=	0,
+		initiatorPilotName	=	"New callsign",
+		initiator_coalition	=	2,
+	}, -- end of [3]
+	[4] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"King Hussein Air College",
+		t	=	18.901,
+		placeDisplayName	=	"King Hussein Air College",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777728,
+		linked_event_id	=	0,
+		event_id	=	61,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+	}, -- end of [4]
+	[5] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"King Hussein Air College",
+		t	=	18.901,
+		placeDisplayName	=	"King Hussein Air College",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777984,
+		linked_event_id	=	0,
+		event_id	=	64,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+	}, -- end of [5]
+	[6] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"Muwaffaq Salti",
+		t	=	18.901,
+		placeDisplayName	=	"Muwaffaq Salti",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16778240,
+		linked_event_id	=	0,
+		event_id	=	67,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"37",
+	}, -- end of [6]
+	[7] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"Muwaffaq Salti",
+		t	=	18.901,
+		placeDisplayName	=	"Muwaffaq Salti",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	70,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"38",
+	}, -- end of [7]
+	[8] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"King Hussein Air College",
+		t	=	60.901,
+		placeDisplayName	=	"King Hussein Air College",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777728,
+		linked_event_id	=	0,
+		event_id	=	77,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+	}, -- end of [8]
+	[9] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"Muwaffaq Salti",
+		t	=	60.901,
+		placeDisplayName	=	"Muwaffaq Salti",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16778240,
+		linked_event_id	=	0,
+		event_id	=	78,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"37",
+	}, -- end of [9]
+	[10] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"Muwaffaq Salti",
+		t	=	62.001,
+		placeDisplayName	=	"Muwaffaq Salti",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16778496,
+		linked_event_id	=	0,
+		event_id	=	79,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"38",
+	}, -- end of [10]
+	[11] = 
+	{
+		type	=	"takeoff",
+		initiatorPilotName	=	"MiG-23MLD",
+		place	=	"King Hussein Air College",
+		t	=	63.001,
+		placeDisplayName	=	"King Hussein Air College",
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777984,
+		linked_event_id	=	0,
+		event_id	=	80,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+	}, -- end of [11]
+	[12] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"shot",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	259.393,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	81,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [12]
+	[13] = 
+	{
+		weapon_type	=	591716,
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	2,
+		linked_event_id	=	0,
+		targetMissionID	=	"69",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777728,
+		target	=	"F-16C_50",
+		target_object_id	=	16793344,
+		targetPilotName	=	"New callsign",
+		type	=	"shot",
+		target_unit_type	=	"F-16C_50",
+		t	=	267.201,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	82,
+		weapon	=	"R-24R (AA-7 Apex SA)",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+		initiator_coalition	=	1,
+	}, -- end of [13]
+	[14] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"shot",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	270.645,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	83,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [14]
+	[15] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	81,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"hit",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	291.553,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	84,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [15]
+	[16] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"bda",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	291.553,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	85,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [16]
+	[17] = 
+	{
+		type	=	"ai abort mission",
+		initiatorPilotName	=	"MiG-23MLD",
+		t	=	291.553,
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777728,
+		linked_event_id	=	0,
+		event_id	=	86,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+	}, -- end of [17]
+	[18] = 
+	{
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777728,
+		target	=	"",
+		target_object_id	=	33555200,
+		targetPilotName	=	"",
+		type	=	"eject",
+		target_unit_type	=	"",
+		t	=	293.561,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	87,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+		initiator_coalition	=	1,
+	}, -- end of [18]
+	[19] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	84,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"kill",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	293.561,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	88,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [19]
+	[20] = 
+	{
+		type	=	"score",
+		initiatorPilotName	=	"New callsign",
+		t	=	293.561,
+		linked_event_id	=	88,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	89,
+		initiator_object_id	=	16793344,
+		amount	=	30,
+		comment	=	"air",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [20]
+	[21] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	83,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"hit",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	294.395,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	91,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [21]
+	[22] = 
+	{
+		weapon_type	=	1574692,
+		initiatorPilotName	=	"New callsign",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"35",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16793344,
+		target	=	"MiG-23MLD",
+		target_object_id	=	16777728,
+		targetPilotName	=	"MiG-23MLD",
+		type	=	"bda",
+		target_unit_type	=	"MiG-23MLD",
+		t	=	294.395,
+		initiator_unit_type	=	"F-16C_50",
+		event_id	=	92,
+		weapon	=	"AIM-120B",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+		initiator_coalition	=	2,
+	}, -- end of [22]
+	[23] = 
+	{
+		type	=	"ai abort mission",
+		initiatorPilotName	=	"MiG-23MLD",
+		t	=	294.395,
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777728,
+		linked_event_id	=	0,
+		event_id	=	93,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+	}, -- end of [23]
+	[24] = 
+	{
+		initiatorPilotName	=	"",
+		target_coalition	=	1,
+		linked_event_id	=	0,
+		targetMissionID	=	"0",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16809728,
+		target	=	"",
+		target_object_id	=	33555200,
+		targetPilotName	=	"",
+		type	=	"pilot discard chair",
+		target_unit_type	=	"",
+		t	=	316.701,
+		initiator_unit_type	=	"",
+		event_id	=	94,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"0",
+		initiator_coalition	=	1,
+	}, -- end of [24]
+	[25] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16778752,
+		linked_event_id	=	0,
+		event_id	=	95,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"50",
+	}, -- end of [25]
+	[26] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16779008,
+		linked_event_id	=	0,
+		event_id	=	97,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"51",
+	}, -- end of [26]
+	[27] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16779264,
+		linked_event_id	=	0,
+		event_id	=	99,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"52",
+	}, -- end of [27]
+	[28] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16779520,
+		linked_event_id	=	0,
+		event_id	=	101,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"53",
+	}, -- end of [28]
+	[29] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16779776,
+		linked_event_id	=	0,
+		event_id	=	103,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"54",
+	}, -- end of [29]
+	[30] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16780032,
+		linked_event_id	=	0,
+		event_id	=	105,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"55",
+	}, -- end of [30]
+	[31] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16780288,
+		linked_event_id	=	0,
+		event_id	=	107,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"56",
+	}, -- end of [31]
+	[32] = 
+	{
+		type	=	"engine startup",
+		initiatorPilotName	=	"Su-27",
+		t	=	328.001,
+		initiator_unit_type	=	"Su-27",
+		initiator_object_id	=	16780544,
+		linked_event_id	=	0,
+		event_id	=	109,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"57",
+	}, -- end of [32]
+	[33] = 
+	{
+		weapon_type	=	591716,
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	2,
+		linked_event_id	=	0,
+		targetMissionID	=	"69",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777984,
+		target	=	"F-16C_50",
+		target_object_id	=	16793344,
+		targetPilotName	=	"New callsign",
+		type	=	"shot",
+		target_unit_type	=	"F-16C_50",
+		t	=	329.261,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	111,
+		weapon	=	"R-24R (AA-7 Apex SA)",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+		initiator_coalition	=	1,
+	}, -- end of [33]
+	[34] = 
+	{
+		type	=	"crash",
+		initiatorPilotName	=	"MiG-23MLD",
+		t	=	332.881,
+		initiator_unit_type	=	"MiG-23MLD",
+		initiator_object_id	=	16777728,
+		linked_event_id	=	0,
+		event_id	=	112,
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"35",
+	}, -- end of [34]
+	[35] = 
+	{
+		weapon_type	=	1443604,
+		type	=	"shot",
+		initiatorPilotName	=	"New callsign",
+		t	=	339.579,
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	113,
+		weapon	=	"AIM-9M",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [35]
+	[36] = 
+	{
+		weapon_type	=	1443604,
+		type	=	"shot",
+		initiatorPilotName	=	"New callsign",
+		t	=	343.744,
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	114,
+		weapon	=	"AIM-9M",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [36]
+	[37] = 
+	{
+		weapon_type	=	591716,
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	2,
+		linked_event_id	=	111,
+		targetMissionID	=	"69",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777984,
+		target	=	"F-16C_50",
+		target_object_id	=	16793344,
+		targetPilotName	=	"New callsign",
+		type	=	"hit",
+		target_unit_type	=	"F-16C_50",
+		t	=	346.351,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	115,
+		weapon	=	"R-24R (AA-7 Apex SA)",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+		initiator_coalition	=	1,
+	}, -- end of [37]
+	[38] = 
+	{
+		weapon_type	=	591716,
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	2,
+		linked_event_id	=	0,
+		targetMissionID	=	"69",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777984,
+		target	=	"F-16C_50",
+		target_object_id	=	16793344,
+		targetPilotName	=	"New callsign",
+		type	=	"bda",
+		target_unit_type	=	"F-16C_50",
+		t	=	346.351,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	116,
+		weapon	=	"R-24R (AA-7 Apex SA)",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+		initiator_coalition	=	1,
+	}, -- end of [38]
+	[39] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"AN_ALR56_FAILURE_SENSOR_NOSE_RIGHT",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	117,
+		failureDisplayName	=	"AN/ALR-56 sensor nose right",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [39]
+	[40] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"AN_ALR56_FAILURE_SENSOR_NOSE_LEFT",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	118,
+		failureDisplayName	=	"AN/ALR-56 sensor tail right",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [40]
+	[41] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"oxy_FAILURE_TOTAL",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	119,
+		failureDisplayName	=	"Oxygen System: Total Failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [41]
+	[42] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"AN_ALR56_FAILURE_TOTAL",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	120,
+		failureDisplayName	=	"AN/ALR-56 total failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [42]
+	[43] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"CLOCK_FAILURE",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	121,
+		failureDisplayName	=	"Clock Failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [43]
+	[44] = 
+	{
+		type	=	"pilot dead",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		initiator_unit_type	=	"F-16C_50",
+		initiator_object_id	=	16793344,
+		linked_event_id	=	0,
+		event_id	=	122,
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [44]
+	[45] = 
+	{
+		weapon_type	=	591716,
+		initiatorPilotName	=	"MiG-23MLD",
+		target_coalition	=	2,
+		linked_event_id	=	115,
+		targetMissionID	=	"69",
+		target_ws_type1	=	1,
+		initiator_object_id	=	16777984,
+		target	=	"F-16C_50",
+		target_object_id	=	16793344,
+		targetPilotName	=	"New callsign",
+		type	=	"kill",
+		target_unit_type	=	"F-16C_50",
+		t	=	346.351,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	123,
+		weapon	=	"R-24R (AA-7 Apex SA)",
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+		initiator_coalition	=	1,
+	}, -- end of [45]
+	[46] = 
+	{
+		type	=	"score",
+		initiatorPilotName	=	"MiG-23MLD",
+		t	=	346.351,
+		linked_event_id	=	123,
+		initiator_unit_type	=	"MiG-23MLD",
+		event_id	=	124,
+		initiator_object_id	=	16777984,
+		amount	=	50,
+		comment	=	"air",
+		initiator_coalition	=	1,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"36",
+	}, -- end of [46]
+	[47] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"UHF_RADIO_FAILURE_ANTENNA_LOWER",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	126,
+		failureDisplayName	=	"UHF radio lower antenna failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [47]
+	[48] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"UHF_RADIO_FAILURE_ANTENNA_LOWER",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	127,
+		failureDisplayName	=	"UHF radio lower antenna failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [48]
+	[49] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"TGP_DESTROYED",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	128,
+		failureDisplayName	=	"TGP destroyed",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [49]
+	[50] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"HTS_DESTROYED",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	129,
+		failureDisplayName	=	"HTS destroyed",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [50]
+	[51] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"AN_ALE_47_FAILURE_TOTAL",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	130,
+		failureDisplayName	=	"AN/ALE-47 total failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [51]
+	[52] = 
+	{
+		type	=	"failure",
+		initiatorPilotName	=	"New callsign",
+		t	=	346.351,
+		failure	=	"AN_ALE_47_FAILURE_CONTAINER",
+		initiator_unit_type	=	"F-16C_50",
+		linked_event_id	=	0,
+		initiator_object_id	=	16793344,
+		event_id	=	131,
+		failureDisplayName	=	"AN/ALE-47 container failure",
+		initiator_coalition	=	2,
+		initiator_ws_type1	=	1,
+		initiatorMissionID	=	"69",
+	}, -- end of [52]
+	[53] = 
+	{
+		type	=	"mission end",
+		comment	=	"winner: , msg: ",
+		t	=	353.516,
+		linked_event_id	=	0,
+		event_id	=	133,
+	}, -- end of [53]
+} -- end of events

@@ -384,98 +384,92 @@
         <div id="groups-section" class="dashboard-section d-none">
             <div class="row mb-4">
                 <div class="col-12">
-                    <h3><i class="fas fa-users me-2"></i>Formation Analysis Dashboard</h3>
+                    <h3><i class="fas fa-users me-2"></i>Formation Performance Analysis</h3>
                     <p class="text-muted">
-                        Comprehensive tactical analysis comparing formation effectiveness, pilot quality distribution, 
-                        and coalition performance across multiple combat metrics.
+                        Individual formation radar charts showing tactical effectiveness across multiple combat metrics.
                     </p>
                 </div>
             </div>
             
-            <div class="chart-container" style="min-height: 1200px;">
-                <div id="groupChart"></div>
-            </div>
-            
-            <!-- Analysis Insights -->
-            <div class="row mt-4">
+            <!-- Red Coalition Groups -->
+            <div class="row mb-4">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Tactical Insights</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h6 class="text-primary">Formation Effectiveness</h6>
-                                    <p class="small text-muted">
-                                        The radar chart shows multi-dimensional performance across accuracy, survivability, 
-                                        efficiency, activity level, and lethality. Larger areas indicate superior overall performance.
-                                    </p>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6 class="text-success">Combat Performance Matrix</h6>
-                                    <p class="small text-muted">
-                                        Scatter plot correlates accuracy with kill count. Bubble size represents formation size. 
-                                        Top-right positions indicate elite formations with high accuracy and kill counts.
-                                    </p>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6 class="text-warning">Pilot Quality Distribution</h6>
-                                    <p class="small text-muted">
-                                        Histogram shows the distribution of pilot efficiency ratings by coalition. 
-                                        Right-skewed distributions indicate higher concentrations of skilled pilots.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h4 class="text-danger"><i class="fas fa-circle me-2"></i>Red Coalition Formations</h4>
                 </div>
             </div>
+            <div class="row" id="redGroupCharts">
+                {% for group_chart in session_data.visualizations.group_comparison %}
+                {% if group_chart.coalition == 'red' %}
+                <div class="col-lg-6 mb-4 group-chart">
+                    <div class="chart-container">
+                        <div id="groupChart{{ loop.index }}"></div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
             
-            <!-- Group Analysis Legend -->
+            <!-- Blue Coalition Groups -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h4 class="text-primary"><i class="fas fa-circle me-2"></i>Blue Coalition Formations</h4>
+                </div>
+            </div>
+            <div class="row" id="blueGroupCharts">
+                {% for group_chart in session_data.visualizations.group_comparison %}
+                {% if group_chart.coalition == 'blue' %}
+                <div class="col-lg-6 mb-4 group-chart">
+                    <div class="chart-container">
+                        <div id="groupChart{{ loop.index }}"></div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Group Performance Legend -->
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Formation Analysis Metrics Guide</h5>
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Formation Performance Metrics Guide</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
                                     <h6 class="text-primary">Radar Chart Metrics</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Accuracy:</strong> Group average hit percentage</li>
+                                        <li><strong>Accuracy:</strong> Formation average hit percentage</li>
                                         <li><strong>Survivability:</strong> Percentage of pilots who survived</li>
                                         <li><strong>Efficiency:</strong> Average pilot efficiency rating</li>
-                                        <li><strong>Activity:</strong> Total shots fired (scaled)</li>
-                                        <li><strong>Lethality:</strong> Total kills achieved (scaled)</li>
+                                        <li><strong>Activity:</strong> Combat engagement level (shots × 5)</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-success">Force Strength & Matrix</h6>
+                                    <h6 class="text-success">Chart Interpretation</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Coalition Bars:</strong> Total pilots per side</li>
-                                        <li><strong>Kill Numbers:</strong> Displayed on bars</li>
-                                        <li><strong>Scatter Plot:</strong> Accuracy vs. kills correlation</li>
-                                        <li><strong>Bubble Size:</strong> Formation size (pilot count)</li>
+                                        <li><strong>Larger Area:</strong> Better overall formation performance</li>
+                                        <li><strong>Balanced Shape:</strong> Well-rounded tactical capabilities</li>
+                                        <li><strong>Spikes:</strong> Exceptional performance in specific areas</li>
+                                        <li><strong>Scale:</strong> All metrics normalized to 0-100 range</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-warning">Quality & Efficiency</h6>
+                                    <h6 class="text-warning">Coalition Organization</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Histogram:</strong> Pilot skill distribution</li>
-                                        <li><strong>Red/Blue Bars:</strong> Coalition comparison</li>
-                                        <li><strong>Efficiency Bars:</strong> Formation rankings</li>
-                                        <li><strong>Horizontal Layout:</strong> Easy comparison</li>
+                                        <li><strong>Red Formations:</strong> Displayed with red coloring</li>
+                                        <li><strong>Blue Formations:</strong> Displayed with blue coloring</li>
+                                        <li><strong>Sorting:</strong> Groups ordered by efficiency rating</li>
+                                        <li><strong>Formation Size:</strong> Pilot count shown in title</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
-                                    <h6 class="text-info">Survivability Gauge</h6>
+                                    <h6 class="text-info">Formation Details</h6>
                                     <ul class="small text-muted mb-0">
-                                        <li><strong>Gauge Value:</strong> Winning coalition survivability</li>
-                                        <li><strong>Color Zones:</strong> Performance thresholds</li>
-                                        <li><strong>Delta:</strong> Comparison to 50% baseline</li>
-                                        <li><strong>Winner Text:</strong> Superior coalition identified</li>
+                                        <li><strong>Title Format:</strong> Group Name (pilots, kills)</li>
+                                        <li><strong>Coalition ID:</strong> Red/Blue formation identifier</li>
+                                        <li><strong>Performance:</strong> Multi-metric tactical assessment</li>
+                                        <li><strong>Comparison:</strong> Easy visual performance comparison</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1145,10 +1139,12 @@ $(document).ready(function() {
         Plotly.newPlot('weaponChart', weaponData.data, weaponData.layout, {responsive: true});
     }
 
-    // Group Comparison Chart
+    // Group Comparison Charts (individual charts like pilot performance)
     if (visualizations.group_comparison) {
-        const groupData = JSON.parse(visualizations.group_comparison);
-        Plotly.newPlot('groupChart', groupData.data, groupData.layout, {responsive: true});
+        visualizations.group_comparison.forEach(function(groupChart, index) {
+            const chartData = JSON.parse(groupChart.chart);
+            Plotly.newPlot('groupChart' + (index + 1), chartData.data, chartData.layout, {responsive: true});
+        });
     }
 
     // Combat Timeline Chart
