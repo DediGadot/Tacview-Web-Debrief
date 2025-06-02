@@ -1,0 +1,264 @@
+{
+  "dashboard_config": {
+    "title": "DCS Mission Debrief Dashboard",
+    "description": "Layout: Default Layout",
+    "version": "1.0"
+  },
+  "tab_order": [
+    {
+      "id": "overview",
+      "name": "Mission Overview",
+      "icon": "fas fa-chart-pie",
+      "description": "High-level mission statistics and summary",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "mission_overview",
+          "name": "Mission Statistics",
+          "type": "chart",
+          "description": "Duration, combat stats, pilot count, group count",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "id": "mission_summary_table",
+          "name": "Mission Summary",
+          "type": "table",
+          "description": "Key mission metadata and parameters",
+          "enabled": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "pilots",
+      "name": "Pilot Performance",
+      "icon": "fas fa-user-astronaut",
+      "description": "Individual pilot performance analysis",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "pilot_performance",
+          "name": "Pilot Radar Charts",
+          "type": "chart",
+          "description": "Individual pilot performance radar charts by coalition",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "id": "efficiency_leaderboard",
+          "name": "Efficiency Leaderboard",
+          "type": "chart",
+          "description": "Top pilots ranked by efficiency rating",
+          "enabled": true,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "weapons",
+      "name": "Weapons Analysis",
+      "icon": "fas fa-crosshairs",
+      "description": "Weapon effectiveness and usage patterns",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "weapon_effectiveness",
+          "name": "Weapon Effectiveness Dashboard",
+          "type": "chart",
+          "description": "Comprehensive weapon analysis with multiple visualizations",
+          "enabled": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "groups",
+      "name": "Formation Analysis",
+      "icon": "fas fa-users",
+      "description": "Group and formation performance metrics",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "group_comparison",
+          "name": "Formation Radar Charts",
+          "type": "chart",
+          "description": "Individual formation performance radar charts by coalition",
+          "enabled": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "air_to_ground",
+      "name": "Air-to-Ground",
+      "icon": "fas fa-bomb",
+      "description": "Air-to-ground combat analysis",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "air_to_ground_analysis",
+          "name": "A2G Combat Analysis",
+          "type": "chart",
+          "description": "Air-to-ground shots, accuracy, and effectiveness",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "id": "ag_pilot_dashboard",
+          "name": "A2G Pilot Performance",
+          "type": "chart",
+          "description": "Air-to-ground statistics per pilot",
+          "enabled": true,
+          "order": 2
+        },
+        {
+          "id": "ag_group_dashboard",
+          "name": "A2G Group Performance",
+          "type": "chart",
+          "description": "Air-to-ground statistics per group",
+          "enabled": true,
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "name": "Combat Timeline",
+      "icon": "fas fa-clock",
+      "description": "Chronological analysis of combat events",
+      "enabled": true,
+      "modules": [
+        {
+          "id": "combat_timeline",
+          "name": "Event Timeline",
+          "type": "chart",
+          "description": "Multi-track timeline of combat events",
+          "enabled": true,
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "name": "Kill Network",
+      "icon": "fas fa-project-diagram",
+      "description": "Interactive D3.js force-directed network visualization of combat relationships",
+      "enabled": true,
+      "technical_specs": {
+        "graphics_engine": "D3.js v7",
+        "rendering": "SVG with physics simulation",
+        "performance": "60 FPS for networks <200 nodes",
+        "features": [
+          "Force-directed layout with real-time physics",
+          "Interactive drag and drop node manipulation",
+          "Multi-layered event handling system",
+          "Real-time network analytics and statistics",
+          "Coalition-based visual encoding",
+          "Weapon-specific link differentiation"
+        ]
+      },
+      "modules": [
+        {
+          "id": "kill_death_network",
+          "name": "Interactive Kill/Death Network",
+          "type": "d3_network",
+          "description": "Sophisticated D3.js network graph displaying combat relationships with physics simulation",
+          "enabled": true,
+          "order": 1,
+          "implementation": {
+            "data_processing": "Python backend processes DCS debrief logs into graph nodes and links",
+            "visualization_engine": "D3.js v7 with force simulation",
+            "node_types": {
+              "pilot_nodes": {
+                "encoding": "Size scales with kill count, color by coalition, symbols by role",
+                "coalition_colors": {
+                  "blue": "#4a90e2",
+                  "red": "#e53e3e"
+                },
+                "size_formula": "Math.max(8, 10 + kills * 2)"
+              },
+              "ground_target_nodes": {
+                "color": "#8B4513",
+                "type": "ground_target",
+                "unique_ids": "target_type #index"
+              }
+            },
+            "link_types": {
+              "air_to_air": {
+                "color": "#e74c3c",
+                "represents": "Aircraft shooting down other aircraft",
+                "direction": "Killer → Victim"
+              },
+              "air_to_ground": {
+                "color": "#27ae60", 
+                "represents": "Aircraft destroying ground targets",
+                "direction": "Pilot → Ground Target"
+              }
+            },
+            "physics_simulation": {
+              "link_force": "120px distance for optimal spacing",
+              "charge_force": "-300 strength for node repulsion",
+              "collision_detection": "Radius-based with kill count scaling",
+              "centering_force": "Keeps network centered in viewport"
+            },
+            "interactive_features": [
+              "Drag and drop node manipulation",
+              "Rich tooltips with combat statistics",
+              "Real-time physics updates",
+              "Zoom and pan capabilities",
+              "Multi-touch gesture support"
+            ],
+            "event_system": {
+              "tab_events": "Bootstrap 5 tab activation detection",
+              "mutation_observer": "Robust DOM change monitoring",
+              "fallback_timers": "Guaranteed execution mechanisms",
+              "resize_handling": "Dynamic viewport adjustment"
+            },
+            "analytics": {
+              "network_density": "Real-time calculation of connection density",
+              "top_performers": "Dynamic identification of leading pilots",
+              "kill_chains": "Combat sequence analysis",
+              "coalition_statistics": "Balanced performance metrics"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "module_types": {
+    "chart": {
+      "container_class": "chart-container",
+      "loading_message": "Loading visualization...",
+      "error_message": "Failed to load chart"
+    },
+    "table": {
+      "container_class": "table-container",
+      "loading_message": "Loading data...",
+      "error_message": "Failed to load table"
+    },
+    "d3_network": {
+      "container_class": "d3-network-container",
+      "loading_message": "Initializing D3.js network simulation...",
+      "error_message": "Failed to load interactive network",
+      "dependencies": ["d3.js v7", "modern SVG support"],
+      "performance_notes": "Optimized for networks up to 500 nodes with real-time physics"
+    }
+  },
+  "display_options": {
+    "show_module_descriptions": true,
+    "show_tab_icons": true,
+    "enable_module_collapse": true
+  },
+  "theme": {
+    "primary_color": "#007bff",
+    "secondary_color": "#6c757d",
+    "network_colors": {
+      "blue_coalition": "#4a90e2",
+      "red_coalition": "#e53e3e",
+      "ground_targets": "#8B4513",
+      "air_to_air_links": "#e74c3c",
+      "air_to_ground_links": "#27ae60"
+    }
+  }
+}

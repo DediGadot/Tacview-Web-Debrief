@@ -1,0 +1,566 @@
+{
+  "layouts": {
+    "default": {
+      "name": "Default Layout",
+      "description": "Standard mission analysis layout with all modules enabled",
+      "config": {
+        "tab_order": [
+          {
+            "id": "overview",
+            "name": "Mission Overview",
+            "icon": "fas fa-chart-pie",
+            "description": "High-level mission statistics and summary",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "mission_overview",
+                "name": "Mission Statistics",
+                "type": "chart",
+                "description": "Duration, combat stats, pilot count, group count",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "mission_summary_table",
+                "name": "Mission Summary",
+                "type": "table",
+                "description": "Key mission metadata and parameters",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "pilots",
+            "name": "Pilot Performance",
+            "icon": "fas fa-user-astronaut",
+            "description": "Individual pilot performance analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "pilot_performance",
+                "name": "Pilot Radar Charts",
+                "type": "chart",
+                "description": "Individual pilot performance radar charts by coalition",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "efficiency_leaderboard",
+                "name": "Efficiency Leaderboard",
+                "type": "chart",
+                "description": "Top pilots ranked by efficiency rating",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "weapons",
+            "name": "Weapons Analysis",
+            "icon": "fas fa-crosshairs",
+            "description": "Weapon effectiveness and usage patterns",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "weapon_effectiveness",
+                "name": "Weapon Effectiveness Dashboard",
+                "type": "chart",
+                "description": "Comprehensive weapon analysis with multiple visualizations",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "groups",
+            "name": "Formation Analysis",
+            "icon": "fas fa-users",
+            "description": "Group and formation performance metrics",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "group_comparison",
+                "name": "Formation Radar Charts",
+                "type": "chart",
+                "description": "Individual formation performance radar charts by coalition",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "air_to_ground",
+            "name": "Air-to-Ground",
+            "icon": "fas fa-bomb",
+            "description": "Air-to-ground combat analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "air_to_ground_analysis",
+                "name": "A2G Combat Analysis",
+                "type": "chart",
+                "description": "Air-to-ground shots, accuracy, and effectiveness",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "ag_pilot_dashboard",
+                "name": "A2G Pilot Performance",
+                "type": "chart",
+                "description": "Air-to-ground statistics per pilot",
+                "enabled": true,
+                "order": 2
+              },
+              {
+                "id": "ag_group_dashboard",
+                "name": "A2G Group Performance",
+                "type": "chart",
+                "description": "Air-to-ground statistics per group",
+                "enabled": true,
+                "order": 3
+              }
+            ]
+          },
+          {
+            "id": "timeline",
+            "name": "Combat Timeline",
+            "icon": "fas fa-clock",
+            "description": "Chronological analysis of combat events",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "combat_timeline",
+                "name": "Event Timeline",
+                "type": "chart",
+                "description": "Multi-track timeline of combat events",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "network",
+            "name": "Kill Network",
+            "icon": "fas fa-project-diagram",
+            "description": "Kill/death relationship analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "kill_death_network",
+                "name": "Kill/Death Network",
+                "type": "chart",
+                "description": "Network visualization of combat relationships",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "pilot_focused": {
+      "name": "Pilot-Focused Layout",
+      "description": "Emphasizes individual pilot performance and rankings",
+      "config": {
+        "tab_order": [
+          {
+            "id": "pilots",
+            "name": "Pilot Performance",
+            "icon": "fas fa-user-astronaut",
+            "description": "Individual pilot performance analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "pilot_performance",
+                "name": "Pilot Radar Charts",
+                "type": "chart",
+                "description": "Individual pilot performance radar charts by coalition",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "efficiency_leaderboard",
+                "name": "Efficiency Leaderboard",
+                "type": "chart",
+                "description": "Top pilots ranked by efficiency rating",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "overview",
+            "name": "Mission Overview",
+            "icon": "fas fa-chart-pie",
+            "description": "High-level mission statistics",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "mission_overview",
+                "name": "Mission Statistics",
+                "type": "chart",
+                "description": "Duration, combat stats, pilot count, group count",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "weapons",
+            "name": "Weapons Analysis",
+            "icon": "fas fa-crosshairs",
+            "description": "Weapon effectiveness by pilot",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "weapon_effectiveness",
+                "name": "Weapon Effectiveness Dashboard",
+                "type": "chart",
+                "description": "Focus on pilot weapon mastery",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "network",
+            "name": "Kill Network",
+            "icon": "fas fa-project-diagram",
+            "description": "Pilot kill relationships",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "kill_death_network",
+                "name": "Kill/Death Network",
+                "type": "chart",
+                "description": "Network visualization of combat relationships",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tactical_analysis": {
+      "name": "Tactical Analysis Layout",
+      "description": "Focus on tactical patterns and group performance",
+      "config": {
+        "tab_order": [
+          {
+            "id": "overview",
+            "name": "Mission Overview",
+            "icon": "fas fa-chart-pie",
+            "description": "Mission-level tactical summary",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "mission_overview",
+                "name": "Mission Statistics",
+                "type": "chart",
+                "description": "Strategic overview of the engagement",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "timeline",
+            "name": "Combat Timeline",
+            "icon": "fas fa-clock",
+            "description": "Tactical event sequencing",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "combat_timeline",
+                "name": "Event Timeline",
+                "type": "chart",
+                "description": "Tactical flow and decision points",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "groups",
+            "name": "Formation Analysis",
+            "icon": "fas fa-users",
+            "description": "Unit coordination and effectiveness",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "group_comparison",
+                "name": "Formation Performance",
+                "type": "chart",
+                "description": "Formation tactical effectiveness comparison",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "air_to_ground",
+            "name": "Ground Operations",
+            "icon": "fas fa-bomb",
+            "description": "CAS and SEAD mission analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "air_to_ground_analysis",
+                "name": "Ground Attack Analysis",
+                "type": "chart",
+                "description": "Close air support effectiveness",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "ag_group_dashboard",
+                "name": "Formation Ground Attack",
+                "type": "chart",
+                "description": "Formation-level ground attack performance",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "weapons",
+            "name": "Weapons & TTPs",
+            "icon": "fas fa-crosshairs",
+            "description": "Tactics, techniques, and procedures",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "weapon_effectiveness",
+                "name": "Weapon Systems Analysis",
+                "type": "chart",
+                "description": "Weapon system employment patterns",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "minimal": {
+      "name": "Minimal Layout",
+      "description": "Essential charts only for quick analysis",
+      "config": {
+        "tab_order": [
+          {
+            "id": "overview",
+            "name": "Overview",
+            "icon": "fas fa-chart-pie",
+            "description": "Mission summary",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "mission_overview",
+                "name": "Mission Statistics",
+                "type": "chart",
+                "description": "Key mission metrics",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "pilots",
+            "name": "Pilots",
+            "icon": "fas fa-user-astronaut",
+            "description": "Pilot performance",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "efficiency_leaderboard",
+                "name": "Pilot Rankings",
+                "type": "chart",
+                "description": "Top performer rankings",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "network",
+            "name": "Kill Network",
+            "icon": "fas fa-project-diagram",
+            "description": "Combat relationships",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "kill_death_network",
+                "name": "Kill Network",
+                "type": "chart",
+                "description": "Combat relationship visualization",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "comprehensive": {
+      "name": "Comprehensive Analysis",
+      "description": "All available modules with detailed analysis",
+      "config": {
+        "tab_order": [
+          {
+            "id": "overview",
+            "name": "Mission Overview",
+            "icon": "fas fa-chart-pie",
+            "description": "Complete mission analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "mission_overview",
+                "name": "Mission Dashboard",
+                "type": "chart",
+                "description": "Comprehensive mission statistics",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "mission_summary_table",
+                "name": "Detailed Summary",
+                "type": "table",
+                "description": "Complete mission metadata",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "pilots",
+            "name": "Pilot Analysis",
+            "icon": "fas fa-user-astronaut",
+            "description": "Complete pilot performance suite",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "pilot_performance",
+                "name": "Individual Performance",
+                "type": "chart",
+                "description": "Detailed pilot radar charts",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "efficiency_leaderboard",
+                "name": "Performance Rankings",
+                "type": "chart",
+                "description": "Pilot efficiency leaderboard",
+                "enabled": true,
+                "order": 2
+              }
+            ]
+          },
+          {
+            "id": "groups",
+            "name": "Formation Analysis",
+            "icon": "fas fa-users",
+            "description": "Unit and formation performance",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "group_comparison",
+                "name": "Formation Performance",
+                "type": "chart",
+                "description": "Formation effectiveness comparison",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "weapons",
+            "name": "Weapons Analysis",
+            "icon": "fas fa-crosshairs",
+            "description": "Complete weapons effectiveness",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "weapon_effectiveness",
+                "name": "Weapons Dashboard",
+                "type": "chart",
+                "description": "Comprehensive weapon analysis",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "air_to_ground",
+            "name": "Air-to-Ground Suite",
+            "icon": "fas fa-bomb",
+            "description": "Complete ground attack analysis",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "air_to_ground_analysis",
+                "name": "A2G Overview",
+                "type": "chart",
+                "description": "Air-to-ground combat overview",
+                "enabled": true,
+                "order": 1
+              },
+              {
+                "id": "ag_pilot_dashboard",
+                "name": "A2G by Pilot",
+                "type": "chart",
+                "description": "Individual pilot ground attack stats",
+                "enabled": true,
+                "order": 2
+              },
+              {
+                "id": "ag_group_dashboard",
+                "name": "A2G by Formation",
+                "type": "chart",
+                "description": "Formation ground attack effectiveness",
+                "enabled": true,
+                "order": 3
+              }
+            ]
+          },
+          {
+            "id": "timeline",
+            "name": "Combat Timeline",
+            "icon": "fas fa-clock",
+            "description": "Temporal analysis suite",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "combat_timeline",
+                "name": "Event Timeline",
+                "type": "chart",
+                "description": "Complete mission timeline",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          },
+          {
+            "id": "network",
+            "name": "Relationship Analysis",
+            "icon": "fas fa-project-diagram",
+            "description": "Combat interaction networks",
+            "enabled": true,
+            "modules": [
+              {
+                "id": "kill_death_network",
+                "name": "Kill Network",
+                "type": "chart",
+                "description": "Combat relationship network",
+                "enabled": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+} 

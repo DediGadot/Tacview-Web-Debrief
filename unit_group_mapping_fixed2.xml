@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcs_mapping timestamp="Mission Time 09:13:51" mission_time="33231" update_number="1478">
+<groups>
+<group id="1" name="f16a" category="0" coalition="2" first_seen="29046" last_seen="33027" active="false"/>
+<group id="2" name="Ground-1" category="2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="3" name="Ground-2" category="2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="4" name="first-mig23" category="0" coalition="1" first_seen="28800" last_seen="30378" active="false"/>
+<group id="5" name="first-mig23-1" category="0" coalition="1" first_seen="28800" last_seen="30558" active="false"/>
+<group id="7" name="Ground-3" category="2" coalition="2" first_seen="28800" last_seen="33231" active="true"/>
+<group id="8" name="scuds-north" category="2" coalition="1" first_seen="28800" last_seen="31104" active="false"/>
+<group id="9" name="scuds-south" category="2" coalition="1" first_seen="28800" last_seen="32409" active="false"/>
+<group id="10" name="second-su27" category="0" coalition="1" first_seen="28800" last_seen="31290" active="false"/>
+<group id="11" name="second-su27-1" category="0" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="12" name="scuds-protect-south" category="0" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="13" name="scuds-protect-north" category="0" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="14" name="f16a-1" category="0" coalition="2" first_seen="29091" last_seen="33231" active="true"/>
+<group id="15" name="f18a" category="0" coalition="2" first_seen="28851" last_seen="33102" active="false"/>
+<group id="16" name="Aerial-1" category="0" coalition="2" first_seen="28800" last_seen="33231" active="true"/>
+<group id="17" name="scuds-south-1" category="2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<group id="18" name="Ground-4" category="2" coalition="1" first_seen="28800" last_seen="30387" active="false"/>
+<group id="19" name="Ground-5" category="2" coalition="1" first_seen="28800" last_seen="32103" active="false"/>
+<group id="20" name="third-mig31" category="0" coalition="1" first_seen="28800" last_seen="33087" active="false"/>
+</groups>
+<units>
+<unit id="16777985" name="first-mig23-1" display_name="first-mig23-1" is_player_controlled="false" type="MiG-23MLD" group_id="4" group_name="first-mig23" coalition="1" first_seen="28800" last_seen="30378" active="false"/>
+<unit id="16780033" name="second-su27-1-1" display_name="second-su27-1-1" is_player_controlled="false" type="Su-27" group_id="11" group_name="second-su27-1" coalition="1" first_seen="28800" last_seen="31602" active="false"/>
+<unit id="16782081" name="scuds-protect-south-1-2" display_name="scuds-protect-south-1-2" is_player_controlled="false" type="A-10A" group_id="13" group_name="scuds-protect-north" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16784129" name="Ground-1-2" display_name="Ground-1-2" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16786177" name="Ground-1-10" display_name="Ground-1-10" is_player_controlled="false" type="p-19 s-125 sr" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="30789" active="false"/>
+<unit id="16788225" name="Ground-2-3" display_name="Ground-2-3" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16790273" name="Ground-2-11" display_name="Ground-2-11" is_player_controlled="false" type="Ural-4320 APA-5D" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="31131" active="false"/>
+<unit id="16792321" name="Ground-4-1" display_name="Ground-4-1" is_player_controlled="false" type="Scud_B" group_id="8" group_name="scuds-north" coalition="1" first_seen="28800" last_seen="31104" active="false"/>
+<unit id="16794369" name="scuds-south-1-4" display_name="scuds-south-1-4" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16796417" name="scuds-south-1-12" display_name="scuds-south-1-12" is_player_controlled="false" type="2S6 Tunguska" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16778241" name="first-mig23-2" display_name="first-mig23-2" is_player_controlled="false" type="MiG-23MLD" group_id="4" group_name="first-mig23" coalition="1" first_seen="28800" last_seen="30351" active="false"/>
+<unit id="16780289" name="second-su27-1-2" display_name="second-su27-1-2" is_player_controlled="false" type="Su-27" group_id="11" group_name="second-su27-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16782337" name="scuds-protect-south-1-3" display_name="scuds-protect-south-1-3" is_player_controlled="false" type="A-10A" group_id="13" group_name="scuds-protect-north" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16784385" name="Ground-1-3" display_name="Ground-1-3" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16786433" name="Ground-1-11" display_name="Ground-1-11" is_player_controlled="false" type="Ural-4320 APA-5D" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="30789" active="false"/>
+<unit id="16788481" name="Ground-2-4" display_name="Ground-2-4" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16790529" name="Ground-2-12" display_name="Ground-2-12" is_player_controlled="false" type="ATMZ-5" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16792577" name="scuds-north-1-1" display_name="scuds-north-1-1" is_player_controlled="false" type="Scud_B" group_id="9" group_name="scuds-south" coalition="1" first_seen="28800" last_seen="32328" active="false"/>
+<unit id="16794625" name="scuds-south-1-5" display_name="scuds-south-1-5" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16796673" name="Ground-4-5" display_name="Ground-4-5" is_player_controlled="false" type="Osa 9A33 ln" group_id="18" group_name="Ground-4" coalition="1" first_seen="28800" last_seen="30387" active="false"/>
+<unit id="16778497" name="first-mig23-1-1" display_name="first-mig23-1-1" is_player_controlled="false" type="MiG-23MLD" group_id="5" group_name="first-mig23-1" coalition="1" first_seen="28800" last_seen="29835" active="false"/>
+<unit id="16780545" name="second-su27-1-3" display_name="second-su27-1-3" is_player_controlled="false" type="Su-27" group_id="11" group_name="second-su27-1" coalition="1" first_seen="28800" last_seen="32214" active="false"/>
+<unit id="16782593" name="scuds-protect-south-1-4" display_name="scuds-protect-south-1-4" is_player_controlled="false" type="A-10A" group_id="13" group_name="scuds-protect-north" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16784641" name="Ground-1-4" display_name="Ground-1-4" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16786689" name="Ground-1-12" display_name="Ground-1-12" is_player_controlled="false" type="ATMZ-5" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16788737" name="Ground-2-5" display_name="Ground-2-5" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16790785" name="Ground-2-13" display_name="Ground-2-13" is_player_controlled="false" type="ATMZ-5" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16792833" name="scuds-north-1-2" display_name="scuds-north-1-2" is_player_controlled="false" type="Scud_B" group_id="9" group_name="scuds-south" coalition="1" first_seen="28800" last_seen="32331" active="false"/>
+<unit id="16794881" name="scuds-south-1-6" display_name="scuds-south-1-6" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16796929" name="Ground-5-1" display_name="Ground-5-1" is_player_controlled="false" type="Osa 9A33 ln" group_id="19" group_name="Ground-5" coalition="1" first_seen="28800" last_seen="32103" active="false"/>
+<unit id="16778753" name="first-mig23-1-2" display_name="first-mig23-1-2" is_player_controlled="false" type="MiG-23MLD" group_id="5" group_name="first-mig23-1" coalition="1" first_seen="28800" last_seen="29805" active="false"/>
+<unit id="16780801" name="Aerial-1-7" display_name="Aerial-1-7" is_player_controlled="false" type="A-10A" group_id="12" group_name="scuds-protect-south" coalition="1" first_seen="28800" last_seen="32625" active="false"/>
+<unit id="16782849" name="Aerial-2-1" display_name="Aerial-2-1" is_player_controlled="false" type="MiG-31" group_id="20" group_name="third-mig31" coalition="1" first_seen="28800" last_seen="32757" active="false"/>
+<unit id="16784897" name="Ground-1-5" display_name="Ground-1-5" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16786945" name="Ground-1-13" display_name="Ground-1-13" is_player_controlled="false" type="ATMZ-5" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16788993" name="Ground-2-6" display_name="Ground-2-6" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="31449" active="false"/>
+<unit id="16791041" name="Ground-2-14" display_name="Ground-2-14" is_player_controlled="false" type="Ural-4320T" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16793089" name="scuds-north-1-3" display_name="scuds-north-1-3" is_player_controlled="false" type="Scud_B" group_id="9" group_name="scuds-south" coalition="1" first_seen="28800" last_seen="32409" active="false"/>
+<unit id="16795137" name="scuds-south-1-7" display_name="scuds-south-1-7" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16797185" name="Aerial-1-8" display_name="Aerial-1-8" is_player_controlled="false" type="E-3A" group_id="16" group_name="Aerial-1" coalition="2" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16779009" name="first-mig23-1-3" display_name="first-mig23-1-3" is_player_controlled="false" type="MiG-23MLD" group_id="5" group_name="first-mig23-1" coalition="1" first_seen="28800" last_seen="30546" active="false"/>
+<unit id="16781057" name="scuds-protect-south-1" display_name="scuds-protect-south-1" is_player_controlled="false" type="A-10A" group_id="12" group_name="scuds-protect-south" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16783105" name="Aerial-2-2" display_name="Aerial-2-2" is_player_controlled="false" type="MiG-31" group_id="20" group_name="third-mig31" coalition="1" first_seen="28800" last_seen="32925" active="false"/>
+<unit id="16785153" name="Ground-1-6" display_name="Ground-1-6" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16787201" name="Ground-1-14" display_name="Ground-1-14" is_player_controlled="false" type="Ural-4320T" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16789249" name="Ground-2-7" display_name="Ground-2-7" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16791297" name="Ground-2-15" display_name="Ground-2-15" is_player_controlled="false" type="Ural-4320T" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+    <unit id="16793345" name="scuds-north-1-4" display_name="scuds-north-1-4" is_player_controlled="false" type="Scud_B" group_id="9" group_name="scuds-south" coalition="1" first_seen="28800" last_seen="32328" active="false"/>
+<unit id="16795393" name="scuds-south-1-8" display_name="scuds-south-1-8" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16797441" name="Ground-3-1" display_name="Ground-3-1" is_player_controlled="false" type="Soldier M249" group_id="7" group_name="Ground-3" coalition="2" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16779265" name="Aerial-1-3" display_name="Aerial-1-3" is_player_controlled="false" type="Su-27" group_id="10" group_name="second-su27" coalition="1" first_seen="28800" last_seen="31065" active="false"/>
+<unit id="16781313" name="scuds-protect-south-2" display_name="scuds-protect-south-2" is_player_controlled="false" type="A-10A" group_id="12" group_name="scuds-protect-south" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16783361" name="Aerial-2-3" display_name="Aerial-2-3" is_player_controlled="false" type="MiG-31" group_id="20" group_name="third-mig31" coalition="1" first_seen="28800" last_seen="32874" active="false"/>
+<unit id="16785409" name="Ground-1-7" display_name="Ground-1-7" is_player_controlled="false" type="S_75M_Volhov" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16787457" name="Ground-1-15" display_name="Ground-1-15" is_player_controlled="false" type="Ural-4320T" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16789505" name="Ground-2-8" display_name="Ground-2-8" is_player_controlled="false" type="ZIL-131 KUNG" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16791553" name="Ground-4-4" display_name="Ground-4-4" is_player_controlled="false" type="Scud_B" group_id="8" group_name="scuds-north" coalition="1" first_seen="28800" last_seen="31101" active="false"/>
+<unit id="16793601" name="scuds-south-1-1" display_name="scuds-south-1-1" is_player_controlled="false" type="RPC_5N62V" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16795649" name="scuds-south-1-9" display_name="scuds-south-1-9" is_player_controlled="false" type="S-200_Launcher" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16797697" name="Ground-3-2" display_name="Ground-3-2" is_player_controlled="false" type="Soldier M249" group_id="7" group_name="Ground-3" coalition="2" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16840456" name="f16a-2" display_name="Penelopy" player_name="Penelopy" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29934" last_seen="33027" active="false"/>
+<unit id="16972809" name="f16a-1-3" display_name="IAF.DanielC" player_name="IAF.DanielC" is_player_controlled="true" type="F-16C_50" group_id="14" group_name="f16a-1" coalition="2" first_seen="31296" last_seen="33021" active="false"/>
+<unit id="17107974" name="f16a-1" display_name="fiod9" player_name="fiod9" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="31284" last_seen="32910" active="false"/>
+<unit id="17100037" name="f16a-1-4" display_name="IAF.Yuval KiZ" player_name="IAF.Yuval KiZ" is_player_controlled="true" type="F-16C_50" group_id="14" group_name="f16a-1" coalition="2" first_seen="31272" last_seen="33231" active="true"/>
+<unit id="16779521" name="Aerial-1-4" display_name="Aerial-1-4" is_player_controlled="false" type="Su-27" group_id="10" group_name="second-su27" coalition="1" first_seen="28800" last_seen="31011" active="false"/>
+<unit id="16781569" name="scuds-protect-south-3" display_name="scuds-protect-south-3" is_player_controlled="false" type="A-10A" group_id="12" group_name="scuds-protect-south" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16783617" name="Aerial-2-4" display_name="Aerial-2-4" is_player_controlled="false" type="MiG-31" group_id="20" group_name="third-mig31" coalition="1" first_seen="28800" last_seen="32907" active="false"/>
+<unit id="16785665" name="Ground-1-8" display_name="Ground-1-8" is_player_controlled="false" type="ZIL-131 KUNG" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16787713" name="Ground-2-1" display_name="Ground-2-1" is_player_controlled="false" type="SNR_75V" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="31581" active="false"/>
+<unit id="16789761" name="Ground-2-9" display_name="Ground-2-9" is_player_controlled="false" type="ZIL-131 KUNG" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16791809" name="Ground-4-3" display_name="Ground-4-3" is_player_controlled="false" type="Scud_B" group_id="8" group_name="scuds-north" coalition="1" first_seen="28800" last_seen="31101" active="false"/>
+<unit id="16793857" name="scuds-south-1-2" display_name="scuds-south-1-2" is_player_controlled="false" type="RLS_19J6" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16795905" name="scuds-south-1-10" display_name="scuds-south-1-10" is_player_controlled="false" type="Ural-375" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16953604" name="f18a-1" display_name="IAF.Aviranov" player_name="IAF.Aviranov" is_player_controlled="true" type="FA-18C_hornet" group_id="15" group_name="f18a" coalition="2" first_seen="30567" last_seen="31602" active="false"/>
+<unit id="17151492" name="f18a-1" display_name="IAF.Aviranov" player_name="IAF.Aviranov" is_player_controlled="true" type="FA-18C_hornet" group_id="15" group_name="f18a" coalition="2" first_seen="31662" last_seen="33102" active="false"/>
+<unit id="16840706" name="Aerial-1-1" display_name="IAF.Assaf" player_name="IAF.Assaf" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29922" last_seen="31362" active="false"/>
+<unit id="16840710" name="f16a-1" display_name="fiod9" player_name="fiod9" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29901" last_seen="31257" active="false"/>
+<unit id="16793865" name="f16a-1-3" display_name="IAF.DanielC" player_name="IAF.DanielC" is_player_controlled="true" type="F-16C_50" group_id="14" group_name="f16a-1" coalition="2" first_seen="29829" last_seen="29913" active="false"/>
+<unit id="16777481" name="f16a-1-3" display_name="IAF.DanielC" player_name="IAF.DanielC" is_player_controlled="true" type="F-16C_50" group_id="14" group_name="f16a-1" coalition="2" first_seen="29568" last_seen="31278" active="false"/>
+<unit id="16777729" name="Aerial-1-2" display_name="Aerial-1-2" is_player_controlled="false" type="MiG-23MLD" group_id="4" group_name="first-mig23" coalition="1" first_seen="28800" last_seen="29874" active="false"/>
+<unit id="16779777" name="Aerial-1-5" display_name="Aerial-1-5" is_player_controlled="false" type="Su-27" group_id="10" group_name="second-su27" coalition="1" first_seen="28800" last_seen="31266" active="false"/>
+<unit id="16781825" name="scuds-protect-south-1-1" display_name="scuds-protect-south-1-1" is_player_controlled="false" type="A-10A" group_id="13" group_name="scuds-protect-north" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16783873" name="Ground-1-1" display_name="Ground-1-1" is_player_controlled="false" type="SNR_75V" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="30777" active="false"/>
+<unit id="16785921" name="Ground-1-9" display_name="Ground-1-9" is_player_controlled="false" type="ZIL-131 KUNG" group_id="2" group_name="Ground-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16787969" name="Ground-2-2" display_name="Ground-2-2" is_player_controlled="false" type="S_75M_Volhov" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16790017" name="Ground-2-10" display_name="Ground-2-10" is_player_controlled="false" type="p-19 s-125 sr" group_id="3" group_name="Ground-2" coalition="1" first_seen="28800" last_seen="31131" active="false"/>
+<unit id="16792065" name="Ground-4-2" display_name="Ground-4-2" is_player_controlled="false" type="Scud_B" group_id="8" group_name="scuds-north" coalition="1" first_seen="28800" last_seen="31101" active="false"/>
+<unit id="16794113" name="scuds-south-1-3" display_name="scuds-south-1-3" is_player_controlled="false" type="p-19 s-125 sr" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16796161" name="scuds-south-1-11" display_name="scuds-south-1-11" is_player_controlled="false" type="Ural-375" group_id="17" group_name="scuds-south-1" coalition="1" first_seen="28800" last_seen="33231" active="true"/>
+<unit id="16777480" name="f16a-2" display_name="Penelopy" player_name="Penelopy" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29403" last_seen="29907" active="false"/>
+<unit id="16777478" name="f16a-1" display_name="fiod9" player_name="fiod9" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29223" last_seen="29886" active="false"/>
+<unit id="16777477" name="f16a-1-4" display_name="IAF.Yuval KiZ" player_name="IAF.Yuval KiZ" is_player_controlled="true" type="F-16C_50" group_id="14" group_name="f16a-1" coalition="2" first_seen="29091" last_seen="31245" active="false"/>
+<unit id="16777474" name="Aerial-1-1" display_name="IAF.Assaf" player_name="IAF.Assaf" is_player_controlled="true" type="F-16C_50" group_id="1" group_name="f16a" coalition="2" first_seen="29046" last_seen="29877" active="false"/>
+<unit id="16777476" name="f18a-1" display_name="IAF.Aviranov" player_name="IAF.Aviranov" is_player_controlled="true" type="FA-18C_hornet" group_id="15" group_name="f18a" coalition="2" first_seen="28878" last_seen="30546" active="false"/>
+<unit id="16777475" name="f16a-2-1" display_name="DC10" player_name="DC10" is_player_controlled="true" type="FA-18C_hornet" group_id="15" group_name="f18a" coalition="2" first_seen="28851" last_seen="31683" active="false"/>
+</units>
+<summary>
+<stats total_groups="19" active_groups="9" total_units="95" active_units="47" player_units="16" active_player_units="1" groups_ever_seen="19" units_ever_seen="95"/>
+<coalition_distribution>
+<groups red="14" blue="5" neutral="0"/>
+<units red="76" blue="19" neutral="0"/>
+</coalition_distribution>
+</summary>
+</dcs_mapping>

@@ -1,0 +1,167 @@
+/**
+ * Kill Network D3.js Styling
+ * CSS for the interactive force-directed network visualization
+ */
+
+.d3-network-container {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.network-loading {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(2px);
+}
+
+.network-analytics {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1000;
+}
+
+/* SVG Styling */
+.d3-network-container svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Node Styling */
+.d3-network-container .nodes circle {
+    transition: opacity 0.3s ease, r 0.2s ease;
+}
+
+.d3-network-container .nodes circle:hover {
+    stroke-width: 3px;
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Link Styling */
+.d3-network-container .links line {
+    transition: opacity 0.3s ease, stroke-width 0.2s ease;
+}
+
+.d3-network-container .links line:hover {
+    stroke-width: 4px;
+    opacity: 1;
+}
+
+/* Label Styling */
+.d3-network-container .labels text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    transition: opacity 0.3s ease;
+}
+
+/* Legend Styling */
+.d3-network-container .legend {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.d3-network-container .legend:hover {
+    opacity: 1;
+}
+
+.d3-network-container .legend-item text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .d3-network-container {
+        min-height: 400px;
+    }
+    
+    .network-analytics {
+        font-size: 11px;
+        padding: 8px;
+    }
+    
+    .d3-network-container .labels text {
+        font-size: 8px;
+    }
+    
+    .d3-network-container .legend {
+        transform: scale(0.8);
+        transform-origin: top right;
+    }
+}
+
+@media (max-width: 576px) {
+    .d3-network-container {
+        min-height: 350px;
+    }
+    
+    .d3-network-container .legend {
+        display: none;
+    }
+}
+
+/* Animation Classes */
+.network-fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.network-highlight {
+    animation: pulse 1s infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .d3-network-container {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        border-color: #4a5568;
+    }
+    
+    .network-analytics {
+        background: rgba(26, 32, 44, 0.95);
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
+    
+    .d3-network-container .labels text {
+        fill: #e2e8f0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Performance Optimizations */
+.d3-network-container svg {
+    shape-rendering: geometricPrecision;
+    text-rendering: optimizeLegibility;
+}
+
+.d3-network-container .links line {
+    shape-rendering: crispEdges;
+}
+
+/* Accessibility */
+.d3-network-container:focus-within {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+
+/* Loading Spinner */
+.network-loading .spinner-border {
+    color: #4f46e5;
+} 
