@@ -3,7 +3,18 @@ services:
     name: dcs-mission-debrief
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 2 --worker-class sync app:app
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: FLASK_DEBUG
+        value: false
+      - key: MAX_UPLOAD_SIZE
+        value: 100
+      - key: SECRET_KEY
+        generateValue: true
+    disk:
+      name: dcs-mission-data
+      mountPath: /opt/render/project/src
+      sizeGB: 1

@@ -19,10 +19,21 @@ import plotly.graph_objects as go
 import plotly.utils
 from plotly.subplots import make_subplots
 import pandas as pd
+import logging
 
 app = Flask(__name__)
-app.secret_key = 'dcs_mission_debrief_secret_key_2024'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size
+# Use environment variable for secret key in production, fallback for development
+app.secret_key = os.environ.get('SECRET_KEY', 'dcs_mission_debrief_secret_key_2024')
+
+# Configure file upload limits - be more conservative for production hosting
+max_file_size = int(os.environ.get('MAX_UPLOAD_SIZE', 100)) * 1024 * 1024  # Default 100MB
+app.config['MAX_CONTENT_LENGTH'] = max_file_size
+
+# Production error handling
+if not app.debug:
+    logging.basicConfig(level=logging.INFO)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('DCS Mission Debrief startup')
 
 # Configuration
 UPLOAD_FOLDER = 'uploads'
@@ -2307,6 +2318,34 @@ def get_past_analyses():
     
     return past_analyses
 
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Render.com and monitoring"""
+    try:
+        # Check if required directories exist and are writable
+        upload_test = os.access(UPLOAD_FOLDER, os.W_OK)
+        results_test = os.access(RESULTS_FOLDER, os.W_OK)
+        
+        status = {
+            'status': 'healthy',
+            'timestamp': datetime.now().isoformat(),
+            'upload_dir_writable': upload_test,
+            'results_dir_writable': results_test,
+            'max_upload_size_mb': app.config['MAX_CONTENT_LENGTH'] // (1024 * 1024)
+        }
+        
+        if not (upload_test and results_test):
+            status['status'] = 'degraded'
+            status['warning'] = 'Some directories not writable'
+        
+        return jsonify(status), 200 if status['status'] == 'healthy' else 503
+    except Exception as e:
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 @app.route('/')
 def index():
     past_analyses = get_past_analyses()
@@ -2314,113 +2353,137 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_files():
-    # debrief.log is required, dcs.log is optional
-    if 'debrief_log' not in request.files:
-        flash('debrief.log file is required')
-        return redirect(request.url)
-    
-    dcs_file = request.files.get('dcs_log')
-    debrief_file = request.files['debrief_log']
-    
-    # Check if debrief.log is provided
-    if debrief_file.filename == '':
-        flash('Please select a debrief.log file')
-        return redirect(request.url)
-    
-    # Validate debrief.log file
-    if not (debrief_file and allowed_file(debrief_file.filename)):
-        flash('Invalid debrief.log file format. Please upload a .log file.')
-        return redirect(url_for('index'))
-    
-    # Validate dcs.log file if provided
-    dcs_file_valid = True
-    if dcs_file and dcs_file.filename != '':
-        if not allowed_file(dcs_file.filename):
-            flash('Invalid dcs.log file format. Please upload a .log file.')
-            return redirect(url_for('index'))
-    else:
-        dcs_file = None  # No dcs.log provided
-        dcs_file_valid = True
-    
-    # Save uploaded files temporarily to extract mission metadata
-    temp_dcs_path = None
-    temp_debrief_path = tempfile.mktemp(suffix='.log')
-    
+    """Handle file uploads with enhanced error handling for production"""
     try:
-        # Always save debrief.log
-        debrief_file.save(temp_debrief_path)
+        app.logger.info(f"Upload request received from {request.remote_addr}")
         
-        # Save dcs.log only if provided
-        if dcs_file:
-            temp_dcs_path = tempfile.mktemp(suffix='.log')
-            dcs_file.save(temp_dcs_path)
+        # debrief.log is required, dcs.log is optional
+        if 'debrief_log' not in request.files:
+            flash('debrief.log file is required')
+            app.logger.warning("Upload failed: debrief_log not in request")
+            return redirect(request.url)
         
-        # Extract mission metadata from debrief log
-        mission_metadata = extract_mission_metadata(temp_debrief_path)
-        mission_id = mission_metadata['mission_id']
+        dcs_file = request.files.get('dcs_log')
+        debrief_file = request.files['debrief_log']
         
-        # Check if this mission has already been analyzed
-        existing_session_dir = os.path.join(RESULTS_FOLDER, mission_id)
-        if os.path.exists(existing_session_dir):
-            # Mission already exists, redirect to existing analysis
-            flash(f'Mission "{mission_metadata["mission_name"]}" has already been analyzed. Showing existing results.')
-            return redirect(url_for('dashboard', session_id=mission_id))
+        # Check if debrief.log is provided
+        if debrief_file.filename == '':
+            flash('Please select a debrief.log file')
+            app.logger.warning("Upload failed: empty debrief filename")
+            return redirect(request.url)
         
-        # Save files with mission-based naming
-        debrief_filename = secure_filename(debrief_file.filename)
-        debrief_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_debrief.log")
-        
-        dcs_path = None
-        if dcs_file:
-            dcs_filename = secure_filename(dcs_file.filename)
-            dcs_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_dcs.log")
-            shutil.move(temp_dcs_path, dcs_path)
-        
-        # Move debrief file to final location
-        shutil.move(temp_debrief_path, debrief_path)
-        
-        # Process files with mission-based analyzer
-        analyzer = MissionAnalyzer(mission_id, mission_metadata)
-        success, result = analyzer.process_files(dcs_path, debrief_path)
-        
-        if success:
-            # Create visualizations
-            visualizations = analyzer.create_visualizations(result)
-            
-            # Store session data with mission metadata
-            session_data = {
-                'mission_data': result,
-                'visualizations': visualizations,
-                'mission_metadata': mission_metadata,
-                'timestamp': datetime.now().isoformat()
-            }
-            
-            session_file = os.path.join(analyzer.session_dir, 'session_data.json')
-            with open(session_file, 'w') as f:
-                json.dump(session_data, f)
-            
-            # Create appropriate success message
-            if dcs_file:
-                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (with unit mapping)')
-            else:
-                flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (debrief.log only)')
-            
-            return redirect(url_for('dashboard', session_id=mission_id))
-        else:
-            flash(f'Processing failed: {result}')
+        # Validate debrief.log file
+        if not (debrief_file and allowed_file(debrief_file.filename)):
+            flash('Invalid debrief.log file format. Please upload a .log file.')
+            app.logger.warning(f"Upload failed: invalid debrief file format: {debrief_file.filename}")
             return redirect(url_for('index'))
+        
+        # Validate dcs.log file if provided
+        dcs_file_valid = True
+        if dcs_file and dcs_file.filename != '':
+            if not allowed_file(dcs_file.filename):
+                flash('Invalid dcs.log file format. Please upload a .log file.')
+                app.logger.warning(f"Upload failed: invalid dcs file format: {dcs_file.filename}")
+                return redirect(url_for('index'))
+        else:
+            dcs_file = None  # No dcs.log provided
+        
+        # Save uploaded files temporarily to extract mission metadata
+        temp_dcs_path = None
+        temp_debrief_path = tempfile.mktemp(suffix='.log')
+        
+        try:
+            # Always save debrief.log
+            debrief_file.save(temp_debrief_path)
+            app.logger.info(f"Saved debrief file to {temp_debrief_path}")
             
+            # Save dcs.log only if provided
+            if dcs_file:
+                temp_dcs_path = tempfile.mktemp(suffix='.log')
+                dcs_file.save(temp_dcs_path)
+                app.logger.info(f"Saved DCS file to {temp_dcs_path}")
+            
+            # Extract mission metadata from debrief log
+            mission_metadata = extract_mission_metadata(temp_debrief_path)
+            mission_id = mission_metadata['mission_id']
+            app.logger.info(f"Extracted mission ID: {mission_id}")
+            
+            # Check if this mission has already been analyzed
+            existing_session_dir = os.path.join(RESULTS_FOLDER, mission_id)
+            if os.path.exists(existing_session_dir):
+                # Mission already exists, redirect to existing analysis
+                flash(f'Mission "{mission_metadata["mission_name"]}" has already been analyzed. Showing existing results.')
+                app.logger.info(f"Mission {mission_id} already exists, redirecting to existing analysis")
+                return redirect(url_for('dashboard', session_id=mission_id))
+            
+            # Save files with mission-based naming
+            debrief_filename = secure_filename(debrief_file.filename)
+            debrief_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_debrief.log")
+            
+            dcs_path = None
+            if dcs_file:
+                dcs_filename = secure_filename(dcs_file.filename)
+                dcs_path = os.path.join(UPLOAD_FOLDER, f"{mission_id}_dcs.log")
+                shutil.move(temp_dcs_path, dcs_path)
+                app.logger.info(f"Moved DCS file to {dcs_path}")
+            
+            # Move debrief file to final location
+            shutil.move(temp_debrief_path, debrief_path)
+            app.logger.info(f"Moved debrief file to {debrief_path}")
+            
+            # Process files with mission-based analyzer
+            analyzer = MissionAnalyzer(mission_id, mission_metadata)
+            app.logger.info(f"Starting analysis for mission {mission_id}")
+            success, result = analyzer.process_files(dcs_path, debrief_path)
+            
+            if success:
+                app.logger.info(f"Analysis successful for mission {mission_id}")
+                # Create visualizations
+                visualizations = analyzer.create_visualizations(result)
+                
+                # Store session data with mission metadata
+                session_data = {
+                    'mission_data': result,
+                    'visualizations': visualizations,
+                    'mission_metadata': mission_metadata,
+                    'timestamp': datetime.now().isoformat()
+                }
+                
+                session_file = os.path.join(analyzer.session_dir, 'session_data.json')
+                with open(session_file, 'w') as f:
+                    json.dump(session_data, f)
+                
+                # Create appropriate success message
+                if dcs_file:
+                    flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (with unit mapping)')
+                else:
+                    flash(f'Successfully analyzed mission: "{mission_metadata["mission_name"]}" (debrief.log only)')
+                
+                app.logger.info(f"Mission {mission_id} analysis completed successfully")
+                return redirect(url_for('dashboard', session_id=mission_id))
+            else:
+                app.logger.error(f"Analysis failed for mission {mission_id}: {result}")
+                flash(f'Processing failed: {result}')
+                return redirect(url_for('index'))
+                
+        except Exception as e:
+            app.logger.error(f"Error during file processing: {str(e)}")
+            flash(f'Error processing files: {str(e)}')
+            return redirect(url_for('index'))
+        finally:
+            # Clean up temp files if they still exist
+            for temp_file in [temp_dcs_path, temp_debrief_path]:
+                if temp_file and os.path.exists(temp_file):
+                    try:
+                        os.remove(temp_file)
+                        app.logger.debug(f"Cleaned up temp file: {temp_file}")
+                    except Exception as e:
+                        app.logger.warning(f"Failed to cleanup temp file {temp_file}: {e}")
+                        
     except Exception as e:
-        flash(f'Error processing files: {str(e)}')
+        app.logger.error(f"Unexpected error in upload_files: {str(e)}")
+        flash(f'An unexpected error occurred: {str(e)}')
         return redirect(url_for('index'))
-    finally:
-        # Clean up temp files if they still exist
-        for temp_file in [temp_dcs_path, temp_debrief_path]:
-            if temp_file and os.path.exists(temp_file):
-                try:
-                    os.remove(temp_file)
-                except:
-                    pass
 
 @app.route('/dashboard/<session_id>')
 def dashboard(session_id):
@@ -2463,6 +2526,14 @@ def download_file(session_id, file_type):
         return jsonify({'error': str(e)}), 404
 
 if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0', port=5002) 
-    port = int(os.environ.get('PORT', 5002))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Get port from environment variable (for Render.com) or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    # Get debug mode from environment variable (default to False for production)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    print(f"Starting Flask app on port {port} with debug={debug_mode}")
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)
+else:
+    # When running with Gunicorn (production), ensure directories exist
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(RESULTS_FOLDER, exist_ok=True)
